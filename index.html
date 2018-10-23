@@ -1,28 +1,29 @@
 <!DOCTYPE html>
-<html manifest=/demo.appcache>
-
+<html>
 <head>
-    <meta charset=utf-8>
-    <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <meta name=viewport content="width=device-width,initial-scale=1,user-scalable=no">
-    <link rel=icon href=/favicon.ico>
-    <title>vue</title>
-    <link rel=stylesheet href=https://cache.amap.com/lbs/static/main1119.css>
-    <link as=style href=/css/app.3bc4fa75.css rel=preload>
-    <link as=script href=/js/app.914009d0.js rel=preload>
-    <link as=script href=/js/chunk-vendors.908cdd7f.js rel=preload>
-    <link href=/js/1.c7e209a4.js rel=prefetch>
-    <link href=/js/2.2c4767ff.js rel=prefetch>
-    <link href=/js/3.655d393b.js rel=prefetch>
-    <link href=/js/4.1a1f8a43.js rel=prefetch>
-    <link href=/css/app.3bc4fa75.css rel=stylesheet>
+    <meta charset="utf-8">
+    <title>Cocos2d-html5 Hello World test</title>
+    <link rel="icon" type="image/GIF" href="res/favicon.ico"/>
+    <meta name="viewport" content="width=480, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="full-screen" content="yes"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <meta name="x5-fullscreen" content="true"/>
+    <meta name="360-fullscreen" content="true"/>
+    <style>
+        body, canvas, div {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -khtml-user-select: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+    </style>
 </head>
-
-<body>
-    <noscript><strong>We're sorry but vue doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript>
-    <div id=app></div>
-    <script src=/js/chunk-vendors.908cdd7f.js></script>
-    <script src=/js/app.914009d0.js></script>
+<body style="padding:0; margin: 0; background: #000;">
+<script src="res/loading.js"></script>
+<canvas id="gameCanvas" width="480" height="720"></canvas>
+<script src="frameworks/cocos2d-html5/CCBoot.js"></script>
+<script cocos src="main.js"></script>
 </body>
-
 </html>
