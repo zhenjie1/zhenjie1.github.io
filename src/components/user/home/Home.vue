@@ -1,0 +1,325 @@
+<template>
+	<div class="home">
+		<div class="map">
+			<mapp :screen='isScreen' :lngLat='lngAndLat' @screen='screenEv' @sos='sosOrdersEv'></mapp>
+			<div class="search" :class="{screen: isScreen}">
+				<div class="input">
+					<i class="iconfont icon-search"></i>
+					<input type="text" name="" id="suggestId" placeholder='搜索地点或救援点' ref="inputMap" v-model="searchTxt" @focus="showSearchResult = true" @blur="showSearchResult = false">
+					<!-- <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div> -->
+					<ul class="searchResult" v-if="showSearchResult">
+						<li v-for="(item,index) in setRescue" :key='index' @click='setLngLat(item)'>
+							<h3>{{item.name}}</h3>
+							<p>{{item.address}}</p>
+						</li>
+					</ul>
+				</div>
+				<div class="position">
+					<span>{{district}}</span>
+					<i class="iconfont icon-jiantou_down"></i>
+				</div>
+			</div>
+			<div class="menuTiao" @click='screen'><p></p></div>
+			<div class="menuBtn">
+				<router-link tag="div" class="rescue btn" to='home/userRescue'>
+					<i class="iconfont icon-yinhangqia"></i>
+					<span>救援卡</span>
+				</router-link>
+				 <router-link to='/user/insuranceList' tag='div' class="insurance btn">
+					<i class="iconfont icon-fenfabaoxian"></i>
+					<span>保险理财</span>
+				</router-link>
+			</div>
+		</div>
+		<div class="advertising">
+			<!-- <img src="" alt=""> -->
+			<swiper :list='imgList'></swiper>
+		</div>
+		<div class="con" ref='con' :class='{"fixed":classFlag}'>
+			<ul class="nav">
+				<li :class='{checked: conLiIndex == 1}' @click='commonSenseEv(1)'>急救小常识</li>
+				<li :class='{checked: conLiIndex == 2}' @click='commonSenseEv(2)'>系统公告</li>
+			</ul>
+			<!-- <transition name='breadcrumb'> -->
+				<component :is='currentView'></component>
+			<!-- </transition> -->
+		</div>
+		<div class="menuBottom" :class='{menuBottomHide : isMenuShow}'>
+			<ul>
+				<router-link to='/user' tag='li' class="checked">
+					<div class="icon">
+						<i class="iconfont icon-home"></i>
+					</div>
+					<p>首页</p>
+				</router-link>
+				<li class="middle" @click='sosOrdersEv'>
+					<div class="icon">
+						<i class="iconfont icon-dianhua"></i>
+					</div>
+					<p>一键呼救</p>
+				</li>
+				<router-link to='/user/personal' tag='li'>
+					<div class="icon">
+						<i class="iconfont icon-wode1"></i>
+					</div>
+					<p>个人</p>
+				</router-link>
+			</ul>
+		</div>
+	</div>
+</template>
+<script>
+import Mapp from '../../../components/common/mapp/mapp'
+import Sense from './children/sense.vue'
+import {Swiper} from 'vux/src/components/swiper/'
+import Announcement from './children/announcement.vue'
+import { sosOrders } from '@/config/getData'
+import debounce from 'lodash.debounce'
+import mapLngLat from '../../../assets/js/LatAndLon'
+import { getStore, setStore } from '../../../config/mUtils'
+export default {
+	data(){
+		return {
+			start: 0,
+			searchTxt:'',
+			showSearchResult:false,//搜索结果显示
+			lngAndLat:'',//保存搜索出来的经纬
+			setRescue:[],
+			isMenuShow:false,
+			conLiIndex:1,
+			pageNum:1,
+			isScreen:false,//地图是否全屏
+			currentView: 'sense',
+			imgList:[{
+				img: 'http://a.hiphotos.baidu.com/image/pic/item/14ce36d3d539b6006a6cc5d0e550352ac65cb733.jpg',
+			}, {
+				img: 'http://a.hiphotos.baidu.com/image/pic/item/14ce36d3d539b6006a6cc5d0e550352ac65cb733.jpg',
+			}],
+			classFlag:false
+		}
+	},
+	watch:{
+		searchTxt(val){
+			var rescueArr = JSON.parse(sessionStorage.setRescue)
+			var temporaryArr = [];
+			rescueArr.forEach( v => {
+				if(v.address.indexOf(val) !== -1){
+					temporaryArr.push(v)
+				}else if(v.name.indexOf(val) !== -1){
+					temporaryArr.push(v)
+				}
+			})
+			this.setRescue = temporaryArr
+		}
+	},
+	methods: {
+		setLngLat(item){
+			this.lngAndLat = item.longitude + ',' + item.dimensions
+		},
+		commonSenseEv(index){
+			this.conLiIndex = index
+			this.currentView = index == 1 ? 'sense' : 'announcement';
+		},
+		screenEv(val){
+			this.isScreen = val
+		},
+		screen(){
+			this.isScreen = true
+		},
+		sosOrdersEv(){
+			mapLngLat.then( res => {
+				if(res) {
+					var [x,y] = [res.x,res.y]
+					// var [x,y] = [113.750644,34.849902]
+					var promise = sosOrders(x,y).then( res => {
+						this.$vux.toast.text(res.msg)
+						if(res.code == 2){
+							window.location.href = 'tel:' + res.mobile
+						}else if(res.code == 101){
+							window.location.href = 'tel:' + res.mobile
+						}else if( res.code == 600 ) {
+							this.$router.push('/user/home/userRescue')
+						}
+						else if( res.code == 601 ) {
+							this.$router.push('/user/personal/verified')
+						}
+					})
+				}
+			})
+		},
+		scrollEv(e){
+			var y = Math.floor( e.targetTouches[0]['clientY'] );
+
+			if(y > this.start + 10){
+				// console.log('向下')
+				this.isMenuShow = false
+			}else if(y + 10 < this.start){
+				// console.log('向上')
+				this.isMenuShow = true
+			}
+			this.start = y;
+
+		},
+		scrollHandler(e) {
+			console.log(e)
+		}
+	},
+	mounted(){
+		if(getStore('userInfo') && getStore('userInfo')['userType']!=3 ) {
+			this.$router.push('/rescue/task')
+		}
+		if(sessionStorage.setRescue){
+			this.setRescue = JSON.parse(sessionStorage.setRescue)
+		}
+		window.addEventListener('touchstart', function(e){
+			this.start = Math.floor( e.targetTouches[0]['clientY'] )
+		})
+		window.addEventListener('touchmove',
+			debounce(this.scrollEv,20,{
+				'leading': true,
+				'trailing': false
+			})
+		)
+
+		let con = this.$refs.con
+		window.addEventListener('scroll',(event)=> {
+			let tpScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+			if(con.offsetTop < tpScrollTop) {
+				this.classFlag = true;
+			}else {
+				this.classFlag = false;
+			}
+		});
+	},
+	computed:{
+		district:function(){
+			return sessionStorage.district
+		},
+	},
+	components: {
+		Mapp,
+		Sense,
+		Announcement,
+		Swiper
+	}
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../../../assets/css/all';
+
+.search input::-ms-input-placeholder {color:white;}
+.search input::-webkit-input-placeholder {color:white;}
+.search input:-moz-placeholder { color: white;}
+.search input::-moz-placeholder { color: white;}
+.search input:-ms-input-placeholder { color: white;}
+
+.home{position: relative;
+	.map{height: 370px;}
+	.fixed {
+		padding-top: 45px;
+		ul {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
+	}
+	.con{
+		ul.nav{overflow: hidden;background-color: white;
+			li{float:left;width:50%;text-align: center;font-size:17px;line-height: 45px;color:#939393;position: relative;}
+			li:after{position: absolute;left:50%;bottom: 6px;transform: translateX(-50%);content: '';display: block;width:30px;height: 3px;border-radius: 10px;background-color: transparent;}
+			li.checked{color: #333;font-weight: bold;}
+			li.checked:after{background-color: $red;}
+		}
+	}
+	.search{display: flex;z-index:1;justify-content: space-between;margin:0 3%;position: absolute;left:0;top:10px;width:94%;
+		div.input{display: block;width:70%;position: relative;
+			input{background-color: rgba(0,0,0,.2);border:none;width: 100%;height: 38px;padding:9px 0 9px 32px;font-size:14px;color:white;border-radius: 4px;box-sizing: border-box;}
+			i{position: absolute;left:10px;top:50%;transform: translateY(-50%);color:white;}
+		}
+		.searchResult{background-color: white;box-shadow: 0 2px 10px rgba(0,0,0,.1);width:100%;position: absolute;top:45px;box-sizing: border-box;padding:0 15px;border-radius:2px;overflow-y: auto;max-height:500px;
+			li{padding: 10px 0;
+				h3{font-size:14px;font-weight: normal;}
+				p{font-size: 12px;color:#999;}
+			}
+			li + li{border-top: 1px solid #f5f5f5;}
+		}
+	}
+	.position{
+		*{color:#908F8D;}
+		span{font-size: 16px;line-height: 38px;}
+	}
+	.menuTiao{background-color: white;padding:13px 0;
+		p{width:40px;height: 5px;background-color: #C4C5C2;border-radius: 100px;margin:0 auto;}
+	}
+
+	.menuBottom{background-color: #f8f8f8;height: 50px;width:78%;position: fixed;left:11%;bottom:20px;border-radius: 100px;	filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));transition:transform .4s ease;
+		ul{display: flex;align-items:flex-end;
+			li{width:33.33%;text-align: center;margin-top:-37px;
+				p{font-size:12px;}
+				i{font-size: 20px;font-weight: bold;}
+				a{display: block;}
+			}
+			li.checked{
+				i,p{color:$red;}
+
+			}
+			li.middle{
+				.icon{background-color: #f8f8f8;@include wh(60px,60px);padding:4px;text-align: center;border-radius: 200px;margin:0 auto;}
+				i{font-weight: normal;color:white;font-size:40px;line-height: 60px;text-align: center;background-color: $red;width:60px;height:60px;border-radius: 100px;display: inline-block;}
+				p{margin-top:-4px;color:$red;}
+			}
+		}
+	}
+	.menuBottomHide{transform: translateY(160px);}
+
+	.menuBtn{display: flex;justify-content: space-around;background-color:white;padding:0 0 20px;
+		box-shadow:0 4px 8px rgba(0,0,0,.05);
+		.btn{height: 50px;line-height: 50px;border-radius: 100px;width:140px;text-align:center;
+			i{font-size:26px;margin-right: 6px;vertical-align: middle;}
+			span{font-size: 16px;}
+		}
+		.rescue{background-color: #E7F6FF;color:#5E8AA6;
+			i{color:#12A6FF;}
+		}
+		.insurance{background-color: #FEEFE8;color:#967363;
+			i{color:#F89666;}
+		}
+	}
+	.advertising{margin:10px 0;
+		img{width:100%;height: 140px;display: block;}
+	}
+}
+</style>
+
+<style lang="scss">
+@import '../../../assets/css/all';
+
+.sense{
+	li{background-color: white;padding:15px 15px;border-top: 1px solid #f5f5f5;display: flex;justify-content: space-between;
+		.l{flex:1;
+			.tit{font-size:16px;font-weight:normal;height:44px;}
+			.tag{display: flex;justify-content: space-between;margin-top:2px;color:#929292;}
+			b{font-weight: normal;}
+		}
+		.r{margin-left:10px;
+			img{@include wh(64px,64px);display: block;}
+		}
+	}
+}
+
+.map .posBox{
+	.menuTiao,.help{display:none;}
+}
+.search.screen{position:fixed !important;}
+.map.screen{position: fixed;left:0;top:0;width:100%;height: 100%;z-index: 1;
+	.hello{height:100%;}
+	#map{position: absolute;left:0;top:0;z-index:11;width:100%;height: 100%;
+	}
+	.posBox{
+		.menuTiao,.help{display:block;}
+	}
+}
+</style>
+
