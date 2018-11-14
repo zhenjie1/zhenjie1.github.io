@@ -127,6 +127,7 @@ export default {
 			this.isScreen = true
 		},
 		sosOrdersEv(){
+			console.log(123)
 			// mapLngLat().then( res => {
 			// 	if(res) {
 					// console.log(res)

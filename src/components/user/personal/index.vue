@@ -1,9 +1,9 @@
 <template>
 	<div class="personal">
 		<router-link tag='div' to='personal/basic' class="info">
-			<img :src="userInfo.user.photo " alt="" class="avatar">
+			<img :src="userInfo.photo " alt="" class="avatar">
 			<div class="center">
-				<h3>昵称：{{userInfo.user.name}}</h3>
+				<h3>昵称：{{userInfo.name}}</h3>
 				<span>查看或编辑个人信息</span>
 			</div>
 			<i class="iconfont icon-fenxiang"></i>

@@ -25,13 +25,13 @@
 import { rescueMoney, allMoney, userPass ,rescueInt} from "../../../config/getData";
 export default {
   props: {
-    value: Boolean
+	value: Boolean,
+	rescueId: String
   },
   data() {
     return {
       paymentPass: "",
 	  token: "",
-	  rescueId:""
     };
   },
   watch: {
@@ -47,16 +47,11 @@ export default {
       } else if (this.paymentPass.length < 6) {
         this.$vux.toast.text("支付密码最少 6 位");
         return;
-      }
+	  }
       userPass(this.paymentPass).then(res => {
-        console.log(res.rows.token);
-        this.token = res.rows.token;
-      });
+        console.log(`id：${this.rescueId}  token：${res.rows.token}`);
 
-      // 救援卡
-      setTimeout(function() {
-        rescueMoney(this.rescueId, this.token).then(res => {
-			console.error(res)
+        rescueMoney(this.rescueId, res.rows.token).then(res => {
           if (res.code == 2) {
             this.$vux.toast.text("购买成功");
             this.$emit("vipType", 1);
@@ -65,7 +60,8 @@ export default {
             this.$vux.toast.text(res.msg);
           }
         });
-      }, 400);
+
+      });
     },
     hide() {
       this.$emit("input", false);

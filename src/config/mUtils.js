@@ -40,3 +40,20 @@ export const plusXing = (str, frontLen, endLen) => {
 	}
 	return str.substring(0, frontLen) + xing + str.substring(str.length - endLen);
 }
+
+/*
+*登录后-处理返回的值
+*/
+export const loginReturnVal = (data) => {
+	var obj = {}
+	for(let i in data){
+		if(i == 'user'){
+			for(let j in data[i]){
+				obj[j] = data[i][j]
+			}
+		}else{
+			obj[i] = data[i]
+		}
+	}
+	return obj
+}
