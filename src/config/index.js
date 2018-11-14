@@ -8,6 +8,7 @@ axios.defaults.withCredentials = true
 export default async function (url = '', data = {}, type = 'POST', urlAll = null, config = {}) {
 
 	url = URL + url;
+	console.log(url)
 
 	if (urlAll === null) data = qs.stringify(data);
 	type = type.toUpperCase()

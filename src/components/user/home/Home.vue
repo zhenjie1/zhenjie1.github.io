@@ -127,10 +127,11 @@ export default {
 			this.isScreen = true
 		},
 		sosOrdersEv(){
-			mapLngLat.then( res => {
-				if(res) {
-					var [x,y] = [res.x,res.y]
-					// var [x,y] = [113.750644,34.849902]
+			// mapLngLat().then( res => {
+			// 	if(res) {
+					// console.log(res)
+					// var [x,y] = [res.x,res.y]
+					var [x,y] = [113.750644,34.849902]
 					var promise = sosOrders(x,y).then( res => {
 						this.$vux.toast.text(res.msg)
 						if(res.code == 2){
@@ -144,8 +145,8 @@ export default {
 							this.$router.push('/user/personal/verified')
 						}
 					})
-				}
-			})
+			// 	}
+			// })
 		},
 		scrollEv(e){
 			var y = Math.floor( e.targetTouches[0]['clientY'] );
@@ -165,6 +166,7 @@ export default {
 		}
 	},
 	mounted(){
+		console.log(window.location.href)
 		if(getStore('userInfo') && getStore('userInfo')['userType']!=3 ) {
 			this.$router.push('/rescue/task')
 		}

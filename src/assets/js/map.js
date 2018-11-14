@@ -13,7 +13,7 @@ var longitude = null,
 var map;
 
 window.initialize = function () {
-	mapLngLat.then( res => {
+	mapLngLat().then( res => {
 		longitude = res.x
 		latitude = res.y
 		var ggPoint = new BMap.Point(longitude, latitude);

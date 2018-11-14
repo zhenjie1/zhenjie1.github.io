@@ -48,7 +48,6 @@ export default {
     loginEv() {
       login(this.username, this.password, true).then(res => {
         if (res.code == 2) {
-          // console.log(res.code)
           res = res.rows;
           this.userInfo = res.rows;
           if (!res.id) {

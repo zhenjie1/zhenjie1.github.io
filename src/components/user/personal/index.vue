@@ -1,9 +1,9 @@
 <template>
 	<div class="personal">
 		<router-link tag='div' to='personal/basic' class="info">
-			<img :src="userInfo.photo" alt="" class="avatar">
+			<img :src="userInfo.user.photo " alt="" class="avatar">
 			<div class="center">
-				<h3>昵称：{{userInfo.name}}</h3>
+				<h3>昵称：{{userInfo.user.name}}</h3>
 				<span>查看或编辑个人信息</span>
 			</div>
 			<i class="iconfont icon-fenxiang"></i>
@@ -111,7 +111,7 @@ import mapLngLat from "../../../assets/js/LatAndLon";
 export default {
   data() {
     return {
-      userInfo: "",
+      userInfo: '',
       text: ""
     };
   },
@@ -120,9 +120,7 @@ export default {
       mapLngLat.then(res => {
         if (res) {
           var [x, y] = [res.x, res.y];
-          console.log(x, y);
           sosOrders(x, y).then(res => {
-            console.log(res);
             if (res.code == 2) {
               window.location.href = "tel:" + res.mobile;
             } else if (res.code == 101) {
@@ -139,7 +137,7 @@ export default {
   },
   created() {
     if (getStore("userInfo") == null) {
-      alert("请先登录！");
+      this.$vux.toast.text("请先登录！");
       this.$router.push("/user/login");
     } else {
       this.userInfo = getStore("userInfo");
