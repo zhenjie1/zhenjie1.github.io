@@ -9,11 +9,16 @@
 </template>
 
 <script>
-import { getStore } from '../../../config/mUtils'
+import { mapState } from 'vuex';
   export default {
     props:{
       status:Number
-    },
+	},
+	computed:{
+		...mapState([
+			'userInfo'
+		])
+	},
     data() {
       return {
         text:'',
@@ -22,7 +27,7 @@ import { getStore } from '../../../config/mUtils'
       }
     },
     mounted() {
-      this.userType = getStore('userInfo').userType;
+      this.userType = this.userInfo.userType;
       /*  0 绑卡成功
        *  1 认证成功
        *  2 提现成功
@@ -40,7 +45,7 @@ import { getStore } from '../../../config/mUtils'
           this.text = '提现成功';
           this.tip = '申请提现成功，24小时（工作日）内到账（具体到账时间以银行到账时间为准）'
         break;
-        
+
       }
     }
   }
@@ -86,9 +91,9 @@ import { getStore } from '../../../config/mUtils'
           .iconfont{font-size: 14px}
         }
       }
-      
+
     }
-    
+
   }
-</style>  
+</style>
 

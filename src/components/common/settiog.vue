@@ -40,6 +40,7 @@
 import Actionsheet from 'vux/src/components/actionsheet/'
 import { logout } from '../../config/getData'
 import { getStore,removeStore } from '../../config/mUtils'
+import { mapState } from 'vuex'
 
 export default {
 	data(){
@@ -55,35 +56,35 @@ export default {
 		}
 	},
 	computed:{
+		...mapState([
+			'userInfo'
+		])
 	},
 	methods:{
 		variety(val,ind){
 			this.testval[ind] = val
-			// console.log(this.testval)
 		},
 		logoutEv(){
 			this.logoutShow = true
 		},
-		inputEv(html){
-			// console.log(html)
-		},
 		onDelete(val){
 			logout().then( res => {
 				if(res.code == 2){
-					alert('退出成功');
+					this.$vux.toast.text('退出成功');
+					this.userInfo = undefined;
 					removeStore('userInfo')
 					this.$router.push('/user/login')
 				}
 			})
 		},
 		link() {
-			if(getStore('userInfo').realName != 1) {
+			if(this.userInfo.realName != 1) {
 				this.$router.push('/user/personal/verified')
 			}
 		}
 	},
 	mounted(){
-		let type = getStore('userInfo').realName;
+		let type = this.userInfo.realName;
 		if(type == 1) {
 			this.text = '已认证'
 		}

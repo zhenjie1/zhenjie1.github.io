@@ -18,7 +18,7 @@
 			<div class="borbot">
 				<h4>保障期限<span class="">(支付成功后日生效)</span></h4>
 				<div class="insurDetQx">
-					<label v-for="(Dtime,index) in dateData"@click="choose(index)" :class="{active:index==timeIndex}">
+					<label v-for="(Dtime,index) in dateData" :key="index" @click="choose(index)" :class="{active:index==timeIndex}">
 						<span ref="menuItem">{{Dtime.insuranceId}}</span>
 						<span ref="itmeMon">{{Dtime.insuranceMoney}}</span>
 						<input type="radio" name="1" value="半年" />{{Dtime.insuranceDay}}
@@ -28,7 +28,7 @@
 			<div>
 				<h4>为谁投保</h4>
 				<div class="insurDetQx">
-					<label v-for="(Dtime,index) in Derdata" @click="pchoose(index)" :class="{active:index==penIndex}"ref="typeMen">
+					<label v-for="(Dtime,index) in Derdata" :key="index" @click="pchoose(index)" :class="{active:index==penIndex}"ref="typeMen">
 						<input type="radio" name="1" value="半年" />{{Dtime.pen}}
 					</label>
 				</div>
@@ -48,19 +48,16 @@
 			<div class="clearfix DetChooseList" v-if='zData.isMc==1'>
 				<div class="fl DetChooseTit">是否有医保（含新农合）</div>
 				<ul class="fr surybBox">
-					<li
-						v-for="(surs,index) in sureNo"
-						class="fl surybw"
-						@click="ychoose(index)"
-						:class="{active:index==ybIndex}"
-					>{{surs.val}}</li>
+					<!-- {{ybIndex}} -->
+					<li v-for="(surs,index) in sureNo" class="fl surybw" :key="index" @click="ychoose(index)" :class="{active:index==ybIndex}">{{surs.val}}</li>
 				</ul>
 			</div>
 			<div class="clearfix DetChooseList" v-if='zData.isHospital == 1'>
-				<div class="fl DetChooseTit">是最近是否住院</div>
+				<div class="fl DetChooseTit">最近是否住院</div>
 				<ul class="fr surybBox">
 					<li
 						v-for="(surs,index) in sureNo"
+						:key="index"
 						class="fl suryb"
 						@click="zychoose(index)"
 						:class="{active:index==zyIndex}"
@@ -69,12 +66,10 @@
 			</div>
 		</div>
 		<div class="insurUpImg">
-			<div class="clearfix" v-if='zData.isUploadimg == 1'>
+			<router-link class="clearfix" v-show='ybIndex == 1' :to="'/user/insuranceList/insuranceDet'+this.id +'/insurImgUp'">
 				<div class="fl DetChooseTit">上传证明</div>
-				<router-link  class="insurUpImga fr"
-					:to="'/user/insuranceList/insuranceDet'+this.id +'/insurImgUp'"
-					>{{tip}}<span class="iconfont icon-jiantou"></span></router-link >
-			</div>
+				<div class="insurUpImga fr">{{tip}}<span class="iconfont icon-jiantou"></span></div>
+			</router-link>
 			<div class="clearfix" @click='lpBtn'>
 				<div class="fl DetChooseTit">理赔流程</div>
 				<span class="lp fr iconfont icon-jiantou"></span>
@@ -88,34 +83,23 @@
 			<div class="DetBotb clearfix">
 				<div class="DetBotPrice fl"><span class="inspan">价格：</span><span class="inp" style="color: #f02b2b;">{{paymon}}</span></div>
 				<div class="DetBotSub fl">
-					<a href="javascript:;" @click="upData()">提交</a>
+					<a href="javascript:;" @click="upData">提交</a>
 				</div>
 			</div>
 		</div>
 
 		<payment v-model='isShowPay' :show='isShowPay' :data='propsData' :pageNum='pageNum' :showList='[0]'></payment>
-		<keep-alive>
 		<router-view></router-view>
-		</keep-alive>
 	</div>
 </template>
 
 <script>
-import {
-  insListDet,
-  insUpImages,
-  paySave,
-  insListReceive
-} from "../../../config/getData";
+import {insListDet,insUpImages,paySave,insListReceive} from "../../../config/getData";
 import { mapState } from "vuex";
-//	import dateChoose from './dateChoose'
-//	import imagesFlie from './imagesFlie'
 
 import Payment from "../../common/payment/Payment";
 export default {
   components: {
-    //			imagesFlie,
-    //			dateChoose,
     Payment
   },
   props: {
@@ -129,7 +113,6 @@ export default {
       input2: "",
       isShoww: true,
       isShowx: false,
-      // isShowPay:false,
       penIndex: 0,
       ybIndex: 0,
       zyIndex: 0,
@@ -171,7 +154,7 @@ export default {
   methods: {
     // 理赔跳转
     lpBtn() {
-      window.location.href = this.zData.claimProcess;
+		this.$router.push('/user/insuranceList/claims/' + this.zData.claimProcess)
     },
     //投保期限选择
     choose: function(index) {
@@ -200,13 +183,13 @@ export default {
     },
     upData() {
       if (this.input1 == "") {
-        alert("请填写姓名");
+        this.$vux.toast.text("请填写姓名");
       } else if (this.input2.length != 18 && this.input2.length != 15) {
-        alert("请填写身份证");
+        this.$vux.toast.text("请填写身份证");
       } else if (this.isA == false) {
-        alert("请阅读并同意投保条约");
-      } else if (this.zyIndex == 1 && localStorage.ImgDataArr == undefined) {
-        alert("请上传住院证明");
+        this.$vux.toast.text("请阅读并同意投保条约");
+      } else if (this.ybIndex == 1 && localStorage.ImgDataArr == undefined) {
+        this.$vux.toast.text("请上传住院证明");
       } else {
         let userName = this.input1;
         let user_id_number = this.input2;
@@ -237,14 +220,6 @@ export default {
           paymon
         };
         this.getData();
-        // paySave(id,dayId,typeMen,userName,user_id_number,isMc,isHospital,hospitalImgs).then( res=> {
-        // 	if( res.code == 2 ) {
-        // 		alert(res.msg)
-        // 		localStorage.removeItem("ImgDataArr")
-        //   localStorage.removeItem("ImgThis")
-        //   this.$router.push('/user/buyRecord')
-        // 	}
-        // })
       }
     },
     getData() {

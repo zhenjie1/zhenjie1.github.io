@@ -77,13 +77,14 @@
 
 <script>
 import Actionsheet from 'vux/src/components/actionsheet/'
+import { mapState, mapActions } from 'vuex'
 import Confirm from 'vux/src/components/confirm/'
 import Datetime from 'vux/src/components/datetime/'
 import Avatar from '../../../../common/avatar/avatar'
 import Toast from 'vux/src/components/toast/'
 
 import { getUserInfo, editUserInfo } from '@/config/getData'
-import { getStore,setStore} from '../../../../../config/mUtils'
+import { setStore } from '../../../../../config/mUtils'
 
 
 export default {
@@ -93,7 +94,6 @@ export default {
 			flag:true,
 			date:'',
 			sex:'123',
-			userInfo:{},
 			showPositionValue:false,
 			show:{
 				bloodType:false,
@@ -106,7 +106,7 @@ export default {
 				id:'',
 				avatarUrl:'',
 				sex:['保密','男','女'],
-				bloodType:['A','B','AB','O','保密'],
+				bloodType:['A','B','AB','O','Rh阳性','Rh阴性','MN','MNSs血型'],
 				avatarTxt:'',
 
 				birthdayVal:'点击选择',
@@ -118,10 +118,16 @@ export default {
 			zhengshu:''
 		}
 	},
+	computed:{
+		...mapState([
+			'userInfo'
+		])
+	},
 	created(){
 		getUserInfo().then( res => {
 			res = res.rows
-			this.userInfo = res
+			this.setUserInfo(res)
+
 			this.seleceVal.sexVal = res.sexId
 			this.seleceVal.bloodVal = res.blood
 			this.seleceVal.birthdayVal = res.birthday
@@ -141,8 +147,11 @@ export default {
 		Toast
 	},
 	methods:{
+		...mapActions([
+			'setUserInfo'
+		]),
 		getLoca(name,cont) {
-			let obj = getStore('userInfo');
+			let obj = this.userInfo
 			obj[name] = cont;
 			setStore('userInfo',obj)
 		},
@@ -223,9 +232,7 @@ export default {
 		}
 	},
 	mounted(){
-		if(getStore('userInfo').realName == 1) {
-				this.flag = false
-		}
+		if(this.userInfo.realName == 1) this.flag = false
 	}
 }
 </script>
@@ -271,7 +278,7 @@ export default {
 		li.AvatarBox{padding:10px 15px;}
 		li + li{margin-top:1px;}
 	}
-	
+
 }
 </style>
 

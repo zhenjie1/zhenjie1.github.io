@@ -26,8 +26,7 @@
 						<i class="iconfont icon-icon-test"></i>
 						<p>
 							<b>所需物品</b>
-							<span v-for='item in detaData.ordersPartsList
-'>{{item.name}}&nbsp</span>
+							<span v-for='(item,i) in detaData.ordersPartsList' :key="i">{{item.name}}</span>
 						</p>
 					</li>
 					<li>
@@ -58,8 +57,7 @@
 		<div class="duiyuan" v-if='userType != 3'>
 			<p>参与救援的队员</p>
 			<ul>
-				<li v-for='(item,i) in detaData.rescueNames
-'>{{item.name}}</li>
+				<li v-for='(item,i) in detaData.rescueNames' :key="i">{{item.name}}</li>
 			</ul>
 		</div>
 		<confirm v-model="showCancel" :hide-on-blur='true' :show-input='true' placeholder='请输入取消理由' @on-confirm='cancelEv' :title='"取消理由"' theme="android" confirm-text='确定' cancel-text='取消'></confirm>
@@ -71,6 +69,8 @@
 import { getStore } from '../../../../../config/mUtils'
 import { jiuorder,cancelOrder,cancelOffice } from '../../../../../config/getData'
 import Confirm from 'vux/src/components/confirm/'
+import { mapState } from 'vuex'
+
 export default {
 	data(){
 		return {
@@ -80,6 +80,11 @@ export default {
 			showCancel:false,
 			showCancelRefuse:false
 		}
+	},
+	computed:{
+		...mapState([
+			'userInfo'
+		])
 	},
 	components:{Confirm},
 	methods:{
@@ -121,9 +126,8 @@ export default {
 		}
 	},
 	created(){
-		this.userType = getStore('userInfo').userType
+		this.userType = this.userInfo.userType
 		this.detaData = getStore('viewCurrentData')
-		console.log(this.userType)
 		jiuorder(this.detaData.id).then( res=>{
 			this.detaData = res.rows
 			this.detaData.stateId = parseInt(this.detaData.stateId)

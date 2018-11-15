@@ -6,10 +6,11 @@
         <p>{{item.name}}</p>
         <i class="icon iconfont icon-dianhua"></i>
       </li> -->
-      <router-link :to="{path: '/personal/playInfo',query:item}" v-for='(item,i) in dataArr' tag='li':key='i'>
-        <p><img :src="item.photo" alt="">{{item.name}}</p>
-        <i class="icon iconfont icon-dianhua info"></i>
-      </router-link>
+      <li v-for='(item,i) in dataArr' tag='li' :key='i'>
+        <router-link :to="{path: '/personal/playInfo',query:item}" tag='p'><img :src="item.photo" alt="">{{item.name}}</router-link>
+		<!-- {{item.mobile}} -->
+        <a :href="'tel:' + item.mobile" class="icon iconfont icon-dianhua info"></a>
+      </li>
     </ul>
   </div>
 </template>
@@ -126,7 +127,7 @@
           ]
 // console.log(sort(brand))
       }
-  } 
+  }
 </script>
 
 
@@ -143,6 +144,7 @@
       justify-content: space-between;
       padding: 8px 20px 8px 10px;
       p {
+		width:100%;
         display: flex;
         align-items:center;
         img {

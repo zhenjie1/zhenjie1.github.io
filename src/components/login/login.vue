@@ -1,13 +1,7 @@
 <template>
 <div class="login">
 	<div class="logo"><img src="" alt=""></div>
-  <!-- <form action="http://t.tjh.homebank.shop:8080/jeesite/mobile/a/login?__ajax=true" method="post">
-    <input type="text" name="username">
-    <input type="text" name="password">
-    <input type="text" name="mobileLogin" value="true">
-    <input type="submit" value="提交">
-  </form> -->
-	<div class="form">
+	<form class="form" @submit.prevent="loginEv">
 		<label><input type="text" placeholder="请输入手机号/天机卡号" v-model="username"></label>
 		<label>
 			<input :type="isLook ? 'text' : 'password'" placeholder="请输入登录密码" v-model="password">
@@ -19,14 +13,13 @@
 			<router-link to='/user/forgetPass'>忘记密码？</router-link>
 		</div>
 		<input type="submit" :disabled='!disabled' :class='{active:disabled}' @click='loginEv' class="submit" value="登录">
-	</div>
+	</form>
 </div>
 </template>
 
 <script>
 import { login } from "../../config/getData.js";
 import { mapActions, mapState, mapMutations } from "vuex";
-import { getStore } from "../../config/mUtils";
 
 export default {
   data() {
@@ -49,12 +42,13 @@ export default {
       login(this.username, this.password, true).then(res => {
         if (res.code == 2) {
           res = res.rows;
-          this.userInfo = res.rows;
+		  this.userInfo = res.rows;
+		  console.log(this.userInfo)
           if (!res.id) {
             alert(res.msg);
           } else {
             this.setUserInfo(res);
-            if (getStore("userInfo")["userType"] == 3)
+            if (this.userInfo["userType"] == 3)
               this.$router.push("/user/home");
             else this.$router.push("/rescue/task");
             //task

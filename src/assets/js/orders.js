@@ -6,7 +6,7 @@ import {
 	userSearchAllRescue,
 	userRescue,
 	userRescueOk,
-	findListTask//救援用户查询	
+	findListTask//救援用户查询
 } from '../../config/getData'
 import {
 	getStore
@@ -36,7 +36,7 @@ export const initFun = (that, type) => {
 				res = res.rows
 				that.infoData = res
 				that.originalData = res
-				jinzhan(that.infoData)	
+				jinzhan(that.infoData)
 			}).then(() => {
 				that.isShow();
 			})
@@ -47,8 +47,8 @@ export const initFun = (that, type) => {
 				res = res.rows
 				that.infoData = res
 				that.originalData = res
-				that.liLength = res.length	
-				jinzhan(that.infoData)			
+				that.liLength = res.length
+				jinzhan(that.infoData)
 			})
 			break;
 		case 4: //救援用户
@@ -57,7 +57,7 @@ export const initFun = (that, type) => {
 				res = res.rows
 				that.infoData = res
 				that.originalData = res
-				jinzhan(that.infoData)	
+				jinzhan(that.infoData)
 			}).then(() => {
 				that.isShow();
 			})
@@ -230,7 +230,7 @@ async function userAjax(that, navIndex) {
 				res = res.rows
 				that.infoData = res
 				that.originalData = res
-				jinzhan(that.infoData)	
+				jinzhan(that.infoData)
 			})
 			break;
 		case 2: //等待接单
@@ -238,7 +238,7 @@ async function userAjax(that, navIndex) {
 				res = res.rows
 				that.infoData = res
 				that.originalData = res
-				jinzhan(that.infoData)	
+				jinzhan(that.infoData)
 			})
 			break;
 		case 3: //施救中
@@ -246,7 +246,7 @@ async function userAjax(that, navIndex) {
 				res = res.rows
 				that.infoData = res
 				that.originalData = res
-				jinzhan(that.infoData)	
+				jinzhan(that.infoData)
 			})
 			break;
 		case 4: //已完成
@@ -254,7 +254,7 @@ async function userAjax(that, navIndex) {
 				res = res.rows;
 				that.infoData = res
 				that.originalData = res
-				jinzhan(that.infoData)	
+				jinzhan(that.infoData)
 			})
 			break;
 		case 5: //已取消
@@ -262,9 +262,9 @@ async function userAjax(that, navIndex) {
 				res = res.rows;
 				that.infoData = res
 				that.originalData = res
-				jinzhan(that.infoData)	
+				jinzhan(that.infoData)
 			})
-			break;			
+			break;
 	}
 	if(that.$refs.li) {
 		that.liLength = that.$refs.li.length;
@@ -290,14 +290,14 @@ function leaderAjax(that, navIndex) {
 					}
 				})
 				that.infoData = dataArr
-				jinzhan(that.infoData)	
+				jinzhan(that.infoData)
 				resolve();
 			}
 		} else {
 			findMyListOk(1, 10).then(res => {
 				res = res.rows;
 				that.infoData = res;
-				jinzhan(that.infoData)	
+				jinzhan(that.infoData)
 				resolve();
 			})
 		}
@@ -341,7 +341,7 @@ function leaderBtnEv(that, item, ind, name) {
 				}else if(name == '查看回访') {
 					that.$router.push('/rescue/report/'+item.id+'/'+0)
 				}
-				
+
 			}
 			console.log(`不请求，而是跳转页面 --- 点击的是第 ${ind} 个`)
 			if (name.indexOf('上传') !== -1) {

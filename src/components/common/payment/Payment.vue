@@ -19,7 +19,6 @@
 
 <script>
 //该组件接受一个 showList 数组，用来决定显示项 [0,1,2], 如果不传或传空数组，就全部显示
-//还接受一个 show false/true ，决定组件是否显示
 
 import {
   allMoney,
@@ -82,27 +81,45 @@ export default {
           break;
         }
       }
-    },
+	},
+	buyRescusCard(){
+		var d = this.data;
+		// 保存+购买保险
+		paySave( d.id, d.dayId, d.typeMen, d.userName, d.user_id_number, d.isMc, d.isHospital, d.hospitalImgs, this.token, d.isUploadimg ).then(res => {
+			if (res && res.code == 2) {
+				localStorage.removeItem("ImgDataArr");
+				localStorage.removeItem("ImgThis");
+				this.$router.push("/user/buyRecord/1");
+				this.$vux.toast.text(res.msg);
+			}
+			if (res == undefined) {
+				this.$vux.toast.text("订单保存成功");
+				this.$router.push("/user/buyRecord/0");
+			}
+		});
+
+	},
     paymentEv(index) {
-      if (index == 2) {
+      if (index == 2) {	//支付宝支付
         window.location.href = "http://ty.tianjistar.com/a/pay/MobilePay";
-      } else if (index == 0) {
+      } else if (index == 0) {//天机会支付
         MessageBox.prompt("请输入密码", {
           inputType: "password"
         }).then(({ value, action }) => {
           userPass(value).then(res => {
             this.token = res.rows.token;
+
             if (this.pageNum == 1) {
               // 购买保险
               insListDet(this.id, this.token).then(res => {
                 allMoney().then(res => {
                   if (res.code == 2) {
-                    alert("购买成功");
-                    location.reload();
+                    this.$vux.toast.text("购买成功");
+                    setTimeout(() => window.location.reload(), 2000 );
                   } else if (res.code == 101) {
-                    alert("验证失败");
+                    this.$vux.toast.text("验证失败");
                   } else if (res.code == 300) {
-                    alert("余额不足请充值");
+                    this.$vux.toast.text("余额不足请充值");
                   }
                   this.money = res.rows.money;
                   this.options[0]["txt"] = `可用余额 ${this.money} 元`;
@@ -111,14 +128,10 @@ export default {
             } else if (this.pageNum == 0) {
               // 救援卡
               rescueMoney(this.rescueId, this.token).then(res => {
+                this.$vux.toast.text(res.msg);
                 if (res.code == 2) {
-                  alert("购买成功");
                   this.$emit("vipType", 1);
                   this.$router.push("/user/personal");
-                } else if (res.code == 101) {
-                  alert("验证失败");
-                } else if (res.code == 300) {
-                  alert("余额不足请充值");
                 }
                 allMoney().then(res => {
                   this.money = res.rows.money;
@@ -126,40 +139,19 @@ export default {
                 });
               });
             } else if (this.pageNum == 2) {
-              var d = this.data;
-              // 保存+购买保险
-              paySave(
-                d.id,
-                d.dayId,
-                d.typeMen,
-                d.userName,
-                d.user_id_number,
-                d.isMc,
-                d.isHospital,
-                d.hospitalImgs,
-                this.token,
-                d.isUploadimg
-              ).then(res => {
-                if (res && res.code == 2) {
-                  localStorage.removeItem("ImgDataArr");
-                  localStorage.removeItem("ImgThis");
-                  this.$router.push("/user/buyRecord/1");
-                }
-                if (res == undefined) {
-                  alert("订单保存成功");
-                  this.$router.push("/user/buyRecord/0");
-                }
-              });
+				this.buyRescusCard()
             }
           });
         });
       }
     },
     getData() {
-      allMoney().then(res => {
-        this.money = res.rows.money;
-        this.options[0]["txt"] = `可用余额 ${this.money} 元`;
-      });
+		if(this.showList[0] === 0){
+			allMoney().then(res => {
+				this.money = res.rows.money;
+				this.options[0]["txt"] = `可用余额 ${this.money} 元`;
+			});
+		}
     }
   },
   created() {

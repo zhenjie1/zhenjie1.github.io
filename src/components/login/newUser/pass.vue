@@ -74,7 +74,7 @@ export default {
 					if(res.code == 2) that.$router.push('/user/login')
 				})
 			}
-			
+
 		}
 	}
 }

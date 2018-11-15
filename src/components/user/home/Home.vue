@@ -69,6 +69,7 @@
 	</div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
 import Mapp from '../../../components/common/mapp/mapp'
 import Sense from './children/sense.vue'
 import {Swiper} from 'vux/src/components/swiper/'
@@ -76,7 +77,7 @@ import Announcement from './children/announcement.vue'
 import { sosOrders } from '@/config/getData'
 import debounce from 'lodash.debounce'
 import mapLngLat from '../../../assets/js/LatAndLon'
-import { getStore, setStore } from '../../../config/mUtils'
+
 export default {
 	data(){
 		return {
@@ -113,6 +114,10 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions([
+			'setGeographicLocation',
+			'setHomeUrl'
+		]),
 		setLngLat(item){
 			this.lngAndLat = item.longitude + ',' + item.dimensions
 		},
@@ -127,12 +132,10 @@ export default {
 			this.isScreen = true
 		},
 		sosOrdersEv(){
-			console.log(123)
-			// mapLngLat().then( res => {
-			// 	if(res) {
-					// console.log(res)
-					// var [x,y] = [res.x,res.y]
-					var [x,y] = [113.750644,34.849902]
+			mapLngLat().then( res => {
+				if(res) {
+					var [x,y] = [res.Longitude,res.Latitude];
+
 					var promise = sosOrders(x,y).then( res => {
 						this.$vux.toast.text(res.msg)
 						if(res.code == 2){
@@ -146,29 +149,27 @@ export default {
 							this.$router.push('/user/personal/verified')
 						}
 					})
-			// 	}
-			// })
+				}
+			})
 		},
 		scrollEv(e){
 			var y = Math.floor( e.targetTouches[0]['clientY'] );
-
 			if(y > this.start + 10){
-				// console.log('向下')
 				this.isMenuShow = false
 			}else if(y + 10 < this.start){
-				// console.log('向上')
 				this.isMenuShow = true
 			}
 			this.start = y;
-
-		},
-		scrollHandler(e) {
-			console.log(e)
 		}
 	},
 	mounted(){
-		console.log(window.location.href)
-		if(getStore('userInfo') && getStore('userInfo')['userType']!=3 ) {
+		//保存首页url
+		let url = window.location.href;
+		this.setHomeUrl(url)
+
+		console.log(this.homeUrl)
+
+		if(this.userInfo && this.userInfo['userType']!=3 ) {
 			this.$router.push('/rescue/task')
 		}
 		if(sessionStorage.setRescue){
@@ -195,6 +196,10 @@ export default {
 		});
 	},
 	computed:{
+		...mapState([
+			'userInfo',
+			'homeUrl'
+		]),
 		district:function(){
 			return sessionStorage.district
 		},

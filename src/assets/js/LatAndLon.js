@@ -1,6 +1,18 @@
 import Vue from 'vue'
-export default function () {
-	// WebSettings.setJavaScriptEnabled(true);
+import { isIos } from '../../config/mUtils'
+export default function ( vm ) {
+	if( isIos() ) return;	//如果是 ios，为了不让 ios 设备上显示 获取地理位置失败
+
+	var posQquery = window.location.href
+	if(posQquery.indexOf("?") !== -1){
+		var position = {};
+		var q = posQquery.split('?')[1].split('&')
+		q.forEach( v => position[v.split('=')[0]] = v.split('=')[1])
+
+		vm.$store.dispatch('setGeographicLocation', position)	//保存位置
+		return Promise.resolve(position)
+	}
+
 	return new Promise((resolve, reject) => {
 		if (!navigator.geolocation) {
 			alert("你的浏览器不支持定位，无法获取到您的位置！");

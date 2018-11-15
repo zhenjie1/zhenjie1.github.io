@@ -19,14 +19,15 @@
 				<input class="card" type="button" value="银行卡" @click='cardBtn' v-if='userType != 3'>
 			</div>
 		</div>
-		<payment v-if='userType == 3' :showList='[0,1,2]' :show='showPayment' v-model="showPayment"></payment>
+		<payment v-if='userType == 3' :showList='[2]' :show='showPayment' v-model="showPayment"></payment>
 	</div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Payment from "@/components/common/payment/Payment";
 import { allMoney } from "../../../../config/getData";
-import { getStore } from "../../../../config/mUtils";
+
 export default {
   data() {
     return {
@@ -34,6 +35,11 @@ export default {
       showPayment: false,
       userType: ""
     };
+  },
+  computed:{
+	...mapState([
+		'userInfo'
+	]),
   },
   methods: {
     txBtn() {
@@ -52,7 +58,7 @@ export default {
       console.log(res.rows)
       this.data = res.rows;
     });
-    this.userType = getStore("userInfo").userType;
+    this.userType = this.userInfo.userType;
   },
   components: {
     Payment

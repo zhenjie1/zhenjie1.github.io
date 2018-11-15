@@ -107,7 +107,7 @@ import {
   cancelOrder,
   cancelOffice
 } from "@/config/getData";
-import { getStore, setStore } from "../../../config/mUtils";
+import { setStore } from "../../../config/mUtils";
 import {
   initFun,
   orderBtnFun,
@@ -116,6 +116,7 @@ import {
 } from "../../../assets/js/orders";
 import addScroll from "@/assets/js/scrollLoad";
 import BottomLine from "../../common/bottomLine/BottomLine";
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -138,6 +139,11 @@ export default {
       RescueMenu: []
     };
   },
+  computed:{
+	  ...mapState([
+		  'userInfo'
+	  ])
+  },
   filters: {
     office(str) {
       return typeof str == "object"
@@ -154,6 +160,7 @@ export default {
     $route: "initData"
   },
   created() {
+	  console.log(this.userInfo)
     addScroll(this);
   },
   methods: {
@@ -245,7 +252,7 @@ export default {
   },
   mounted() {
     try {
-      this.userType = getStore("userInfo")["userType"];
+      this.userType = this.userInfo["userType"];
     } catch (e) {
       this.$router.push("/user/login");
     }

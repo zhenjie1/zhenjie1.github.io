@@ -105,15 +105,19 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { sosOrders } from "@/config/getData";
-import { getStore } from "../../../config/mUtils";
 import mapLngLat from "../../../assets/js/LatAndLon";
 export default {
   data() {
     return {
-      userInfo: '',
       text: ""
     };
+  },
+  computed:{
+		...mapState([
+			'userInfo'
+		]),
   },
   methods: {
     sosOrdersEv() {
@@ -136,12 +140,11 @@ export default {
     }
   },
   created() {
-    if (getStore("userInfo") == null) {
+    if (this.userInfo == null) {
       this.$vux.toast.text("请先登录！");
       this.$router.push("/user/login");
     } else {
-      this.userInfo = getStore("userInfo");
-      this.text = getStore("userInfo").vipType == 1 ? "保障中" : "去购买";
+      this.text = this.userInfo.vipType == 1 ? "保障中" : "去购买";
     }
   }
 };

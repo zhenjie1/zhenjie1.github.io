@@ -8,7 +8,6 @@ axios.defaults.withCredentials = true
 export default async function (url = '', data = {}, type = 'POST', urlAll = null, config = {}) {
 
 	url = URL + url;
-	console.log(url)
 
 	if (urlAll === null) data = qs.stringify(data);
 	type = type.toUpperCase()
@@ -19,10 +18,8 @@ export default async function (url = '', data = {}, type = 'POST', urlAll = null
 		.then(res => {
 			if (res.code == 102) {
 				alert('请先登录！')
-				// console.log(url)
 				window.location.href = '/mobile/#/user/login'
 			} else if (res.code != 2 && res.code != 101) {
-				// alert('接口错误')
 				console.log('\n')
 				console.log('接口错误详情')
 				console.log(res)

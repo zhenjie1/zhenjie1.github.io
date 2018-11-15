@@ -1,5 +1,4 @@
 import { geoconv, findlist } from '../../config/getData.js'
-import { getStore } from '../../config/mUtils'
 
 var iconUrl = 'http://zj.tianjistar.com/icon/daohang.png';
 var enterStr = null;

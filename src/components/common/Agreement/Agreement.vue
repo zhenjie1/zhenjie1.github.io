@@ -25,7 +25,7 @@
 
 <style lang='scss'>
   .xyagree {
-    div {width: 100% !important;}
+    div {width: 100% !important;box-sizing: border-box;padding: 15px;}
     h1,h4 {width:100% !important;}
   }
 </style>

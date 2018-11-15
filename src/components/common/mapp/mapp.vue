@@ -13,7 +13,6 @@
 
 <script>
 import { loadScript, mouseoverMap } from '../../../assets/js/map'
-import { getStore } from '../../../config/mUtils'
 
 export default {
 	data(){
@@ -49,7 +48,7 @@ export default {
 	},
 	mounted(){
 		if(this.enter === 'rescue') this.height = document.documentElement.offsetHeight + 'px'
-		loadScript(this.enter);
+		loadScript(this.enter, this);
 	}
 }
 </script>

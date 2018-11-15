@@ -1,5 +1,5 @@
-import eruda from 'eruda'
-eruda.init()
+// import eruda from 'eruda'
+// eruda.init()
 
 import Vue from 'vue'
 import App from './App'
@@ -24,7 +24,6 @@ new Vue({
 	},
 	store,
 	template: '<App/>',
-
 })
 
 router.beforeEach((to, from, next) => {
@@ -33,3 +32,8 @@ router.beforeEach((to, from, next) => {
 	}
 	next()
 })
+// setTimeout(()=>{
+// 	vm.$watch(vm.$store.store.userInfo, function(val){
+// 		console.log(val)
+// 	})
+// },1000)

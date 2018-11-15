@@ -1,8 +1,5 @@
 import mapLngLat from './LatAndLon'
 import { geoconv, findlist } from '../../config/getData.js'
-import { getStore } from '../../config/mUtils'
-
-
 
 var iconUrl = 'http://zj.tianjistar.com/icon/daohang.png';
 var enterStr = null;
@@ -10,12 +7,12 @@ var enterStr = null;
 var longitude = null,
 	latitude = null;
 
-var map;
+var map, vm;
 
 window.initialize = function () {
-	mapLngLat().then( res => {
-		longitude = res.x
-		latitude = res.y
+	mapLngLat(vm).then( res => {
+		longitude = res.Longitude
+		latitude = res.Latitude
 		var ggPoint = new BMap.Point(longitude, latitude);
 
 			map = new BMap.Map("map");
@@ -182,7 +179,8 @@ function addMarker(point, map) {
 }
 
 
-export const loadScript = function (enter) {
+export const loadScript = function (enter, mvvm) {
+	vm = mvvm
 	enterStr = enter
 	var mapUrl = "https://api.map.baidu.com/api?v=2.0&ak=FdnveqDZGzZHbnx08vngQUBH4BNkzi3C&callback=initialize"
 	var getScript = document.getElementsByTagName('script');

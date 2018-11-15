@@ -52,7 +52,7 @@
 		</div>
 		<!-- <button class="submit">申请退保</button> -->
 		<!-- <router-link :to="'/user/recordDet/retreat/'+id" class='submit' :disabled="isDis"></router-link> -->
-		<button class='submit' @click='tbBtn'>申请退保</button>
+		<!-- <button class='submit' @click='tbBtn'>申请退保</button> -->
 	</div>
 </template>
 

@@ -77,7 +77,7 @@ const recordDet = () => import('../components/insurance/buy/recordDet')//保险�
 const cardInfo = () => import('../components/insurance/buy/cordInfo')
 
 const rePhoto = () => import('../components/insurance/buy/photo')//保险图片
-// 队员资料 
+// 队员资料
 const playInfo = () => import('../components/Rescue/personal/children/playinfo')
 
 export default new Router({
@@ -148,11 +148,6 @@ export default new Router({
 				meta:{ title:'查看图片' }
 			},
 			{
-				path:'claims/:data?',
-				component:claims,
-				meta:{ title:'保险理赔流程' }
-			},
-			{
 				path:'insuranceList',
 				component:insuranceList,
 				meta:{ title:'保险' },
@@ -169,6 +164,12 @@ export default new Router({
 							}
 						]
 					},
+					{
+						path:'claims/:data?',
+						component:claims,
+						meta:{ title:'保险理赔流程' }
+					},
+
 				]
 			},
 			{
@@ -231,7 +232,7 @@ export default new Router({
 				component:userHome,
 				meta:{ title:'天佑' },
 				children:[
-					
+
 					{
 						path:'userRescue',
 						component: userRescue,
@@ -269,7 +270,7 @@ export default new Router({
 						component: Update,
 						meta:{ title:'上传报告' },
 					},
-					
+
 					{
 						path:'Details',
 						component: TaskDetails,

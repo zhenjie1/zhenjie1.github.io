@@ -1,3 +1,5 @@
+import Vue from 'vue'
+// console.log(Vue)
 /**
  * 存储localStorage
  */
@@ -56,4 +58,15 @@ export const loginReturnVal = (data) => {
 		}
 	}
 	return obj
+}
+
+
+/*
+* 判断设备
+*/
+
+export const isIos = () => {
+	var u = navigator.userAgent;
+	// u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //Android
+	return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);//ios
 }

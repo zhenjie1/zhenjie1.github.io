@@ -22,7 +22,8 @@
 
 
 <script>
-import { rescueMoney, allMoney, userPass ,rescueInt} from "../../../config/getData";
+import { mapState ,mapActions } from 'vuex'
+import { rescueMoney, userPass ,rescueInt, userInf} from "../../../config/getData";
 export default {
   props: {
 	value: Boolean,
@@ -34,12 +35,20 @@ export default {
 	  token: "",
     };
   },
+  computed:{
+	  ...mapState([
+		  'userInfo'
+	  ])
+  },
   watch: {
     value(val) {
       val && setTimeout(() => this.$refs.pass.focus(), 0);
     }
   },
   methods: {
+	  ...mapActions([
+		  'setUserInfo'
+	  ]),
     submit() {
       if (!this.paymentPass) {
         this.$vux.toast.text("请输入支付密码");
@@ -49,16 +58,15 @@ export default {
         return;
 	  }
       userPass(this.paymentPass).then(res => {
-        console.log(`id：${this.rescueId}  token：${res.rows.token}`);
-
         rescueMoney(this.rescueId, res.rows.token).then(res => {
-          if (res.code == 2) {
-            this.$vux.toast.text("购买成功");
-            this.$emit("vipType", 1);
-            this.$router.go(-1);
-          } else {
-            this.$vux.toast.text(res.msg);
-          }
+			if (res.code == 2) {
+				var userInfo = this.userInfo;
+				userInfo.vipType = 1;
+				this.setUserInfo(userInfo)
+				this.$router.go(-1);
+			}
+			this.$vux.toast.text(res.msg);
+
         });
 
       });
@@ -66,15 +74,6 @@ export default {
     hide() {
       this.$emit("input", false);
     },
-    getData() {
-      allMoney().then(res => {
-        this.money = res.rows.money;
-        this.options[0]["txt"] = `可用余额 ${this.money} 元`;
-      });
-    }
-  },
-  created: function() {
-    this.getData();
   }
 };
 </script>

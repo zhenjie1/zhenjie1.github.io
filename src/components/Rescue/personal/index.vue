@@ -51,13 +51,14 @@
 
 <script>
 import { sosOrders } from '@/config/getData'
-import { getStore } from '../../../config/mUtils'
+import { mapState } from 'vuex'
 
 export default {
-	data() {
-		return {
-			userInfo:{photo:''}
-		}
+
+	computed:{
+		...mapState([
+			'userInfo'
+		])
 	},
 	methods: {
 		// sosOrdersEv(){
@@ -72,12 +73,11 @@ export default {
 		// },
 	},
 	created(){
-        this.userInfo = getStore('userInfo')
-        if (this.userInfo == null) {
+        if (!this.userInfo) {
         	alert('请先登录！')
 			this.$router.push('/user/login')
         }
-        if(getStore('userInfo').vipType == 1) {
+        if(this.userInfo.vipType == 1) {
         	this.text = '保障中'
         }
     }

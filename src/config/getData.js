@@ -33,7 +33,7 @@ export const userInf = () => fetch('/a/mobile/user', {})
 export const updatePas = (password,newPassword) => fetch('/a/mobile/updatePassword',{
 	password,
 	newPassword
-}) 
+})
 
 // 验证个人信息
 export const verifMessage = (name,idNumber,mobile) => fetch('/a/Payment/verifMessage',{
@@ -135,7 +135,7 @@ export const updateAvatar = (data, type, config) => fetch('/a/alioss/uploadFile'
 export const getUserInfo = () => fetch('/a/mobile/user')
 
 //修改个人资料
-export const editUserInfo = userInfo => fetch('/a/mobile/userModify', userInfo);
+export const editUserInfo = userInfo => fetch('/a/mobile/userModify', userInfo)
 
 //用户 - 小常识 / 公告  state = 1 : 常识  --  state = 2 : 公告
 export const commonSense = (pageNo, state) => fetch('/article/findPage', {
@@ -172,7 +172,7 @@ export const verified = (actualName,idNumber) => fetch('/a/mobile/actualName', {
 	actualName
 })
 //保险种类
-export const insItmeNav = () =>fetch('/mobile/office/findSpecies') 
+export const insItmeNav = () =>fetch('/mobile/office/findSpecies')
 
 
 //保险列表
@@ -204,7 +204,7 @@ export const insUpImages = (data, type, config) => fetch('/a/alioss/uploadFile',
 // 保存购买保险信息
 export const paySave = (id,dayId,typeMen,userName,user_id_number,isMc,isHospital,hospitalImgs,token,isUploadimg) => fetch('/a/mobile/payInsurance/save',{id,dayId,typeMen,userName,user_id_number,isMc,isHospital,hospitalImgs,token,isUploadimg})
 
-//	查询理赔记录接口 
+//	查询理赔记录接口
 export const queryIns = orderinsId => fetch('/a/mobile/ofclaimsInsurance/findOfclaimsByOrder',{
 	orderinsId
 })

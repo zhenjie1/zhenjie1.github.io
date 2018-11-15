@@ -2,23 +2,10 @@
 	<div class="Rescue">
 		<div class="topImg">
 			<img src="https://wx4.sinaimg.cn/mw690/0062fb6Qly1fqoy9sxat2j309j0630w7.jpg" alt="">
-			<!-- <img :src="img" alt=""> -->
 		</div>
 		<div class="conText">
 			<div class="title">救援卡使用说明</div>
-			<!-- <dl>
-				<dt>Q1 适用于那些救援类型？</dt>
-				<dd>可以用来道路、火灾、户外、生命救援、道路救援包 括道路中发生的一切意外；火灾救援包括：； 户外包 括：；生命救援包括：。</dd>
-			</dl>
-			<dl>
-				<dt>Q1 适用于那些救援类型？</dt>
-				<dd>可以用来道路、火灾、户外、生命救援、道路救援包 括道路中发生的一切意外；火灾救援包括：； 户外包 括：；生命救援包括：。</dd>
-			</dl>
-			<dl>
-				<dt>Q1 适用于那些救援类型？</dt>
-				<dd>可以用来道路、火灾、户外、生命救援、道路救援包 括道路中发生的一切意外；火灾救援包括：； 户外包 括：；生命救援包括：。</dd>
-			</dl> -->
-			<dl v-for='e in cont'>
+			<dl v-for='(e, i) in cont' :key="i">
 				<dt>{{e.title}}</dt>
 				<dd>{{e.content}}</dd>
 			</dl>
@@ -27,7 +14,7 @@
 			<span>价格：￥{{price}}</span>
 			<input type="button" value="立即购买>" @click="upData">
 		</div>
-		<div class="bottomBtn" v-else='isShow'>
+		<div class="bottomBtn" v-else>
 			<button class="button">已购买</button>
 		</div>
 
@@ -39,17 +26,23 @@
 
 <script>
 import { MessageBox } from 'mint-ui'
+import { mapState } from 'vuex'
 import { recharge,rescueMoney,rescueInt, retreat } from '../../../../../config/getData'
 import Payment from '../../../../common/payment/Payment.vue'
 import popPayment from '../../../../common/paymentPass/popPayment'
 import {URL} from '../../../../../config/url.js'
-import { getStore,setStore } from '../../../../../config/mUtils'
+import { setStore } from '../../../../../config/mUtils'
 
 export default {
 
 	components:{
 		Payment,
 		popPayment
+	},
+	computed:{
+		...mapState([
+			'userInfo'
+		])
 	},
 	data(){
 		return {
@@ -59,8 +52,7 @@ export default {
 			cont:'',
 			img:'',
 			price:'',
-			isShow:true,
-			userInfo:''
+			isShow:true
 		}
 	},
 	methods:{
@@ -73,12 +65,11 @@ export default {
 			}
 		},
 		upData(){
-
-			if(!getStore('userInfo')){
+			if(!this.userInfo){
 				 this.$vux.toast.text('请先登录!');
 				 return this.$router.push('/user/login')
 			}
-			if(getStore('userInfo').realName ==1) {
+			if(this.userInfo.realName ==1) {
 				this.showPayment = true
 			}else {
 				MessageBox.confirm('请先进行实名认证，为您更好的提供救援帮助').then(action => {
@@ -94,9 +85,9 @@ export default {
 		}
 	},
 	mounted(){
-		this.userInfo = getStore('userInfo');
+		console.log(this.userInfo)
 		if(!this.userInfo){
-			 this.isShow = true
+			this.isShow = true
 		}else if(this.userInfo.vipType == 1) {
 			this.isShow = false;
 		}
@@ -104,7 +95,6 @@ export default {
 			this.jyId = res.rows[0].id;
 			this.cont = res.rows[0].content
 			this.price = res.rows[0].price
-			// this.img = URL + res.rows[0].tyimg
 		})
 	}
 }

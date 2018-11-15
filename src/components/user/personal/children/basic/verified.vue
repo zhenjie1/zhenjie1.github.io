@@ -20,9 +20,10 @@
 
 <script>
 import success from '../../../../common/success/success'
-
+import { mapState } from 'vuex'
 import { verified } from '../../../../../config/getData'
-import { getStore,setStore } from '../../../../../config/mUtils'
+import { setStore } from '../../../../../config/mUtils'
+
 export default {
 	data(){
 		return {
@@ -33,6 +34,9 @@ export default {
 		}
 	},
 	computed:{
+		...mapState([
+			'userInfo'
+		]),
 		isDisabled(){
 			//久的身份证是15位
 			if(this.userName.length >= 1 && (this.IDnumber.length === 18 || this.IDnumber.length === 15) ) return false
@@ -41,7 +45,7 @@ export default {
 	},
 	methods:{
 		verified(){
-			let userInfo = getStore('userInfo');
+			let userInfo = this.userInfo
 			verified(this.userName, this.IDnumber).then( res => {
 				if(res && res.code == 2) {
 					this.isShow = true;

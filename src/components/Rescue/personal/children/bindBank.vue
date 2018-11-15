@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { getStore } from '../../../../config/mUtils'
 import { findCard,bindingCard,bindingOk,userInf } from '../../../../config/getData'
 import MyCode from '../../../login/newUser/code'
 import success from '../../../common/success/success'
@@ -79,7 +78,7 @@ export default {
           this.codeShow = false;
           this.bingOk = true;
         }else{
-          
+
         }
       })
     }
@@ -151,5 +150,5 @@ export default {
       }
     }
   }
-  
+
 </style>
