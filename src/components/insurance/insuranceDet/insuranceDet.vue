@@ -28,7 +28,7 @@
 			<div>
 				<h4>为谁投保</h4>
 				<div class="insurDetQx">
-					<label v-for="(Dtime,index) in Derdata" :key="index" @click="pchoose(index)" :class="{active:index==penIndex}"ref="typeMen">
+					<label v-for="(Dtime,index) in Derdata" :key="index" @click="pchoose(index)" :class="{active:index==penIndex}" ref="typeMen">
 						<input type="radio" name="1" value="半年" />{{Dtime.pen}}
 					</label>
 				</div>
@@ -502,7 +502,7 @@ select {
   font-size: 20px;
 }
 .inspan {
-  color: #8b8b8;
+  color: #8b8b8b;
   font-size: 16px;
 }
 

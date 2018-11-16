@@ -5,9 +5,9 @@
 			<span class="ka">{{data.bank}}</span>
 			<span class="lx">{{data.type}}</span>
 			<p class="card">
-				<span>****</span>&nbsp
-				<span>****</span>&nbsp
-				<span>****</span>&nbsp
+				<span>****</span>
+				<span>****</span>
+				<span>****</span>
 				<span class="num">{{bankCard}}</span>
 			</p>
 			<div class="nbind" @click='nbind'>
