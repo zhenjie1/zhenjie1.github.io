@@ -40,14 +40,13 @@
 import Actionsheet from 'vux/src/components/actionsheet/'
 import { logout } from '../../config/getData'
 import { getStore,removeStore } from '../../config/mUtils'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	data(){
 		return {
 			text:'点击认证',
 			testval:['666','112','333'],
-			userType:getStore('userInfo')['userType'],
 			logoutShow:false,
 			logoutMenu:{
 				'title.noop': '确定退出?<br/><span style="color:#666;font-size:12px;">推出后某些功能将无法使用</span>',
@@ -58,9 +57,15 @@ export default {
 	computed:{
 		...mapState([
 			'userInfo'
-		])
+		]),
+		userType(){
+			return this.userInfo.userType
+		}
 	},
 	methods:{
+		...mapActions([
+			'setUserInfo'
+		]),
 		variety(val,ind){
 			this.testval[ind] = val
 		},
@@ -71,8 +76,7 @@ export default {
 			logout().then( res => {
 				if(res.code == 2){
 					this.$vux.toast.text('退出成功');
-					this.userInfo = undefined;
-					removeStore('userInfo')
+					this.setUserInfo(undefined)
 					this.$router.push('/user/login')
 				}
 			})

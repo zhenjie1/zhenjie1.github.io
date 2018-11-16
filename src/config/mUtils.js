@@ -1,5 +1,3 @@
-import Vue from 'vue'
-// console.log(Vue)
 /**
  * 存储localStorage
  */
@@ -48,12 +46,12 @@ export const plusXing = (str, frontLen, endLen) => {
 */
 export const loginReturnVal = (data) => {
 	var obj = {}
-	for(let i in data){
-		if(i == 'user'){
-			for(let j in data[i]){
+	for (let i in data) {
+		if (i == 'user') {
+			for (let j in data[i]) {
 				obj[j] = data[i][j]
 			}
-		}else{
+		} else {
 			obj[i] = data[i]
 		}
 	}
@@ -64,9 +62,33 @@ export const loginReturnVal = (data) => {
 /*
 * 判断设备
 */
-
 export const isIos = () => {
 	var u = navigator.userAgent;
 	// u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //Android
 	return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);//ios
+}
+
+/*
+* 判断是否登录
+*/
+export const isLogin = function () { //此方法不能使用箭头函数，因为调用的地方使用了 call(this)
+	return this.userInfo && JSON.stringify(this.userInfo) !== '{}'
+}
+
+/*
+* 判断首页是否有经纬度参数，有责保存到vuex中
+*/
+export const isGeographicLocation = function() { //此方法不能使用箭头函数，因为调用的地方使用了 call(this)
+	var posQquery = window.location.href
+	if (posQquery.indexOf("?") === -1) return false;
+
+	var position = {};
+	var q = posQquery.split('?')[1].split('&')
+
+	q.forEach(v => position[v.split('=')[0]] = v.split('=')[1])
+	if( !position.Longitude ) return false
+
+	this.$store.dispatch('setGeographicLocation', position)	//保存位置
+	return true
+
 }

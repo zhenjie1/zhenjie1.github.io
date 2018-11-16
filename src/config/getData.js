@@ -277,10 +277,11 @@ export const withdrawals = (applyMoney,bankName,bankCard,token) => fetch('/a/tyM
 export const findCard = (card) => fetch('/a/bank/bank/findCard',{card})
 
 // 绑定银行卡
-export const bindingCard = (mobile,bankcard,realName) => fetch('/a/tyMoney/bindingCard',{
+export const bindingCard = (mobile,bankcard,realName, openingBank) => fetch('/a/tyMoney/bindingCard',{
 	mobile,
 	bankcard,
-	realName
+	realName,
+	openingBank
 })
 // 确认银行卡
 export const bindingOk = (yzm) => fetch('/a/tyMoney/bindingOk',{
@@ -299,10 +300,12 @@ export const jRecord = (pageNo,pageSize) => fetch('/a/tyMoney/transactionRecord'
 // 用户协议 0注册 1保险
 export const view = (type) => fetch('/protocol/view',{type})
 
+//支付宝支付
+export const zfbPay = (price) =>fetch('/a/pay/app',{ price })
 
 
-
-
+//
+export const zfbzftest = (price) => fetch('/a/pay/MobilePay',{ price })
 
 
 

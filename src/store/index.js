@@ -4,14 +4,12 @@ import mutations from './mutations'
 import actions from './action'
 import getters from './getters'
 import vuexI18n from 'vuex-i18n'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-var userInfo = localStorage.userInfo == undefined ? {} : JSON.parse(localStorage.userInfo)
-
-
 const state = {
-	userInfo, //用户信息
+	userInfo: null, //用户信息
 	geographicLocation: null,//用户经纬度
 	homeUrl:''	//首页url
 }
@@ -23,5 +21,6 @@ export default store = new Vuex.Store({
 	state,
 	getters,
 	actions,
-	mutations
+	mutations,
+	plugins:[createPersistedState()]
 })

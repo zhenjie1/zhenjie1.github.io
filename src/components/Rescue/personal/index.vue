@@ -52,6 +52,7 @@
 <script>
 import { sosOrders } from '@/config/getData'
 import { mapState } from 'vuex'
+import { isLogin } from '../../../config/mUtils'
 
 export default {
 
@@ -61,21 +62,12 @@ export default {
 		])
 	},
 	methods: {
-		// sosOrdersEv(){
-
-		// 	sosOrders(113.733971,34.780561).then( res => {
-		// 		if(res.code == 2){
-		// 			window.location.href = 'tel:' + res.mobile
-		// 		}else{
-		// 			alert(res.msg)
-		// 		}
-		// 	})
-		// },
 	},
 	created(){
-        if (!this.userInfo) {
-        	alert('请先登录！')
+        if (!isLogin.call(this)) {
+        	this.$vux.toast.text('请先登录！')
 			this.$router.push('/user/login')
+			return
         }
         if(this.userInfo.vipType == 1) {
         	this.text = '保障中'

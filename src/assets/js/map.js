@@ -10,63 +10,63 @@ var longitude = null,
 var map, vm;
 
 window.initialize = function () {
-	mapLngLat(vm).then( res => {
+	mapLngLat(vm).then(res => {
 		longitude = res.Longitude
 		latitude = res.Latitude
 		var ggPoint = new BMap.Point(longitude, latitude);
 
-			map = new BMap.Map("map");
-			map.centerAndZoom(ggPoint, 14);
-			map.enableScrollWheelZoom(true);
+		map = new BMap.Map("map");
+		map.centerAndZoom(ggPoint, 14);
+		map.enableScrollWheelZoom(true);
 
-			map.addEventListener('touchstart',function(){
-				document.getElementById('suggestId').blur()
-				// console.log()
+		map.addEventListener('touchstart', function () {
+			document.getElementById('suggestId').blur()
 		})
 
-		setTimeout(function () {
-			var convertor = new BMap.Convertor();
-			var pointArr = [];
-			pointArr.push(ggPoint);
-			convertor.translate(pointArr, 1, 5, translateCallback)
-		}, 0)
+		translateCallback()
+		// setTimeout(function () {
+		// 	var convertor = new BMap.Convertor();
+		// 	var pointArr = [];
+		// 	pointArr.push(ggPoint);
+		// 	convertor.translate(pointArr, 1, 5, translateCallback)
+		// }, 0)
 
-		function translateCallback(data) {
-			if (data.status === 0) {
-				new Promise((rej, res) => {
-					map.setCenter(data.points[0]);
+		function translateCallback() {
+			new Promise((rej) => {
 
-					let lng = data.points[0]['lng'];
-					let lat = data.points[0]['lat'];
+				let lngAndLat = {
+					lng: longitude,
+					lat: latitude
+				}
+				map.setCenter(lngAndLat);
 
-					rej({
-						lng,
-						lat
-					})
-				}).then(rej => {
-					if (enterStr == 'home') {
-						getRescue(map, rej)
-						inputAuto(map)
-					} else if (enterStr == 'rescue') {
-						var p1 = new BMap.Point(rej.lng, rej.lat);
-						var destinationX = sessionStorage.lngLat.split(',')[1]
-						var destinationY = sessionStorage.lngLat.split(',')[0]
-						var p2 = new BMap.Point(destinationX, destinationY);
-						var driving = new BMap.DrivingRoute(map, {
-							renderOptions: {
-								map: map,
-								autoViewport: true
-							}
-						});
-						driving.search(p1, p2);
-					}
-				}).catch(e => {
-					console.log(e)
+				rej({
+					lng: lngAndLat.lng,
+					lat: lngAndLat.lat
 				})
-
-
-			}
+			}).then(rej => {
+				if (enterStr == 'home') {
+					getRescue(map, rej)
+					inputAuto(map)
+				} else if (enterStr == 'rescue') {
+					var p1 = new BMap.Point(rej.lng, rej.lat);
+					var destinationX = sessionStorage.lngLat.split(',')[1]
+					var destinationY = sessionStorage.lngLat.split(',')[0]
+					var p2 = new BMap.Point(destinationX, destinationY);
+					var driving = new BMap.DrivingRoute(map, {
+						renderOptions: {
+							map: map,
+							autoViewport: true
+						}
+					});
+					driving.search(p1, p2);
+				}
+			}).catch(e => {
+				console.log(e)
+			})
 		}
+
+
 
 		map.setMapStyle({
 			styleJson: [{
@@ -111,31 +111,31 @@ function inputAuto(map) {
 	});
 
 	var myValue;
-	ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+	ac.addEventListener("onconfirm", function (e) {    //鼠标点击下拉列表后的事件
 
-	var _value = e.item.value;
-		myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+		var _value = e.item.value;
+		myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
 		// G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
 		setPlace(myValue);
 	});
 
-	function setPlace(myValue){
+	function setPlace(myValue) {
 		map.clearOverlays();    //清除地图上所有覆盖物
-		function myFun(){
+		function myFun() {
 			var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
 			map.centerAndZoom(pp, 18);
 			map.addOverlay(new BMap.Marker(pp));    //添加标注
 		}
 		var local = new BMap.LocalSearch(map, { //智能搜索
-		  onSearchComplete: myFun
+			onSearchComplete: myFun
 		});
 		local.search(myValue);
 	}
 }
 
-export const mouseoverMap = function (val){
+export const mouseoverMap = function (val) {
 	val = val.split(',')
-	map.panTo(new BMap.Point(val[0],val[1]))
+	map.panTo(new BMap.Point(val[0], val[1]))
 }
 
 function getRescue(map, rej) {
@@ -150,7 +150,7 @@ function getRescue(map, rej) {
 
 	//获取省市区
 	var gc = new BMap.Geocoder()
-	gc.getLocation(pt, function(res){
+	gc.getLocation(pt, function (res) {
 		res = res.addressComponents.district
 		sessionStorage.district = res
 	})

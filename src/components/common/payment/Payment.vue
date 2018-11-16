@@ -14,149 +14,158 @@
 				</li>
 			</ul>
 		</div>
+		<confirm v-model="isShowPassConfirm" show-input title='请输入充值金额' theme='android' hide-on-blur @on-confirm='recharge'/>
 	</div>
 </template>
 
 <script>
 //该组件接受一个 showList 数组，用来决定显示项 [0,1,2], 如果不传或传空数组，就全部显示
 
-import {
-  allMoney,
-  userPass,
-  insListDet,
-  rescueMoney,
-  paySave
-} from "../../../config/getData";
+import { allMoney, userPass, insListDet, rescueMoney, paySave, zfbPay, zfbzftest } from "../../../config/getData";
+import Confirm from 'vux/src/components/confirm/'
 import { MessageBox } from "mint-ui";
-//import { insListDet } from '../../config/getData'
+
 export default {
-  props: {
-    value: Boolean,
-    data: Object,
-    showList: "",
-    id: String,
-    rescueId: {
-      type: String,
-      default: ""
-    },
-    pageNum: Number
-  },
-  data() {
-    return {
-      options: [
-        {
-          title: "天机会余额",
-          txt: "可用余额 0.00 元",
-          img:
-            "https://wx3.sinaimg.cn/thumb150/b103a6f1ly1fqpvwqhvmoj201t01tdft.jpg"
-        },
-        {
-          title: "微信支付",
-          txt: "微信单笔限额20000元",
-          img:
-            "https://wx4.sinaimg.cn/thumb150/b103a6f1ly1fqpvwqhw8vj201n01g0sk.jpg"
-        },
-        {
-          title: "支付宝支付",
-          txt: "支付宝单笔限额20000元",
-          img:
-            "https://wx1.sinaimg.cn/thumb150/b103a6f1ly1fqpvwqj8b4j201h01h3ya.jpg"
-        }
-      ],
-      money: [],
-      token: ""
-    };
-  },
-  methods: {
-    hide() {
-      this.$emit("input", false);
-    },
-    isShow(index) {
-      if (this.showList === undefined || this.showList.toString() === "")
-        return true;
-
-      for (let i = 0; i < this.showList.length; i++) {
-        if (index === this.showList[i]) {
-          return true;
-          break;
-        }
-      }
+	props: {
+		value: Boolean,
+		data: Object,
+		showList: "",
+		id: String,
+		rescueId: {
+		type: String,
+		default: ""
+		},
+		pageNum: Number
 	},
-	buyRescusCard(){
-		var d = this.data;
-		// 保存+购买保险
-		paySave( d.id, d.dayId, d.typeMen, d.userName, d.user_id_number, d.isMc, d.isHospital, d.hospitalImgs, this.token, d.isUploadimg ).then(res => {
-			if (res && res.code == 2) {
-				localStorage.removeItem("ImgDataArr");
-				localStorage.removeItem("ImgThis");
-				this.$router.push("/user/buyRecord/1");
-				this.$vux.toast.text(res.msg);
-			}
-			if (res == undefined) {
-				this.$vux.toast.text("订单保存成功");
-				this.$router.push("/user/buyRecord/0");
-			}
-		});
-
+	data() {
+		return {
+			options: [
+				{
+				title: "天机会余额",
+				txt: "可用余额 0.00 元",
+				img:
+					"https://wx3.sinaimg.cn/thumb150/b103a6f1ly1fqpvwqhvmoj201t01tdft.jpg"
+				},
+				{
+				title: "微信支付",
+				txt: "微信单笔限额20000元",
+				img:
+					"https://wx4.sinaimg.cn/thumb150/b103a6f1ly1fqpvwqhw8vj201n01g0sk.jpg"
+				},
+				{
+				title: "支付宝支付",
+				txt: "支付宝单笔限额20000元",
+				img:
+					"https://wx1.sinaimg.cn/thumb150/b103a6f1ly1fqpvwqj8b4j201h01h3ya.jpg"
+				}
+			],
+			money: [],
+			token: "",
+			isShowPassConfirm: false
+		};
 	},
-    paymentEv(index) {
-      if (index == 2) {	//支付宝支付
-        window.location.href = "http://ty.tianjistar.com/a/pay/MobilePay";
-      } else if (index == 0) {//天机会支付
-        MessageBox.prompt("请输入密码", {
-          inputType: "password"
-        }).then(({ value, action }) => {
-          userPass(value).then(res => {
-            this.token = res.rows.token;
+	methods: {
+		hide() {
+			this.$emit("input", false);
+		},
+		isShow(index) {
+			if (this.showList === undefined || this.showList.toString() === "")
+				return true;
 
-            if (this.pageNum == 1) {
-              // 购买保险
-              insListDet(this.id, this.token).then(res => {
-                allMoney().then(res => {
-                  if (res.code == 2) {
-                    this.$vux.toast.text("购买成功");
-                    setTimeout(() => window.location.reload(), 2000 );
-                  } else if (res.code == 101) {
-                    this.$vux.toast.text("验证失败");
-                  } else if (res.code == 300) {
-                    this.$vux.toast.text("余额不足请充值");
-                  }
-                  this.money = res.rows.money;
-                  this.options[0]["txt"] = `可用余额 ${this.money} 元`;
-                });
-              });
-            } else if (this.pageNum == 0) {
-              // 救援卡
-              rescueMoney(this.rescueId, this.token).then(res => {
-                this.$vux.toast.text(res.msg);
-                if (res.code == 2) {
-                  this.$emit("vipType", 1);
-                  this.$router.push("/user/personal");
-                }
-                allMoney().then(res => {
-                  this.money = res.rows.money;
-                  this.options[0]["txt"] = `可用余额 ${this.money} 元`;
-                });
-              });
-            } else if (this.pageNum == 2) {
-				this.buyRescusCard()
-            }
-          });
-        });
-      }
-    },
-    getData() {
-		if(this.showList[0] === 0){
-			allMoney().then(res => {
-				this.money = res.rows.money;
-				this.options[0]["txt"] = `可用余额 ${this.money} 元`;
+			for (let i = 0; i < this.showList.length; i++) {
+				if (index === this.showList[i]) {
+				return true;
+				break;
+				}
+			}
+		},
+		buyRescusCard(){
+			var d = this.data;
+			// 保存+购买保险
+			paySave( d.id, d.dayId, d.typeMen, d.userName, d.user_id_number, d.isMc, d.isHospital, d.hospitalImgs, this.token, d.isUploadimg ).then(res => {
+				if (res && res.code == 2) {
+					localStorage.removeItem("ImgDataArr");
+					localStorage.removeItem("ImgThis");
+					this.$router.push("/user/buyRecord/1");
+					this.$vux.toast.text(res.msg);
+				}
+				if (res == undefined) {
+					this.$vux.toast.text("订单保存成功");
+					this.$router.push("/user/buyRecord/0");
+				}
 			});
+
+		},
+		paymentEv(index) {
+			if (index == 2) {	//支付宝支付
+				this.isShowPassConfirm = true
+			} else if (index == 0) {//天机会支付
+				MessageBox.prompt("请输入密码", {
+				inputType: "password"
+				}).then(({ value, action }) => {
+				userPass(value).then(res => {
+					this.token = res.rows.token;
+
+					if (this.pageNum == 1) {
+					// 购买保险
+					insListDet(this.id, this.token).then(res => {
+						allMoney().then(res => {
+						if (res.code == 2) {
+							this.$vux.toast.text("购买成功");
+							setTimeout(() => window.location.reload(), 2000 );
+						} else if (res.code == 101) {
+							this.$vux.toast.text("验证失败");
+						} else if (res.code == 300) {
+							this.$vux.toast.text("余额不足请充值");
+						}
+						this.money = res.rows.money;
+						this.options[0]["txt"] = `可用余额 ${this.money} 元`;
+						});
+					});
+					} else if (this.pageNum == 0) {
+					// 救援卡
+					rescueMoney(this.rescueId, this.token).then(res => {
+						this.$vux.toast.text(res.msg);
+						if (res.code == 2) {
+						this.$emit("vipType", 1);
+						this.$router.push("/user/personal");
+						}
+						allMoney().then(res => {
+						this.money = res.rows.money;
+						this.options[0]["txt"] = `可用余额 ${this.money} 元`;
+						});
+					});
+					} else if (this.pageNum == 2) {
+						this.buyRescusCard()
+					}
+				});
+				});
+			}
+		},
+		recharge(val){
+			zfbzftest(val).then( res => {
+				sessionStorage.html = res
+				this.$router.push('/test/')
+			})
+			// zfbPay(val).then( res => {
+			// 	// console.log(res)
+			// })
+		},
+		getData() {
+			if(this.showList[0] === 0){
+				allMoney().then(res => {
+					this.money = res.rows.money;
+					this.options[0]["txt"] = `可用余额 ${this.money} 元`;
+				});
+			}
 		}
-    }
-  },
-  created() {
-    this.getData();
-  }
+	},
+	components:{
+		Confirm
+	},
+	created() {
+		this.getData();
+	}
 };
 </script>
 

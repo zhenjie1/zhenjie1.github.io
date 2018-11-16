@@ -1,5 +1,5 @@
 import { socketUrl } from '../../config/url'
-var wsUrl = 'wss://' + socketUrl + '/a/tjSocket'
+var wsUrl = 'ws://' + socketUrl + '/a/tjSocket'
 
 export default function (cb) {
 	var ws = new WebSocket(wsUrl)

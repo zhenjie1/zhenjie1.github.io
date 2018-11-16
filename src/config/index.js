@@ -16,6 +16,8 @@ export default async function (url = '', data = {}, type = 'POST', urlAll = null
 
 	ajax = ajax.then(res => res.data)
 		.then(res => {
+
+			return res
 			if (res.code == 102) {
 				alert('请先登录！')
 				window.location.href = '/mobile/#/user/login'
@@ -24,6 +26,7 @@ export default async function (url = '', data = {}, type = 'POST', urlAll = null
 				console.log('接口错误详情')
 				console.log(res)
 				console.log('\n')
+				alert(res.msg)
 				return res
 			}else if(res.code == 101){
 				alert(res.msg)

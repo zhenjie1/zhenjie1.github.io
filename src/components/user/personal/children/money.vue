@@ -55,7 +55,6 @@ export default {
   },
   created() {
     allMoney().then(res => {
-      console.log(res.rows)
       this.data = res.rows;
     });
     this.userType = this.userInfo.userType;

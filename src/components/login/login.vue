@@ -30,7 +30,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userInfo"]),
+    ...mapState(["userInfo",'homeUrl']),
     disabled() {
       return !!this.username && !!this.password;
     }
@@ -42,15 +42,14 @@ export default {
       login(this.username, this.password, true).then(res => {
         if (res.code == 2) {
           res = res.rows;
-		  this.userInfo = res.rows;
-		  console.log(this.userInfo)
           if (!res.id) {
             alert(res.msg);
           } else {
             this.setUserInfo(res);
-            if (this.userInfo["userType"] == 3)
-              this.$router.push("/user/home");
-            else this.$router.push("/rescue/task");
+			if (this.userInfo["userType"] == 3){
+				console.log(this.homeUrl)
+              this.$router.push(this.homeUrl);
+			}else this.$router.push("/rescue/task");
             //task
           }
         }

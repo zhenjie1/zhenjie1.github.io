@@ -45,7 +45,7 @@
 				<span class=" iconfont icon-jiantou"></span>
 				</div>
 			</div>
-			<a :href='recordDet.cover' class="rDetLc">
+			<a :href='"/#/user/insuranceList/claims/" + recordDet.claimProcess' class="rDetLc">
 				<h5>理赔流程</h5>
 				<span class=" iconfont icon-jiantou"></span>
 			</a>
@@ -85,15 +85,6 @@
 			insRecordDet(this.id).then( res=>{
 				this.recordDet = res.rows;
 				this.recordDet.orderInsuranceUserIdNumber = plusXing(this.recordDet.orderInsuranceUserIdNumber,3, 4)
-				// if(this.recordDet.hospitalImgs){
-				// 	let str = this.recordDet.hospitalImgs;
-				// 	str = str.replace(/\|/g, ',');
-				// 	str = JSON.parse(str)
-				// 	this.recordDet.hospitalImgs = str;
-				// 	console.log(this.recordDet.hospitalImgs)
-				// }else {
-				// 	this.recordDet.hospitalImgs=''
-				// }
 			})
 
 		}

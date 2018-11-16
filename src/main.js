@@ -1,12 +1,11 @@
-// import eruda from 'eruda'
-// eruda.init()
+import eruda from 'eruda'
+eruda.init()
 
 import Vue from 'vue'
 import App from './App'
 import store from './store/index'
 import './assets/js/filter'
 import router from './router'
-// import { MessageBox } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import "../src/assets/js/back.js";
 
@@ -32,8 +31,3 @@ router.beforeEach((to, from, next) => {
 	}
 	next()
 })
-// setTimeout(()=>{
-// 	vm.$watch(vm.$store.store.userInfo, function(val){
-// 		console.log(val)
-// 	})
-// },1000)

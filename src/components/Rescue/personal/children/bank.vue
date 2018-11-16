@@ -103,7 +103,7 @@ import { MessageBox } from "mint-ui";
 export default {
   data() {
     return {
-      data: "",
+      data: {},
       bankCard: ""
     };
   },
@@ -124,6 +124,7 @@ export default {
         userPass(value).then(res => {
           let token = res.rows.token;
           releaseCard(this.data.bankcard).then(res => {
+			this.$vux.toast.text(res.msg)
             this.$router.push("/user/personal/money");
           });
         });

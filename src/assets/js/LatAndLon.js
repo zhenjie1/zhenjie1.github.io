@@ -7,6 +7,7 @@ export default function ( vm ) {
 	if(posQquery.indexOf("?") !== -1){
 		var position = {};
 		var q = posQquery.split('?')[1].split('&')
+
 		q.forEach( v => position[v.split('=')[0]] = v.split('=')[1])
 
 		vm.$store.dispatch('setGeographicLocation', position)	//保存位置

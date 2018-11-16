@@ -84,7 +84,6 @@
 		</div>
 
 		<confirm v-model="showCancel" :hide-on-blur='true' :show-input='true' placeholder='请输入取消理由' @on-confirm='cancelEv' :title='"取消理由"' theme="android" confirm-text='确定' cancel-text='取消'></confirm>
-
 		<confirm v-model="showCancelRefuse" :hide-on-blur='true' :show-input='true' placeholder='请输入拒绝理由' @on-confirm='cancelRefuseEv' :title='"拒绝理由"' theme="android" confirm-text='确定' cancel-text='取消'></confirm>
 
 		<bottom-line v-if="liLength > 0"></bottom-line>
@@ -100,20 +99,9 @@ import Confirm from "vux/src/components/confirm/";
 import socket from "@/assets/js/websocket.js";
 import Personnel from "./orders/personnel";
 import { RescueMenu, userMenu, rescueType } from "@/assets/js/config";
-import {
-  findMissedlist,
-  orderBtn,
-  findMyListOk,
-  cancelOrder,
-  cancelOffice
-} from "@/config/getData";
-import { setStore } from "../../../config/mUtils";
-import {
-  initFun,
-  orderBtnFun,
-  topNavMenuFun,
-  setBtnTxtFun
-} from "../../../assets/js/orders";
+import { findMissedlist, orderBtn, findMyListOk, cancelOrder, cancelOffice } from "@/config/getData";
+import { setStore, isLogin } from "../../../config/mUtils";
+import { initFun,orderBtnFun,topNavMenuFun,setBtnTxtFun } from "../../../assets/js/orders";
 import addScroll from "@/assets/js/scrollLoad";
 import BottomLine from "../../common/bottomLine/BottomLine";
 import { mapState } from 'vuex'
@@ -160,7 +148,10 @@ export default {
     $route: "initData"
   },
   created() {
-	  console.log(this.userInfo)
+	if( !isLogin.call(this) ) {
+		this.$vux.toast.text('请先登录！')
+		this.$router.push('/user/login')
+	}
     addScroll(this);
   },
   methods: {
@@ -266,10 +257,8 @@ export default {
     // if(this.userType != 3){
     socket(data => {
       console.log(data);
-      // code = 1 队长  code = 2 队员
       if (data.code == 1) {
         alert("你有新的任务");
-        console.log(data.rows);
         // this.infoData = data.rows
         this.infoData.splice(0, 0, data.rows);
       } else if (data.code == 3) {
@@ -305,7 +294,7 @@ $size: 44px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   i {
-    font-size: 30px;
+    font-size: 24px;
     font-weight: bold;
   }
 }

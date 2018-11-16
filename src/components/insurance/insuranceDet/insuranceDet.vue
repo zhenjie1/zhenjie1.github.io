@@ -13,7 +13,7 @@
 		<div class="insurDetFw w96">
 			<div class="borbot insurF">
 				<h4>保险范围</h4>
-				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo</div>
+				<div>{{ zData.ranges }}</div>
 			</div>
 			<div class="borbot">
 				<h4>保障期限<span class="">(支付成功后日生效)</span></h4>

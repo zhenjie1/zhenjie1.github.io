@@ -44,7 +44,8 @@
 				<component :is='currentView'></component>
 			<!-- </transition> -->
 		</div>
-		<div class="menuBottom" :class='{menuBottomHide : isMenuShow}'>
+		<bottom-nav checkIndex='1' />
+		<!-- <div class="menuBottom" :class='{menuBottomHide : isMenuShow}'>
 			<ul>
 				<router-link to='/user' tag='li' class="checked">
 					<div class="icon">
@@ -65,7 +66,7 @@
 					<p>个人</p>
 				</router-link>
 			</ul>
-		</div>
+		</div> -->
 	</div>
 </template>
 <script>
@@ -75,8 +76,9 @@ import Sense from './children/sense.vue'
 import {Swiper} from 'vux/src/components/swiper/'
 import Announcement from './children/announcement.vue'
 import { sosOrders } from '@/config/getData'
-import debounce from 'lodash.debounce'
 import mapLngLat from '../../../assets/js/LatAndLon'
+import bottomNav from '../../common/bottomNav/bottomNav'
+import { isLogin, isGeographicLocation } from '../../../config/mUtils.js'
 
 export default {
 	data(){
@@ -132,58 +134,41 @@ export default {
 			this.isScreen = true
 		},
 		sosOrdersEv(){
-			mapLngLat().then( res => {
-				if(res) {
-					var [x,y] = [res.Longitude,res.Latitude];
+			mapLngLat(this).then( res => {
+				var [x,y] = [res.Longitude,res.Latitude];
 
-					var promise = sosOrders(x,y).then( res => {
-						this.$vux.toast.text(res.msg)
-						if(res.code == 2){
-							window.location.href = 'tel:' + res.mobile
-						}else if(res.code == 101){
-							window.location.href = 'tel:' + res.mobile
-						}else if( res.code == 600 ) {
-							this.$router.push('/user/home/userRescue')
-						}
-						else if( res.code == 601 ) {
-							this.$router.push('/user/personal/verified')
-						}
-					})
-				}
+				sosOrders(x,y).then( res => {
+					this.$vux.toast.text(res.msg)
+					if(res.code == 2){
+						window.location.href = 'tel:' + res.mobile
+					}else if(res.code == 101){
+						window.location.href = 'tel:' + res.mobile
+					}else if( res.code == 600 ) {
+						this.$router.push('/user/home/userRescue')
+					}
+					else if( res.code == 601 ) {
+						this.$router.push('/user/personal/verified')
+					}
+				})
 			})
 		},
-		scrollEv(e){
-			var y = Math.floor( e.targetTouches[0]['clientY'] );
-			if(y > this.start + 10){
-				this.isMenuShow = false
-			}else if(y + 10 < this.start){
-				this.isMenuShow = true
-			}
-			this.start = y;
-		}
 	},
 	mounted(){
+		console.log(window.location.href)
 		//保存首页url
-		let url = window.location.href;
-		this.setHomeUrl(url)
+		let isJW = isGeographicLocation.call(this)
+		const url = window.location.href.split('#')[1]
+		if( isJW ) this.setHomeUrl(url)
 
-		console.log(this.homeUrl)
-
-		if(this.userInfo && this.userInfo['userType']!=3 ) {
+		//如果已经登录
+		let isLogins = isLogin.call(this);
+		if(isLogins && this.userInfo['userType'] != 3 ) {
 			this.$router.push('/rescue/task')
 		}
 		if(sessionStorage.setRescue){
 			this.setRescue = JSON.parse(sessionStorage.setRescue)
 		}
-		window.addEventListener('touchstart', function(e){
-			this.start = Math.floor( e.targetTouches[0]['clientY'] )
-		})
-		window.addEventListener('touchmove',
-			debounce(this.scrollEv,20,{
-				'leading': true,
-				'trailing': false
-			})
-		)
+
 
 		let con = this.$refs.con
 		window.addEventListener('scroll',(event)=> {
@@ -208,7 +193,8 @@ export default {
 		Mapp,
 		Sense,
 		Announcement,
-		Swiper
+		Swiper,
+		bottomNav
 	}
 }
 </script>
@@ -262,25 +248,7 @@ export default {
 		p{width:40px;height: 5px;background-color: #C4C5C2;border-radius: 100px;margin:0 auto;}
 	}
 
-	.menuBottom{background-color: #f8f8f8;height: 50px;width:78%;position: fixed;left:11%;bottom:20px;border-radius: 100px;	filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));transition:transform .4s ease;
-		ul{display: flex;align-items:flex-end;
-			li{width:33.33%;text-align: center;margin-top:-37px;
-				p{font-size:12px;}
-				i{font-size: 20px;font-weight: bold;}
-				a{display: block;}
-			}
-			li.checked{
-				i,p{color:$red;}
 
-			}
-			li.middle{
-				.icon{background-color: #f8f8f8;@include wh(60px,60px);padding:4px;text-align: center;border-radius: 200px;margin:0 auto;}
-				i{font-weight: normal;color:white;font-size:40px;line-height: 60px;text-align: center;background-color: $red;width:60px;height:60px;border-radius: 100px;display: inline-block;}
-				p{margin-top:-4px;color:$red;}
-			}
-		}
-	}
-	.menuBottomHide{transform: translateY(160px);}
 
 	.menuBtn{display: flex;justify-content: space-around;background-color:white;padding:0 0 20px;
 		box-shadow:0 4px 8px rgba(0,0,0,.05);

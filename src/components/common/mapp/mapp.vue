@@ -38,11 +38,10 @@ export default {
 	},
 	methods:{
 		sosEv(){
-			console.log(123)
 			this.$emit('sos')
 		},
 		downScreen(){
-			this.screen = false;
+			// this.screen = false;
 			this.$emit('screen',false)
 		}
 	},

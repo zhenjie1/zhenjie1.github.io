@@ -37,7 +37,7 @@ export default {
   	return {
   		name:'',
       card:'',
-      cardLx:'银行',
+      cardLx:'',
       phone:'',
       codeShow:false,
       bingOk:false
@@ -65,7 +65,7 @@ export default {
       }
     },
     subBtn() {
-      bindingCard(this.phone,this.card,this.name).then( res=> {
+      bindingCard(this.phone,this.card,this.name, this.cardLx).then( res=> {
         if(res && res.code == 2) {
           this.codeShow = true;
         }

@@ -124,20 +124,7 @@ export default {
 		])
 	},
 	created(){
-		getUserInfo().then( res => {
-			res = res.rows
-			this.setUserInfo(res)
-
-			this.seleceVal.sexVal = res.sexId
-			this.seleceVal.bloodVal = res.blood
-			this.seleceVal.birthdayVal = res.birthday
-			this.seleceVal.phoneVal = res.mobile == '点击输入'?'':res.mobile
-			this.seleceVal.nicknameVal = res.name
-			this.seleceVal.id = res.id
-			this.seleceVal.avatarUrl = res.photo
-			this.rescue = res.userType != 3?true:false
-			this.zhengshu = res.zhengshu.length == 0?'未上传':'点击查看'
-		})
+		this.getUserInfoEv();
 	},
 	components :{
 		Datetime,
@@ -150,6 +137,22 @@ export default {
 		...mapActions([
 			'setUserInfo'
 		]),
+		getUserInfoEv(){
+			getUserInfo().then( res => {
+				res = res.rows
+				this.setUserInfo(res)
+
+				this.seleceVal.sexVal = res.sexId
+				this.seleceVal.bloodVal = res.blood
+				this.seleceVal.birthdayVal = res.birthday
+				this.seleceVal.phoneVal = res.mobile == '点击输入'?'':res.mobile
+				this.seleceVal.nicknameVal = res.name
+				this.seleceVal.id = res.id
+				this.seleceVal.avatarUrl = res.photo
+				this.rescue = res.userType != 3?true:false
+				this.zhengshu = res.zhengshu.length == 0?'未上传':'点击查看'
+			})
+		},
 		getLoca(name,cont) {
 			let obj = this.userInfo
 			obj[name] = cont;

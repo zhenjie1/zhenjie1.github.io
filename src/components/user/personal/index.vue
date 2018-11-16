@@ -74,7 +74,7 @@
 			</router-link>
 		</ul>
 
-		<div class="menuBottom">
+		<!-- <div class="menuBottom">
 			<ul>
 				<router-link to='/user' tag='li'>
 					<div class="icon">
@@ -95,19 +95,19 @@
 					<p>个人</p>
 				</router-link>
 			</ul>
-		</div>
+		</div> -->
+		<bottom-nav checkIndex='2' />
 		<transition name='breadcrumb'>
-			<keep-alive>
-				<router-view />
-			</keep-alive>
+			<router-view />
 		</transition>
 	</div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { sosOrders } from "@/config/getData";
+import { mapState, mapActions } from 'vuex'
+import { sosOrders, getUserInfo } from "@/config/getData";
 import mapLngLat from "../../../assets/js/LatAndLon";
+import bottomNav from '../../common/bottomNav/bottomNav'
 export default {
   data() {
     return {
@@ -119,27 +119,20 @@ export default {
 			'userInfo'
 		]),
   },
-  methods: {
-    sosOrdersEv() {
-      mapLngLat.then(res => {
-        if (res) {
-          var [x, y] = [res.x, res.y];
-          sosOrders(x, y).then(res => {
-            if (res.code == 2) {
-              window.location.href = "tel:" + res.mobile;
-            } else if (res.code == 101) {
-              window.location.href = "tel:" + res.mobile;
-            } else if (res.code == 600) {
-              this.$router.push("/user/home/userRescue");
-            } else if (res.code == 601) {
-              this.$router.push("/user/personal/verified");
-            }
-          });
-        }
-      });
-    }
+  components:{
+	  bottomNav
+  },
+  methods:{
+	  ...mapActions(['setUserInfo']),
+		getUserInfoEv(){
+			getUserInfo().then( res => {
+				res = res.rows
+				this.setUserInfo(res)
+			})
+		},
   },
   created() {
+	this.getUserInfoEv();
     if (this.userInfo == null) {
       this.$vux.toast.text("请先登录！");
       this.$router.push("/user/login");
@@ -220,67 +213,6 @@ export default {
       font-size: 25px;
       padding: 10px 0 10px 20px;
       color: #b1b1b1;
-    }
-  }
-}
-.menuBottom {
-  background-color: #f8f8f8;
-  height: 50px;
-  width: 78%;
-  position: fixed;
-  left: 11%;
-  bottom: 20px;
-  border-radius: 100px;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
-  ul {
-    display: flex;
-    align-items: flex-end;
-    li {
-      width: 33.33%;
-      text-align: center;
-      margin-top: -37px;
-      p {
-        font-size: 12px;
-      }
-      i {
-        font-size: 20px;
-        font-weight: bold;
-      }
-      a {
-        display: block;
-      }
-    }
-    li.checked {
-      i,
-      p {
-        color: $red;
-      }
-    }
-    li.middle {
-      .icon {
-        background-color: #f8f8f8;
-        @include wh(60px, 60px);
-        padding: 4px;
-        text-align: center;
-        border-radius: 200px;
-        margin: 0 auto;
-      }
-      i {
-        font-weight: normal;
-        color: white;
-        font-size: 40px;
-        line-height: 60px;
-        text-align: center;
-        background-color: $red;
-        width: 60px;
-        height: 60px;
-        border-radius: 100px;
-        display: inline-block;
-      }
-      p {
-        margin-top: -4px;
-        color: $red;
-      }
     }
   }
 }

@@ -31,7 +31,6 @@ import { recharge,rescueMoney,rescueInt, retreat } from '../../../../../config/g
 import Payment from '../../../../common/payment/Payment.vue'
 import popPayment from '../../../../common/paymentPass/popPayment'
 import {URL} from '../../../../../config/url.js'
-import { setStore } from '../../../../../config/mUtils'
 
 export default {
 
@@ -65,7 +64,7 @@ export default {
 			}
 		},
 		upData(){
-			if(!this.userInfo){
+			if(JSON.stringify(this.userInfo) == '{}'){
 				 this.$vux.toast.text('请先登录!');
 				 return this.$router.push('/user/login')
 			}
@@ -76,16 +75,9 @@ export default {
 					this.$router.push('/user/personal/verified')
 				})
 			}
-		},
-		vip(msg) {
-			if(msg && msg == 1) {
-				this.userInfo.vipType = msg;
-				setStore('userInfo',this.userInfo)
-			}
 		}
 	},
 	mounted(){
-		console.log(this.userInfo)
 		if(!this.userInfo){
 			this.isShow = true
 		}else if(this.userInfo.vipType == 1) {

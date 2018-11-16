@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="966c3705-306c-44d4-a6d1-278e93259475" name="默认更改列表" comment="">
+      <change beforePath="$PROJECT_DIR$/dist.zip" beforeDir="false" afterPath="$PROJECT_DIR$/dist.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/css/app.6c49da9e52a43fe06aa2c47894fe0229.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/0.3688ed5a01d7439751a8.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/10.904f6aae9b569d78d26d.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/11.0e5f4d94911077d231d8.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/12.0deb64d48dee44068336.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/13.cd28425cd9a3a87a498d.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/16.4c5e14a6540b7967c4b5.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/17.6bd740bc029eec38f76b.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/18.b41b529a087cbd7198bb.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/19.e3f87311c3176936317b.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/2.6216faaf992e512504fa.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/22.d8979f21c787754b65be.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/23.7c50ef144991a2b5b755.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/24.38eeab44bb5e4f2ba5dc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/25.415cd657dbf62d16cec2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/26.a0d7ff3fe7c10ec31e54.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/27.e74f9bfec35724afc9ed.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/28.43389534b59c4a904f9c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/29.95f42af4a7871113387e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/3.7ae09b748a88697f74ad.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/30.9a05c3f814992cc3d581.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/31.cdde1e2f92eb5c45f8d6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/32.738a2cfb4a6bd1d1e02f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/33.a59c6aaaa7f7e0de5a11.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/34.2b2ec7c06d2bd538397e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/35.095e8743598c6df12835.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/36.8a892736bfec1044af4e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/37.91475e20d688f40507a0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/38.4d40969507ff07d61133.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/39.ec49da8312f5419bf79a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/40.daccd197bceb1e22255f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/5.b44bb5cdb929a4e9306c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/app.445f5fdea0c4a328257d.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/manifest.d93ecb4b7fee075bcd0c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/js/LatAndLon.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/js/LatAndLon.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/js/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/js/map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/js/websocket.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/js/websocket.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/settiog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/settiog.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/login/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/login/login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/user/home/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/home/Home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/user/personal/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/personal/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/url.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/url.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/index.js" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="110960756">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.14" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="js" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JavaScript" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages">
+        <counts>
+          <entry key="git.branch.checkout.revision" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts" />
+      <usages-collector id="statistics.file.types.edit" />
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/assets/js/websocket.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/assets/js/websocket.js" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="23" />
+    <option name="width" value="1920" />
+    <option name="height" value="1018" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state />
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="zhenjie1.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zhenjie1.github.io" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zhenjie1.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zhenjie1.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zhenjie1.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zhenjie1.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zhenjie1.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zhenjie1.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="webs&#9;FILE&#9;file:///Volumes/test/test/zhenjie1.github.io/src/assets/js/websocket.js" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="966c3705-306c-44d4-a6d1-278e93259475" name="默认更改列表" comment="" />
+      <created>1542270386599</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1542270386599</updated>
+      <workItem from="1542270395614" duration="754000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="754000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1920" height="1016" extended-state="6" />
+    <layout>
+      <window_info id="npm" side_tool="true" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24960506" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Version Control" visible="true" weight="0.534632" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/assets/js/websocket.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
