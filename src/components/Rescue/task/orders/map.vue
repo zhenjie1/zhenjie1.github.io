@@ -16,7 +16,7 @@ export default {
 		}
 	},
 	mounted(){
-		alert('显示了')
+		// alert('显示了')
 		// 生成地图
 		loadScript()
 
@@ -30,7 +30,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-#map{width:100%;height:100%;}
+#map {height: 100%; width: 100%;}
+
 </style>
 
 

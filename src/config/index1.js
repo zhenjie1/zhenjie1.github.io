@@ -35,12 +35,10 @@ export default async(url = '', data = {}, type = 'POST', method = 'fetch') => {
 		}
 
 		try {
-			console.log(fetch(url, requestConfig))
 			const response = await fetch(url, requestConfig);
 			const responseJson = await response.json();
 			return responseJson
 		} catch (error) {
-			console.log(2)
 			throw new Error(error)
 		}
 	} else {

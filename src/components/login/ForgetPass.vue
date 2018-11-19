@@ -44,6 +44,7 @@ export default {
 			this.codeIsSend = true
 			phoneSendCode(this.phone).then( res => {
 				if(res.code == 2){
+					this.$vux.toast.text('发送成功')
 					that.codeTxt = that.num + 's 重发';
 					var codeInter = setInterval(function(){
 						that.num--;
@@ -56,7 +57,7 @@ export default {
 						}
 					},1000)
 				}else{
-					alert(res.msg);
+					this.$vux.toast.text(res.msg);
 					this.codeIsSend = false;
 				}
 			})
@@ -66,8 +67,6 @@ export default {
 				if(res && res.code == 2){
 					this.$router.push('/user/newUser/2/' + this.phone +'/token'+'/'+this.code)
 				}
-				// console.log(res)
-
 			})
 		}
 	}
@@ -76,12 +75,10 @@ export default {
 
 
 <style lang="scss">
-@import '../../assets/css/all';
-@import '../../assets/css/login';
+@import "../../assets/css/all";
+@import "../../assets/css/login";
 
-.newUser .con{
-	p + label + p{margin-top:20px;}
-	.label .code{padding:0 15px;float:right;height: 35px;font-size:12px;background-color: white;border:1px solid #ddd;}
-}
+.newUser .con { p + label + p { margin-top: 20px;}
+    .label .code { background-color: white; border: 1px solid #DDDDDD; float: right; font-size: 12px; height: 35px; padding: 0 15px;}}
 </style>
 

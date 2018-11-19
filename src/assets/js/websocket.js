@@ -10,11 +10,9 @@ export default function (cb) {
 	};
 
 	ws.onmessage = function (evt) {
-		// console.log("接受的数据是: " + evt.data);
 		var data = typeof evt.data == 'string' ? JSON.parse(evt.data) : evt.data;
 
 		cb(data)
-		// ws.close();
 	};
 
 

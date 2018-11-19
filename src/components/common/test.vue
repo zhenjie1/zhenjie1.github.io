@@ -1,17 +1,20 @@
 <template>
-	<div v-html="html">123456</div>
+	<div v-html="html"></div>
 </template>
 
 <script>
 export default {
 	data(){
 		return {
-			html: ''
+			html: '支付宝支付'
 		}
 	},
 	mounted(){
-		this.html = sessionStorage.html
-		console.log(this.html)
+		setTimeout( () => {
+			this.html = unescape(sessionStorage.html);
+			console.log(this.html)
+			document.write(this.html)
+		},100)
 	}
 }
 </script>

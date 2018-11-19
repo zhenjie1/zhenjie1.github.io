@@ -31,6 +31,7 @@ import { recharge,rescueMoney,rescueInt, retreat } from '../../../../../config/g
 import Payment from '../../../../common/payment/Payment.vue'
 import popPayment from '../../../../common/paymentPass/popPayment'
 import {URL} from '../../../../../config/url.js'
+import { isLogin } from '../../../../../config/mUtils'
 
 export default {
 
@@ -64,7 +65,7 @@ export default {
 			}
 		},
 		upData(){
-			if(JSON.stringify(this.userInfo) == '{}'){
+			if(!isLogin.call(this)){
 				 this.$vux.toast.text('请先登录!');
 				 return this.$router.push('/user/login')
 			}

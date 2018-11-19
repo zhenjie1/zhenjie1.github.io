@@ -90,7 +90,7 @@ export default {
 	methods:{
 		cancelRefuseEv(val){
 			if(val == ''){
-				alert('请输入拒绝理由！')
+				this.$vux.toast.text('请输入拒绝理由！')
 				return ;
 			}
 			cancelOffice(this.detaData.id,val).then( res => {
@@ -105,7 +105,7 @@ export default {
 		},
 		cancelEv(val){
 			if (val == '') {
-				alert('请输入取消理由！')
+				this.$vux.toast.text('请输入取消理由！')
 				return ;
 			}
 			cancelOrder(this.detaData.id,val).then( res => {

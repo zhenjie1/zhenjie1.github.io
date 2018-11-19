@@ -79,16 +79,25 @@ export const isLogin = function () { //此方法不能使用箭头函数，因�
 * 判断首页是否有经纬度参数，有责保存到vuex中
 */
 export const isGeographicLocation = function() { //此方法不能使用箭头函数，因为调用的地方使用了 call(this)
-	var posQquery = window.location.href
+	var posQquery = window.location.href.split('#')[1];
 	if (posQquery.indexOf("?") === -1) return false;
 
 	var position = {};
 	var q = posQquery.split('?')[1].split('&')
 
 	q.forEach(v => position[v.split('=')[0]] = v.split('=')[1])
-	if( !position.Longitude ) return false
+
+	if( !position.Longitude || !position.Latitude  ) return false
 
 	this.$store.dispatch('setGeographicLocation', position)	//保存位置
-	return true
+	return position
 
+}
+
+/*
+* 判断是不是首页
+*/
+export const isHome = () => {
+	var url = window.location.href.split('#')[1].split('?')[0];
+	return /home$/.test(url)
 }

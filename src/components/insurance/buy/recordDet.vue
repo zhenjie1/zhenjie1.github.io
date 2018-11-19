@@ -45,7 +45,7 @@
 				<span class=" iconfont icon-jiantou"></span>
 				</div>
 			</div>
-			<a :href='"/#/user/insuranceList/claims/" + recordDet.claimProcess' class="rDetLc">
+			<a href='/#/user/insuranceList/claims/' class="rDetLc">
 				<h5>理赔流程</h5>
 				<span class=" iconfont icon-jiantou"></span>
 			</a>
@@ -85,6 +85,7 @@
 			insRecordDet(this.id).then( res=>{
 				this.recordDet = res.rows;
 				this.recordDet.orderInsuranceUserIdNumber = plusXing(this.recordDet.orderInsuranceUserIdNumber,3, 4)
+				window.sessionStorage.recordDet = this.recordDet.claimProcess
 			})
 
 		}

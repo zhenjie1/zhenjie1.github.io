@@ -9,7 +9,7 @@
     </div>
     <div class="time"></div>
     <div class="cont" v-html="data.content">
-     
+
     </div>
 </div>
 </template>
@@ -40,7 +40,6 @@ export default {
 	methods:{
 		// init(){
         //      var arr = document.querySelectorAll('.cont img')
-        //      console.log(arr)
         //     for(let v of arr) {
         //         v.style.width = '100%';
         //     }
@@ -65,7 +64,7 @@ export default {
         h1{font-size:18px;font-weight: normal;}
         p{margin:4px 0 15px;color: #636363;}
     }
-    
+
 }
 </style>
 

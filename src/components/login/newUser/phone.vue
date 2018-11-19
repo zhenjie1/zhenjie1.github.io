@@ -56,14 +56,9 @@ export default {
 
 		//验证码验证
 		reloadPass(code){
-			//
-			// if(this.$route.params.status == 1){
-			// 	console.log('这是忘记密码')
-			// 	return false
-			// }
 			checkCode(code).then( res => {
 				if(res.code != 2){
-					alert(res.msg)
+					this.$vux.toast.text(res.msg)
 				}else{
 					this.code = code;
 					this.childIndex = 2
@@ -85,7 +80,8 @@ export default {
 
 
 <style lang="scss">
-@import '../../../assets/css/all';
-@import '../../../assets/css/login';
+@import "../../../assets/css/all";
+@import "../../../assets/css/login";
+
 </style>
 

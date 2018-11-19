@@ -144,12 +144,9 @@ export default {
 		},
 		recharge(val){
 			zfbzftest(val).then( res => {
-				sessionStorage.html = res
+				sessionStorage.html = escape(res)
 				this.$router.push('/test/')
 			})
-			// zfbPay(val).then( res => {
-			// 	// console.log(res)
-			// })
 		},
 		getData() {
 			if(this.showList[0] === 0){

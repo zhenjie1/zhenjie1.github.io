@@ -74,7 +74,7 @@ export default {
     reloadPass(code) {
       bindingOk(code).then( res => {
         if(res.code == 2){
-          alert('认证成功')
+          this.$vux.toast.text('认证成功')
           this.codeShow = false;
           this.bingOk = true;
         }else{

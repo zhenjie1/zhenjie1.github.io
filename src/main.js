@@ -1,5 +1,5 @@
-import eruda from 'eruda'
-eruda.init()
+// import eruda from 'eruda'
+// eruda.init()
 
 import Vue from 'vue'
 import App from './App'
@@ -10,7 +10,9 @@ import 'mint-ui/lib/style.css'
 import "../src/assets/js/back.js";
 
 import Toast from 'vux/src/plugins/toast/index'
+import loading from 'vux/src/plugins/loading/'
 Vue.use(Toast)
+Vue.use(loading)
 
 Vue.config.productionTip = false
 

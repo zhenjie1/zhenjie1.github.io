@@ -13,15 +13,15 @@ import {
 } from '../../config/mUtils'
 var userType;
 
-try{
+try {
 	userType = parseInt(getStore('userInfo')['userType']);
-}catch(e){
+} catch (e) {
 
 }
 function jinzhan(infoData) {
-	for(let v of infoData) {
-		if(v.orderStautsList.length == 0) {
-				v.orderStautsList.push({'content':'暂无进展'});
+	for (let v of infoData) {
+		if (v.orderStautsList.length == 0) {
+			v.orderStautsList.push({ 'content': '暂无进展' });
 		}
 	}
 }
@@ -32,7 +32,6 @@ export const initFun = (that, type) => {
 	switch (type) {
 		case 2: //救援队长
 			findMissedlist().then(res => {
-				// console.log(res)
 				res = res.rows
 				that.infoData = res
 				that.originalData = res
@@ -53,7 +52,6 @@ export const initFun = (that, type) => {
 			break;
 		case 4: //救援用户
 			findListTask(1).then(res => {
-				// console.log(res)
 				res = res.rows
 				that.infoData = res
 				that.originalData = res
@@ -83,15 +81,15 @@ export const orderBtnFun = (that, type, item, ind, name) => {
 
 	if (type === 2) {
 		leaderBtnEv(that, item, ind, name)
-	}else if(type === 3){
-		if(ind == 0 && name == '救援进展') {
+	} else if (type === 3) {
+		if (ind == 0 && name == '救援进展') {
 			that.$router.push('/rescue/task/progress')
 		}
-		if(ind == 0 && name.indexOf('取消') !== -1){	//点击取消订单
+		if (ind == 0 && name.indexOf('取消') !== -1) {	//点击取消订单
 			//拒绝理由
 			that.showCancel = true;
 		}
-	}else if( type === 4) {
+	} else if (type === 4) {
 		leaderBtnEv(that, item, ind, name)
 	}
 
@@ -105,9 +103,9 @@ export const topNavMenuFun = (that) => {
 	// } else if (userType == 3) {
 	// 	userAjax(that, navIndex)
 	// }
-	if(userType == 3) {
+	if (userType == 3) {
 		userAjax(that, navIndex)
-	}else {
+	} else {
 		leaderAjax(that, navIndex)
 	}
 }
@@ -117,8 +115,6 @@ export const topNavMenuFun = (that) => {
 export const setBtnTxtFun = (str, item) => {
 	str = parseInt(str)
 
-	// console.log(str)
-
 	//队长
 	if (userType == 2) {
 
@@ -126,11 +122,11 @@ export const setBtnTxtFun = (str, item) => {
 		var statusId4Txt2 = item.typeReturn === '0' ? '上传回访' : '查看回访';
 
 		var btn = [
-			[{name: '拒绝接单',type: 'button'},{name: '确认接单',type: 'button'}],
-			[{name: '确认出发',type: 'button'}],
-			[{name: '拍摄',type: 'file'},{name: '确认到达',type: 'button'}],
-			[{name: '拍摄',type: 'file'},{name: '完成',type: 'button'}],
-			[{name: statusId4Txt1,type: 'button'},{	name: statusId4Txt2,type: 'button'}]
+			[{ name: '拒绝接单', type: 'button' }, { name: '确认接单', type: 'button' }],
+			[{ name: '确认出发', type: 'button' }],
+			[{ name: '拍摄', type: 'file' }, { name: '确认到达', type: 'button' }],
+			[{ name: '拍摄', type: 'file' }, { name: '完成', type: 'button' }],
+			[{ name: statusId4Txt1, type: 'button' }, { name: statusId4Txt2, type: 'button' }]
 		]
 
 		switch (str) {
@@ -155,11 +151,11 @@ export const setBtnTxtFun = (str, item) => {
 	} else if (userType == 3) {
 
 		var btn = [
-			[{name: '取消订单',type: 'button'} ],
-			[{name: '救援进展',type: 'button'}],
-			[{name: '救援进展',type: 'button'}],
-			[{name: '救援进展',type: 'button'}],
-			[{name: '救援进展',type: 'button'}],
+			[{ name: '取消订单', type: 'button' }],
+			[{ name: '救援进展', type: 'button' }],
+			[{ name: '救援进展', type: 'button' }],
+			[{ name: '救援进展', type: 'button' }],
+			[{ name: '救援进展', type: 'button' }],
 		]
 
 		switch (str) {
@@ -190,11 +186,11 @@ export const setBtnTxtFun = (str, item) => {
 		var statusId4Txt2 = item.typeReturn === '0' ? '上传回访' : '查看回访';
 
 		var btn = [
-			[{name: '拒绝接单',type: 'button'},{name: '确认接单',type: 'button'}],
-			[{name: '确认出发',type: 'button'}],
-			[{name: '拍摄',type: 'file'},{name: '确认到达',type: 'button'}],
-			[{name: '拍摄',type: 'file'},{name: '完成',type: 'button'}],
-			[{name: statusId4Txt1,type: 'button'},{	name: statusId4Txt2,type: 'button'}]
+			[{ name: '拒绝接单', type: 'button' }, { name: '确认接单', type: 'button' }],
+			[{ name: '确认出发', type: 'button' }],
+			[{ name: '拍摄', type: 'file' }, { name: '确认到达', type: 'button' }],
+			[{ name: '拍摄', type: 'file' }, { name: '完成', type: 'button' }],
+			[{ name: statusId4Txt1, type: 'button' }, { name: statusId4Txt2, type: 'button' }]
 		]
 
 		switch (str) {
@@ -258,7 +254,7 @@ async function userAjax(that, navIndex) {
 			})
 			break;
 		case 5: //已取消
-			await userSearchAllRescue(1,'99').then( res => {
+			await userSearchAllRescue(1, '99').then(res => {
 				res = res.rows;
 				that.infoData = res
 				that.originalData = res
@@ -266,7 +262,7 @@ async function userAjax(that, navIndex) {
 			})
 			break;
 	}
-	if(that.$refs.li) {
+	if (that.$refs.li) {
 		that.liLength = that.$refs.li.length;
 	}
 }
@@ -311,14 +307,13 @@ function leaderAjax(that, navIndex) {
 
 //队长
 function leaderBtnEv(that, item, ind, name) {
-	console.log(name)
 	item.stateId = parseInt(item.stateId)
 	switch (item.stateId) {
 		case 0:
-			if(ind == 1){
+			if (ind == 1) {
 				that.originaId = item.id
 				that.isShowPer = true;
-			}else{
+			} else {
 				that.showCancelRefuse = true
 			}
 			break;
@@ -329,17 +324,17 @@ function leaderBtnEv(that, item, ind, name) {
 			} //完成
 			break;
 		case 4:
-			if(ind == 0) {
-				if(name == '上传报告') {
-					that.$router.push('/rescue/task/update/'+item.id+'/'+1)
-				}else if(name == '查看报告') {
-					that.$router.push('/rescue/report/'+item.id+'/'+1)
+			if (ind == 0) {
+				if (name == '上传报告') {
+					that.$router.push('/rescue/task/update/' + item.id + '/' + 1)
+				} else if (name == '查看报告') {
+					that.$router.push('/rescue/report/' + item.id + '/' + 1)
 				}
-			}else {
-				if(name == '上传回访') {
-					that.$router.push('/rescue/task/update/'+item.id+'/'+0)
-				}else if(name == '查看回访') {
-					that.$router.push('/rescue/report/'+item.id+'/'+0)
+			} else {
+				if (name == '上传回访') {
+					that.$router.push('/rescue/task/update/' + item.id + '/' + 0)
+				} else if (name == '查看回访') {
+					that.$router.push('/rescue/report/' + item.id + '/' + 0)
 				}
 
 			}

@@ -10,7 +10,8 @@ var longitude = null,
 var map, vm;
 
 window.initialize = function () {
-	mapLngLat(vm).then(res => {
+	// if(vm == undefined)
+	mapLngLat.call(vm).then(res => {
 		longitude = res.Longitude
 		latitude = res.Latitude
 		var ggPoint = new BMap.Point(longitude, latitude);
@@ -23,15 +24,15 @@ window.initialize = function () {
 			document.getElementById('suggestId').blur()
 		})
 
-		translateCallback()
-		// setTimeout(function () {
+		translateCallback(vm)
+		// setTimeout(function () {	//经纬度转换
 		// 	var convertor = new BMap.Convertor();
 		// 	var pointArr = [];
 		// 	pointArr.push(ggPoint);
 		// 	convertor.translate(pointArr, 1, 5, translateCallback)
 		// }, 0)
 
-		function translateCallback() {
+		function translateCallback(vm) {
 			new Promise((rej) => {
 
 				let lngAndLat = {
@@ -46,7 +47,7 @@ window.initialize = function () {
 				})
 			}).then(rej => {
 				if (enterStr == 'home') {
-					getRescue(map, rej)
+					getRescue(vm,map, rej)
 					inputAuto(map)
 				} else if (enterStr == 'rescue') {
 					var p1 = new BMap.Point(rej.lng, rej.lat);
@@ -112,10 +113,8 @@ function inputAuto(map) {
 
 	var myValue;
 	ac.addEventListener("onconfirm", function (e) {    //鼠标点击下拉列表后的事件
-
 		var _value = e.item.value;
 		myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
-		// G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
 		setPlace(myValue);
 	});
 
@@ -138,7 +137,7 @@ export const mouseoverMap = function (val) {
 	map.panTo(new BMap.Point(val[0], val[1]))
 }
 
-function getRescue(map, rej) {
+function getRescue(vm, map, rej) {
 
 	//在当前位置添加图标
 	var pt = new BMap.Point(rej.lng, rej.lat);
@@ -152,7 +151,8 @@ function getRescue(map, rej) {
 	var gc = new BMap.Geocoder()
 	gc.getLocation(pt, function (res) {
 		res = res.addressComponents.district
-		sessionStorage.district = res
+
+		vm.$store.dispatch('setDistrict', res)
 	})
 
 	findlist().then(res => {

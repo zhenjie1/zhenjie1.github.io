@@ -27,6 +27,7 @@
 import debounce from 'lodash.debounce'
 import { sosOrders } from '@/config/getData'
 import { mapState } from 'vuex'
+import { isLogin } from '../../../config/mUtils'
 
 export default {
 	props:['checkIndex'],
@@ -41,9 +42,7 @@ export default {
 	},
 	methods: {
 		sosOrdersEv(){
-			// let isLogin = JSON.stringify(this.userInfo) !== '{}'
-			console.log(this.userInfo)
-			return
+
 			if(!isLogin) {
 				this.$vux.toast.text('请先登录！')
 				this.$router.push('/user/login')

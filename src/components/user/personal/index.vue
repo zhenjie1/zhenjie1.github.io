@@ -106,7 +106,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { sosOrders, getUserInfo } from "@/config/getData";
-import mapLngLat from "../../../assets/js/LatAndLon";
 import bottomNav from '../../common/bottomNav/bottomNav'
 export default {
   data() {

@@ -51,7 +51,7 @@ export default {
 					this.isShow = true;
 					userInfo.realName = 1;
 					setStore('userInfo',userInfo);
-					alert(res.msg);
+					this.$vux.toast.text(res.msg);
 					this.$router.go(-1);
 				}
 			})

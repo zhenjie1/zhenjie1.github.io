@@ -154,21 +154,21 @@ export default {
 		},
 	},
 	mounted(){
-		console.log(window.location.href)
 		//保存首页url
 		let isJW = isGeographicLocation.call(this)
 		const url = window.location.href.split('#')[1]
 		if( isJW ) this.setHomeUrl(url)
 
-		//如果已经登录
+		//如果已经登录,区分救援端与客户端
 		let isLogins = isLogin.call(this);
-		if(isLogins && this.userInfo['userType'] != 3 ) {
+		if((isLogins && this.userInfo['userType'] != 3) || (this.$route.query.type && this.$route.query.type != '3') ) {
 			this.$router.push('/rescue/task')
+			return
 		}
+
 		if(sessionStorage.setRescue){
 			this.setRescue = JSON.parse(sessionStorage.setRescue)
 		}
-
 
 		let con = this.$refs.con
 		window.addEventListener('scroll',(event)=> {
@@ -183,11 +183,9 @@ export default {
 	computed:{
 		...mapState([
 			'userInfo',
-			'homeUrl'
-		]),
-		district:function(){
-			return sessionStorage.district
-		},
+			'homeUrl',
+			'district'
+		])
 	},
 	components: {
 		Mapp,

@@ -68,7 +68,7 @@ export default {
         bankName = this.bankInfo.bank,
         bankCard = this.bankInfo.bankcard;
       if (Number(applyMoney) > Number(this.bankInfo.money)) {
-        alert("您的余额不足");
+        this.$vux.toast.text("您的余额不足");
         return;
       }
       MessageBox.prompt("请输入密码", {

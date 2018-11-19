@@ -2,7 +2,7 @@
 	<div class="report">
 		<div class="time">
 			<h2>{{zData.title}}</h2>
-			<p><span>提交时间</span><i>|</i><span>{{zData.createDate}}</span></p>		
+			<p><span>提交时间</span><i>|</i><span>{{zData.createDate}}</span></p>
 		</div>
 		<div class="con">
 			<div class="box" v-for='item in zData.content'>
@@ -35,42 +35,14 @@
 	}
 </script>
 <style lang="scss" scoped>
-	.report {
-		background-color: #fff;
-		.time {
-			font-size: 14px;
-			color: #333;
-			padding: 12px;
-			border-bottom: 1px solid #eee;
-			h2 {
-				font-size: 20px;
-				text-align: center;
-				margin: 6px 0;
-			}
-			p {
-				display: flex;
-				align-items:center;
-				i {
-					display: block;
-					margin: 0 4px;
-					padding-bottom: 2px;
-				}
-			}			
-		}
-		.con {
-			padding: 12px;
-			.box {
-				margin-bottom: 20px;
-				p {
-					text-indent: 2em;
-					font-size: 16px;
-					margin-bottom: 10px;
-				}
-				img {
-					width: 100%;
-					height: auto;
-				}
-			}
-		}
-	}
+.report { background-color: #FFFFFF;
+    .time { border-bottom: 1px solid #EEEEEE; color: #333333; font-size: 14px; padding: 12px;
+        h2 { font-size: 20px; margin: 6px 0; text-align: center;}
+        p { align-items: center; display: flex;
+            i { display: block; margin: 0 4px; padding-bottom: 2px;}}}
+    .con { padding: 12px;
+        .box { margin-bottom: 20px;
+            p { font-size: 16px; margin-bottom: 10px; text-indent: 2em;}
+            img { height: auto; width: 100%;}}}}
+
 </style>

@@ -2,7 +2,7 @@
 	<div class="verification">
 		<input type="password" class="text t1" v-model="password" placeholder="请输入原始密码">
 		<input type="password" class="text t2" v-model="newPassword"  placeholder="请输入新的密码">
-		<input type="password" class="text t2" v-model="newPassword1" placeholder="请再次输入新的密码"@input='yz'>
+		<input type="password" class="text t2" v-model="newPassword1" placeholder="请再次输入新的密码" @input='yz'>
 		<p v-show='flag'>*两次密码输入不一致</p>
 		<input type="button" class="submit" value="完成" @click='ok'>
 	</div>
@@ -32,9 +32,8 @@ export default {
 			if(!this.flag && this.newPassword) {
 				if(this.newPassword === this.newPassword1) {
 					updatePas(this.password,this.newPassword).then(res => {
-						console.log(res)
 						if(res.code == 2) {
-							alert('修改密码成功');
+							this.$vux.toast.text('修改密码成功');
 							localStorage.removeItem("userInfo")
 							this.$router.push('/user/login');
 						}
@@ -42,7 +41,7 @@ export default {
 				}else {
 					this.flag = true
 				}
-				
+
 			}
 		}
 	},

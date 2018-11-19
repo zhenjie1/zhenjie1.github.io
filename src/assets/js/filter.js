@@ -11,6 +11,15 @@ Vue.filter('Rescue', function(value){
 	else return '未知救援'
 })
 
+Vue.filter('realName', function(value){
+	if(value == '') return '未选择';
+
+	value = parseInt(value)
+
+	if ( value === 0) return '点击认证'
+	else if( value === 1) return '已认证'
+})
+
 //性别
 Vue.filter('sex', function(value){
 	if(value == '') return '未知';

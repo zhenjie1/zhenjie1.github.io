@@ -1,16 +1,13 @@
 import Vue from 'vue'
-import { isIos } from '../../config/mUtils'
-export default function ( vm ) {
-	if( isIos() ) return;	//如果是 ios，为了不让 ios 设备上显示 获取地理位置失败
+import { isIos, isGeographicLocation, isHome } from '../../config/mUtils'
 
-	var posQquery = window.location.href
-	if(posQquery.indexOf("?") !== -1){
-		var position = {};
-		var q = posQquery.split('?')[1].split('&')
+export default function () {
+	if( isIos() ) return Promise.resolve({});	//如果是 ios，为了不让 ios 设备上显示 获取地理位置失败
+	if( !isHome() ) return Promise.resolve({}); //如果不是首页，没必要获取位置
 
-		q.forEach( v => position[v.split('=')[0]] = v.split('=')[1])
-
-		vm.$store.dispatch('setGeographicLocation', position)	//保存位置
+	//如果是 Android 传进来的经纬度，直接返回，无需调用原生 api
+	var position =  isGeographicLocation.call(this)
+	if(position){
 		return Promise.resolve(position)
 	}
 
@@ -33,7 +30,7 @@ export default function ( vm ) {
 		function success(position) {
 			var x = position.coords.longitude;
 			var y = position.coords.latitude;
-			// alert("经度为:" + x + "纬度为:" + y);
+
 			console.log("经度为:" + x + "纬度为:" + y)
 			resolve({ x, y })
 		}
@@ -45,9 +42,9 @@ export default function ( vm ) {
 				3: "获取定位信息超时"
 			}
 			if (err.code == 2) {
-				alert('请打开您浏览器的位置权限')
+				Vue.$vux.toast.text('请打开您浏览器的位置权限')
 			}
-			console.log(errorTypes[err.code])
+
 			Vue.$vux.toast.text(errorTypes[err.code])
 			reject(false)
 		}

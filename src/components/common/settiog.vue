@@ -10,7 +10,7 @@
 			<li @click='link'>
 				<span>实名认证</span>
 				<div class="r">
-					<b>{{text}}</b>
+					<b>{{userInfo.realName | realName}}</b>
 					<i class="iconfont icon-jiantou"></i>
 				</div>
 			</li>
@@ -39,13 +39,12 @@
 <script>
 import Actionsheet from 'vux/src/components/actionsheet/'
 import { logout } from '../../config/getData'
-import { getStore,removeStore } from '../../config/mUtils'
+import { getStore, removeStore, isLogin } from '../../config/mUtils'
 import { mapState, mapActions } from 'vuex'
 
 export default {
 	data(){
 		return {
-			text:'点击认证',
 			testval:['666','112','333'],
 			logoutShow:false,
 			logoutMenu:{
@@ -88,10 +87,11 @@ export default {
 		}
 	},
 	mounted(){
-		let type = this.userInfo.realName;
-		if(type == 1) {
-			this.text = '已认证'
+		if(!isLogin.call(this)){
+			this.$vux.toast.text('请先登录！')
+			this.$router.push('/user/login')
 		}
+		let type = this.userInfo.realName;
 	},
 	components:{
 		Actionsheet,

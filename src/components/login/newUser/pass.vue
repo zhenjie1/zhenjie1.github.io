@@ -57,7 +57,7 @@ export default {
 			var that = this;
 			var status = this.$route.params.status
 			if(this.newPass !== this.confirmPass) {
-				alert('两次密码不一致！');
+				this.$vux.toast.text('两次密码不一致！');
 				return false;
 			}
 			//status == 1 支付密码
@@ -65,12 +65,12 @@ export default {
 			//status == undefind 注册密码
 			if(status == 1) {
 				settingsPayPass(this.token,this.newPass).then( res => {
-					alert("修改成功")
+					this.$vux.toast.text("修改成功")
 					that.$router.push('/user/personal')
 				})
 			}else{
 				registered(this.phoneStr,this.newPass,this.codeStr).then( res => {
-					alert(res.msg)
+					this.$vux.toast.text(res.msg)
 					if(res.code == 2) that.$router.push('/user/login')
 				})
 			}
@@ -82,13 +82,10 @@ export default {
 
 
 <style lang="scss" scoped>
-.newUser{
-	.topTit{margin-bottom: 76px;}
-	.con{
-		label + label{margin-top:20px;}
-		.submit{margin-top:40px;}
-	}
-}
+.newUser { .topTit { margin-bottom: 76px;}
+    .con { label + label { margin-top: 20px;}
+        .submit { margin-top: 40px;}}}
+
 </style>
 
 

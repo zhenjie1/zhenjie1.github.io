@@ -45,53 +45,27 @@ export default {
 
 
 <style lang="scss" scoped>
-@import '../../../../../assets/css/all';
-$xian: #E3E5E9;
-$top: 14px;
+@import "../../../../../assets/css/all"; $xian: #E3E5E9; $top: 14px;
 
-.progress{@include screen;z-index: 11;
+.progress { @include screen; z-index: 11;
 
-	.rescueInfo{background-color: white;position: relative;padding:15px;font-size: 13px;
-		.init p{line-height: 26px;}
-		.rescueBtn{position: absolute;right:15px;top:50%;transform: translateY(-50%);
-			div{padding:6px 11px;border:1px solid #333;border-radius: 3px;}
-			div + div{margin-top:10px;}
-		}
-	}
-	.progressCon{background-color: white;margin:15px 0;padding-left:15px;position: relative;overflow: hidden;
-		&:after{
-			position: absolute;
-			left:20px;
-			top:$top + 10;
-			width:1px;
-			height: 100%;
-			background-color: $xian;
-			content:'';
-			display: block;
-		}
-		dl{padding:14px 0;margin-left:26px;position: relative;color:#898989;
-			> *{margin-right:15px;}
-			.leftXian{position: absolute;left:-30px;top:$top;z-index:10;width:20px;height:20px;border-radius: 50%;text-align:center;display:flex;
-				&:after{
-					content:'';
-					display: block;
-					margin:auto;
-					width:8px;height: 8px;
-					background-color: $xian;
-					border-radius: 50%;
-				}
-			}
-			dd{margin-top:10px;}
-		}
-		dl:first-child{color:#333;
-			.leftXian{background-color: #FBBFBF;
-				&:after{background-color: #F02B2B;width:12px;height:12px;}
-			}
-		}
-		dl:last-child::before{content:'';position: absolute;width:10px;height: 100%;left:-25px;top:28px;background-color: white;z-index: 1;}
-		dl + dl{border-top: 1px solid $xian;}
+    .rescueInfo { position: relative; background-color: white; font-size: 13px; padding: 15px;
+        .init p { line-height: 26px;}
+        .rescueBtn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            div { border: 1px solid #333333; border-radius: 3px; padding: 6px 11px;}
+            div + div { margin-top: 10px;}}}
+    .progressCon { position: relative; background-color: white; margin: 15px 0; overflow: hidden; padding-left: 15px;
+        &:after { position: absolute; background-color: $xian; content: ""; display: block; height: 100%; left: 20px; top: $top + 10; width: 1px;}
+        dl { position: relative; color: #898989; margin-left: 26px; padding: 14px 0;
+             > * { margin-right: 15px;}
+            .leftXian { position: absolute; border-radius: 50%; display: flex; height: 20px; left: -30px; text-align: center; top: $top; width: 20px; z-index: 10;
+                &:after { background-color: $xian; border-radius: 50%; content: ""; display: block; height: 8px; margin: auto; width: 8px;}}
+            dd { margin-top: 10px;}}
+        dl:first-child { color: #333333;
+            .leftXian { background-color: #FBBFBF;
+                &:after { background-color: #F02B2B; height: 12px; width: 12px;}}}
+        dl:last-child::before { position: absolute; background-color: white; content: ""; height: 100%; left: -25px; top: 28px; width: 10px; z-index: 1;}
+        dl + dl { border-top: 1px solid $xian;}}}
 
-	}
-}
 </style>
 

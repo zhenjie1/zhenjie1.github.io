@@ -212,8 +212,6 @@ export default {
 		},
 		bloodTypeEv(val){
 			this.seleceVal.bloodVal = val
-			// console.log(this.seleceVal.bloodType[val],val)
-
 			this.sendDealWith()
 		},
 		submit(val){

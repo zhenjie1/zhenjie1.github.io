@@ -1,7 +1,7 @@
 <template>
 	<div class="hello">
     <div class="upload">
-      
+
     </div>
   </div>
 </template>
@@ -12,20 +12,19 @@
     name:'imgUpdate',
 		data(){
 			return {
-				
+
 			}
 		},
 		methods:{
-			
+
 		},
 		mounted(){
-			
+
 		}
 	}
 </script>
 
 <style scoped>
-  .hello {
-    
-  }
+.hello {}
+
 </style>

@@ -18,10 +18,8 @@
 				text:''
 			}
 		},
-		methods:{
-		},
 		mounted() {
-			this.text = this.$route.params.data
+			this.text = window.sessionStorage.recordDet
 		}
 	}
 </script>

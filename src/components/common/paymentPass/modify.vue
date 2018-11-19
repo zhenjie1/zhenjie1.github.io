@@ -35,18 +35,17 @@ export default {
 			}else if(ind == 1){
 				if(this.inputTxt.length >= 6){
 					this.checkIndex = 2;
-				}else alert('支付密码最少 6 位！')
+				}else this.$vux.toast.text('支付密码最少 6 位！')
 			}else if(ind == 2){
 				if(this.inputTxt === this.repeatTxt){
 					modifyPayPass(this.inputTxt,this.repeatTxt).then(res => {
-						console.log(res)
 						if(res.code == 2){
-							alert('修改支付密码成功！');
+							this.$vux.toast.text('修改支付密码成功！');
 							this.$router.push('/user/personal');
 						}
 					})
 				}else{
-					alert('两次输入的密码不一致！')
+					this.$vux.toast.text('两次输入的密码不一致！')
 				}
 			}
 		}

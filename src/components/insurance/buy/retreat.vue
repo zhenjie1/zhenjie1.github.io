@@ -40,7 +40,7 @@
 					let imgArr = JSON.parse(localStorage.ImgDataArr)
 					retreat(this.id,this.textar,imgArr).then( res => {
 						if(res.code == 2){
-							alert(res.msg)
+							this.$vux.toast.text(res.msg)
 							this.$router.replace('/user/buyRecord')
 						}
 					})

@@ -21,7 +21,7 @@ export const registered = (mobile, password, validateCode) => fetch('/mobile/reg
 })
 
 //登录
-export const login = (username, password, mobileLogin) => fetch('/a/login?__ajax=true', {
+export const login = (username, password, mobileLogin) => fetch('/a/login', {
 	username,
 	password,
 	mobileLogin

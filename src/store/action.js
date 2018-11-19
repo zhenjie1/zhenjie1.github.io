@@ -1,17 +1,21 @@
 import { setStore, loginReturnVal } from '../config/mUtils'
 
 export default {
-	setUserInfo:({commit},info) => {
-		if( info !== undefined ) info = loginReturnVal(info)
-		commit('userInfo',info)
-		setStore('userInfo',info)
+	setUserInfo: ({ commit }, info) => {
+		if (info !== undefined) info = loginReturnVal(info)
+		commit('userInfo', info)
+		setStore('userInfo', info)
 	},
-	setGeographicLocation: ( { commit }, info ) => {
-		if( JSON.stringify(info) === "{}") return;
+	setGeographicLocation: ({ commit }, info) => {
+		if (JSON.stringify(info) === "{}") return;
 		commit('saveGeographicLocation', info)
 	},
-	setHomeUrl({ commit }, url){
-		if(url === '') return;
+	setHomeUrl({ commit }, url) {
+		if (url === '') return;
 		commit('saveHomeUrl', url)
+	},
+	setDistrict({ commit }, district) {
+		if (district == '') return;
+		commit('saveDistrict', district)
 	}
 }

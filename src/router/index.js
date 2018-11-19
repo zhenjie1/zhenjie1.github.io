@@ -1,5 +1,4 @@
 import Vue from 'vue'
-//console.log(Router)
 import Router from 'vue-router'
 
 

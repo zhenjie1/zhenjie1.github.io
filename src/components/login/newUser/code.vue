@@ -55,7 +55,6 @@ export default {
 	props: ['phoneStr'],
 	mounted () {
 		this.codeNum(false);
-		// console.log(this.phoneStr)
 	},
 	methods: {
 		codeWatch(){

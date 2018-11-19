@@ -10,5 +10,8 @@ export default {
 	},
 	saveHomeUrl(state, url){
 		state.homeUrl = url
+	},
+	saveDistrict(state, district){
+		state.district = district
 	}
 }

@@ -11,7 +11,8 @@ Vue.use(Vuex)
 const state = {
 	userInfo: null, //用户信息
 	geographicLocation: null,//用户经纬度
-	homeUrl:''	//首页url
+	homeUrl:'/',	//首页url
+	district: ''
 }
 var store;
 export default store = new Vuex.Store({

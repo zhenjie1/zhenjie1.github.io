@@ -132,7 +132,7 @@ export default {
     },
     ghBank() {
       if (this.data) {
-        alert("请先解绑银行卡");
+        this.$vux.toast.text("请先解绑银行卡");
       } else {
         this.$router.push("/personal/bindbank");
       }

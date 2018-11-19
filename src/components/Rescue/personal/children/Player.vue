@@ -28,14 +28,6 @@
       created(){
         findMyJUserList().then( res => {
           this.dataArr = res.rows;
-          // console.log(res.rows)
-          // console.log(this.pySort(res.rows))
-          // var arr = res.rows;
-          // arr.sort((i1,i2)=>{
-          //   return i1.name - i2.name
-          // })
-          // console.log(arr)
-
         })
       },
       methods:{
@@ -125,7 +117,6 @@
               {name: "自然源露", count: 0, selected: 0},
               {name: "贵爱娘", count: 0, selected: 0}
           ]
-// console.log(sort(brand))
       }
   }
 </script>
