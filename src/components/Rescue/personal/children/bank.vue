@@ -24,82 +24,23 @@
 </template>
 
 <style lang="scss" scoped>
-.bank {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #272c33;
-  width: 100%;
-  height: 100%;
-  .top {
-    width: 90%;
-    height: 200px;
-    margin: 20px auto;
-    position: relative;
-    .ka {
-      position: absolute;
-      color: #fff;
-      top: 11%;
-      left: 22%;
-      font-size: 16px;
-    }
-    .lx {
-      position: absolute;
-      color: #fff;
-      top: 23%;
-      left: 22%;
-    }
-    .card {
-      position: absolute;
-      top: 42%;
-      left: 22%;
-      color: #ddd;
-      font-size: 20px;
-      .num {
-        color: #fff;
-        font-size: 24px;
-        position: relative;
-        top: -5px;
-        font-family: "KaiTi";
-      }
-    }
-    .nbind {
-      position: absolute;
-      bottom: 25%;
-      right: 16%;
-      color: #fff;
-      border: 1px solid #fff;
-      padding: 2px 8px;
-    }
-    img {
-      width: 100%;
-      background-color: transparent;
-      display: block;
-    }
-  }
-  .bottom {
-    background-color: #343b45;
-    color: #8c8c8d;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    span {
-      font-size: 15px;
-    }
-    i {
-      padding: 0 8px;
-    }
-  }
-}
+.bank { position: fixed; background-color: #272C33; height: 100%;left: 0; top: 0; width: 100%;
+    .top {position: relative;height: 200px; margin: 20px auto;  width: 90%;
+        .ka { position: absolute; color: #FFFFFF; font-size: 16px;left: 22%; top: 11%; }
+        .lx { position: absolute; color: #FFFFFF; left: 22%;top: 23%; }
+        .card { position: absolute; color: #DDDDDD; font-size: 20px;left: 22%; top: 42%;
+            .num {position: relative;  color: #FFFFFF; font-family: "KaiTi";font-size: 24px; top: -5px; }}
+        .nbind { position: absolute; border: 1px solid #FFFFFF; bottom: 25%; color: #FFFFFF; padding: 2px 8px;right: 16%; }
+        img {background-color: transparent; display: block; width: 100%; }}
+    .bottom { background-color: #343B45; color: #8C8C8D; display: flex; justify-content: space-between; padding: 10px 0;
+        span { font-size: 15px;}
+        i { padding: 0 8px;}}}
+
 </style>
 
 <script>
-import {
-  AllDealForNJ,
-  releaseCard,
-  userPass
-} from "../../../../config/getData";
-import { MessageBox } from "mint-ui";
+import { AllDealForNJ, releaseCard, userPass } from "../../../../config/getData";
+import MessageBox from "mint-ui/packages/message-box/";
 export default {
   data() {
     return {

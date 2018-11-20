@@ -29,7 +29,7 @@
 
 <script>
 import { allMoney, withdrawals, userPass } from "../../../../config/getData";
-import { MessageBox } from "mint-ui";
+import MessageBox from "mint-ui/packages/message-box/";
 import success from "../../../common/success/success";
 export default {
   name: "postal",
