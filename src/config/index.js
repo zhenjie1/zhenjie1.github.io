@@ -37,7 +37,6 @@ export default async function (url = '', data = {}, type = 'POST', urlAll = null
 	if (urlAll === null) data = qs.stringify(data);
 	type = type.toUpperCase()
 
-	console.log(type)
 	var ajax = type == 'POST' ? axios.post(url, data, config) : axios.get(url, data, config);
 
 	ajax = ajax.then(res => res.data)

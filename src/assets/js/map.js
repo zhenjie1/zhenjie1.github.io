@@ -1,5 +1,6 @@
 import mapLngLat from './LatAndLon'
 import { geoconv, findlist } from '../../config/getData.js'
+import { getStore } from '../../config/mUtils'
 
 var iconUrl = 'http://zj.tianjistar.com/icon/daohang.png';
 var enterStr = null;
@@ -10,74 +11,66 @@ var longitude = null,
 var map, vm;
 
 window.initialize = function () {
-	// if(vm == undefined)
-	mapLngLat.call(vm).then(res => {
-		longitude = res.Longitude
-		latitude = res.Latitude
-		var ggPoint = new BMap.Point(longitude, latitude);
+	longitude = vm.$store.state.geographicLocation.Longitude
+	latitude = vm.$store.state.geographicLocation.Latitude
 
-		map = new BMap.Map("map");
-		map.centerAndZoom(ggPoint, 14);
-		map.enableScrollWheelZoom(true);
+	var ggPoint = new BMap.Point(longitude, latitude);
 
-		map.addEventListener('touchstart', function () {
-			document.getElementById('suggestId').blur()
-		})
+	map = new BMap.Map("map");
+	map.centerAndZoom(ggPoint, 14);
+	map.enableScrollWheelZoom(true);
 
-		translateCallback(vm)
-		// setTimeout(function () {	//经纬度转换
-		// 	var convertor = new BMap.Convertor();
-		// 	var pointArr = [];
-		// 	pointArr.push(ggPoint);
-		// 	convertor.translate(pointArr, 1, 5, translateCallback)
-		// }, 0)
+	translateCallback(vm)
+	// setTimeout(function () {	//经纬度转换
+	// 	var convertor = new BMap.Convertor();
+	// 	var pointArr = [];
+	// 	pointArr.push(ggPoint);
+	// 	convertor.translate(pointArr, 1, 5, translateCallback)
+	// }, 0)
 
-		function translateCallback(vm) {
-			new Promise((rej) => {
+	function translateCallback(vm) {
+		new Promise((rej) => {
 
-				let lngAndLat = {
-					lng: longitude,
-					lat: latitude
-				}
-				map.setCenter(lngAndLat);
+			let lngAndLat = {
+				lng: longitude,
+				lat: latitude
+			}
+			map.setCenter(lngAndLat);
 
-				rej({
-					lng: lngAndLat.lng,
-					lat: lngAndLat.lat
-				})
-			}).then(rej => {
-				if (enterStr == 'home') {
-					getRescue(vm,map, rej)
-					inputAuto(map)
-				} else if (enterStr == 'rescue') {
-					var p1 = new BMap.Point(rej.lng, rej.lat);
-					var destinationX = sessionStorage.lngLat.split(',')[1]
-					var destinationY = sessionStorage.lngLat.split(',')[0]
-					var p2 = new BMap.Point(destinationX, destinationY);
-					var driving = new BMap.DrivingRoute(map, {
-						renderOptions: {
-							map: map,
-							autoViewport: true
-						}
-					});
-					driving.search(p1, p2);
-				}
-			}).catch(e => {
-				console.log(e)
+			rej({
+				lng: lngAndLat.lng,
+				lat: lngAndLat.lat
 			})
-		}
+		}).then(rej => {
+			if (enterStr == 'home') {
+				getRescue(vm, map, rej)
+				inputAuto(map)
+			} else if (enterStr == 'rescue') {
+				var p1 = new BMap.Point(rej.lng, rej.lat);
+				var p2 = new BMap.Point(sessionStorage.lngLat.split(',')[1], sessionStorage.lngLat.split(',')[0]);
+				var driving = new BMap.DrivingRoute(map, {
+					renderOptions: {
+						map: map,
+						autoViewport: true
+					}
+				});
+				driving.search(p1, p2);
+			}
+		}).catch(e => {
+			console.log(e)
+		})
+	}
 
 
 
-		map.setMapStyle({
-			styleJson: [{
-				"featureType": "railway",
-				"elementType": "all",
-				"stylers": {
-					"color": "#ffffff08"
-				}
-			}]
-		});
+	map.setMapStyle({
+		styleJson: [{
+			"featureType": "railway",
+			"elementType": "all",
+			"stylers": {
+				"color": "#ffffff08"
+			}
+		}]
 	});
 };
 
@@ -141,10 +134,7 @@ function getRescue(vm, map, rej) {
 
 	//在当前位置添加图标
 	var pt = new BMap.Point(rej.lng, rej.lat);
-	var myIcon = new BMap.Icon(iconUrl, new BMap.Size(30, 30));
-	var marker2 = new BMap.Marker(pt, {
-		icon: myIcon
-	});
+	var marker2 = new BMap.Marker(pt);
 	map.addOverlay(marker2);
 
 	//获取省市区

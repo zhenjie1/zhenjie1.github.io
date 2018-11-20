@@ -1,23 +1,14 @@
-import {
-	findMissedlist,
-	findlistok,
-	findMyListOk,
-	userWaitAccept,
-	userSearchAllRescue,
-	userRescue,
-	userRescueOk,
-	findListTask//救援用户查询
-} from '../../config/getData'
-import {
-	getStore
-} from '../../config/mUtils'
+import { findMissedlist, findlistok, findMyListOk, userWaitAccept, userSearchAllRescue, userRescue, userRescueOk, findListTask } from '../../config/getData'
 var userType;
 
-try {
-	userType = parseInt(getStore('userInfo')['userType']);
-} catch (e) {
-
+function getUserType (){
+	try{
+		return this.$store.state.userInfo.userType
+	}catch(e){
+		setTimeout( () => getUserType(), 100)
+	}
 }
+
 function jinzhan(infoData) {
 	for (let v of infoData) {
 		if (v.orderStautsList.length == 0) {
@@ -26,38 +17,39 @@ function jinzhan(infoData) {
 	}
 }
 //页面初始化调用
-export const initFun = (that, type) => {
-	type = parseInt(type);
+export const initFun = function () {
+	userType = getUserType.call(this);
 
+	const type = parseInt(this.userType);
 	switch (type) {
 		case 2: //救援队长
 			findMissedlist().then(res => {
 				res = res.rows
-				that.infoData = res
-				that.originalData = res
-				jinzhan(that.infoData)
+				this.infoData = res
+				this.originalData = res
+				jinzhan(this.infoData)
 			}).then(() => {
-				that.isShow();
+				topNavMenuFun.call(this)
 			})
 			break;
 		case 3: //普通用户
 			userSearchAllRescue(1).then(res => {
-				that.total = res.total
+				this.total = res.total
 				res = res.rows
-				that.infoData = res
-				that.originalData = res
-				that.liLength = res.length
-				jinzhan(that.infoData)
+				this.infoData = res
+				this.originalData = res
+				this.liLength = res.length
+				jinzhan(this.infoData)
 			})
 			break;
 		case 4: //救援用户
 			findListTask(1).then(res => {
 				res = res.rows
-				that.infoData = res
-				that.originalData = res
-				jinzhan(that.infoData)
+				this.infoData = res
+				this.originalData = res
+				jinzhan(this.infoData)
 			}).then(() => {
-				that.isShow();
+				topNavMenuFun.call(this)
 			})
 			break;
 	}
@@ -96,211 +88,126 @@ export const orderBtnFun = (that, type, item, ind, name) => {
 }
 
 //点击顶部导航
-export const topNavMenuFun = (that) => {
-	var navIndex = that.navIndex;
-	// if (userType == 2) {
-	// 	leaderAjax(that, navIndex)
-	// } else if (userType == 3) {
-	// 	userAjax(that, navIndex)
-	// }
+export const topNavMenuFun = function () {
+	var navIndex = this.navIndex;
 	if (userType == 3) {
-		userAjax(that, navIndex)
+		userAjax.call(this, navIndex)
 	} else {
-		leaderAjax(that, navIndex)
+		leaderAjax.call(this, navIndex)
 	}
 }
 
-
 //设置按钮文字 和 上面的状态
-export const setBtnTxtFun = (str, item) => {
+export const setBtnTxtFun = function (str, item) {
+	const status = ['等待接单', '等待出发', '已到达救援地点', '施救中', '完成']
+	status[99] = '已取消'
+
+	var statusId4Txt1 = item.typeReport === '0' ? '上传报告' : '查看报告';
+	var statusId4Txt2 = item.typeReturn === '0' ? '上传回访' : '查看回访';
+
+	let btn = [
+		[{ name: '拒绝接单', type: 'button' }, { name: '确认接单', type: 'button' }],
+		[{ name: '确认出发', type: 'button' }],
+		[{ name: '拍摄', type: 'file' }, { name: '确认到达', type: 'button' }],
+		[{ name: '拍摄', type: 'file' }, { name: '完成', type: 'button' }],
+		[{ name: statusId4Txt1, type: 'button' }, { name: statusId4Txt2, type: 'button' }]
+	]
+
 	str = parseInt(str)
 
 	//队长
 	if (userType == 2) {
-
-		var statusId4Txt1 = item.typeReport === '0' ? '上传报告' : '查看报告';
-		var statusId4Txt2 = item.typeReturn === '0' ? '上传回访' : '查看回访';
-
-		var btn = [
-			[{ name: '拒绝接单', type: 'button' }, { name: '确认接单', type: 'button' }],
-			[{ name: '确认出发', type: 'button' }],
-			[{ name: '拍摄', type: 'file' }, { name: '确认到达', type: 'button' }],
-			[{ name: '拍摄', type: 'file' }, { name: '完成', type: 'button' }],
-			[{ name: statusId4Txt1, type: 'button' }, { name: statusId4Txt2, type: 'button' }]
-		]
-
-		switch (str) {
-			case 0:
-				str = '等待接单', item.btn = btn[0];
-				break;
-			case 1:
-				str = '等待出发', item.btn = btn[1];
-				break;
-			case 2:
-				str = '已到达救援地点', item.btn = btn[2];
-				break;
-			case 3:
-				str = '施救中', item.btn = btn[3];
-				break;
-			case 4:
-				str = '完成', item.btn = btn[4];
-				break;
-			default:
-				str = '未知状态'
-		}
+		item.btn = btn[str];
 	} else if (userType == 3) {
-
-		var btn = [
+		btn = [
 			[{ name: '取消订单', type: 'button' }],
 			[{ name: '救援进展', type: 'button' }],
-			[{ name: '救援进展', type: 'button' }],
-			[{ name: '救援进展', type: 'button' }],
-			[{ name: '救援进展', type: 'button' }],
 		]
-
-		switch (str) {
-			case 0:
-				str = '等待接单', item.btn = btn[0];
-				break;
-			case 1:
-				str = '等待出发', item.btn = btn[1];
-				break;
-			case 2:
-				str = '已到达救援地点', item.btn = btn[2];
-				break;
-			case 3:
-				str = '施救中', item.btn = btn[2];
-				break;
-			case 4:
-				str = '已完成', item.btn = btn[3];
-				break;
-			case 99:
-				str = '已取消', item.btn = btn[4];
-				break;
-			default:
-				str = '未知状态'
-		}
+		item.btn = str == 0 ? btn[0] : btn[1];
 
 	} else if (userType == 4) {
-		var statusId4Txt1 = item.typeReport === '0' ? '上传报告' : '查看报告';
-		var statusId4Txt2 = item.typeReturn === '0' ? '上传回访' : '查看回访';
-
-		var btn = [
-			[{ name: '拒绝接单', type: 'button' }, { name: '确认接单', type: 'button' }],
-			[{ name: '确认出发', type: 'button' }],
-			[{ name: '拍摄', type: 'file' }, { name: '确认到达', type: 'button' }],
-			[{ name: '拍摄', type: 'file' }, { name: '完成', type: 'button' }],
-			[{ name: statusId4Txt1, type: 'button' }, { name: statusId4Txt2, type: 'button' }]
-		]
-
-		switch (str) {
-			case 0:
-				str = '等待接单', item.btn = btn[0];
-				break;
-			case 1:
-				str = '等待出发', item.btn = btn[1];
-				break;
-			case 2:
-				str = '已到达救援地点', item.btn = btn[2];
-				break;
-			case 3:
-				str = '施救中', item.btn = btn[3];
-				break;
-			case 4:
-				str = '完成', item.btn = btn[4];
-				break;
-			default:
-				str = '未知状态'
-		}
+		item.btn = btn[str]
 	}
 
-	return str
+	return status[str]
 
 }
 //获取用户数据
-async function userAjax(that, navIndex) {
+async function userAjax(navIndex) {
 	switch (navIndex) {
 		case 1: //全部
-			userSearchAllRescue(1).then(res => {
-				that.total = res.total
+			await userSearchAllRescue(1).then(res => {
+				this.total = res.total
 				res = res.rows
-				that.infoData = res
-				that.originalData = res
-				jinzhan(that.infoData)
+				this.infoData = res
+				this.originalData = res
+				jinzhan(this.infoData)
 			})
 			break;
 		case 2: //等待接单
 			await userWaitAccept().then(res => {
 				res = res.rows
-				that.infoData = res
-				that.originalData = res
-				jinzhan(that.infoData)
+				this.infoData = res
+				this.originalData = res
+				jinzhan(this.infoData)
 			})
 			break;
 		case 3: //施救中
 			await userRescue().then(res => {
 				res = res.rows
-				that.infoData = res
-				that.originalData = res
-				jinzhan(that.infoData)
+				this.infoData = res
+				this.originalData = res
+				jinzhan(this.infoData)
 			})
 			break;
 		case 4: //已完成
 			await userRescueOk(1).then(res => {
 				res = res.rows;
-				that.infoData = res
-				that.originalData = res
-				jinzhan(that.infoData)
+				this.infoData = res
+				this.originalData = res
+				jinzhan(this.infoData)
 			})
 			break;
 		case 5: //已取消
 			await userSearchAllRescue(1, '99').then(res => {
 				res = res.rows;
-				that.infoData = res
-				that.originalData = res
-				jinzhan(that.infoData)
+				this.infoData = res
+				this.originalData = res
+				jinzhan(this.infoData)
 			})
 			break;
 	}
-	if (that.$refs.li) {
-		that.liLength = that.$refs.li.length;
+	if (this.$refs.li) {
+		this.liLength = this.$refs.li.length;
 	}
 }
 
 //获取队长订单数据
-function leaderAjax(that, navIndex) {
+function leaderAjax(navIndex) {
 	new Promise((resolve, reject) => {
 		if (navIndex != 4) {
 
-			let dataArr = [];
-			if (Array.isArray(that.originalData)) {
-				that.originalData.forEach((v, i) => {
-					if (navIndex == 1) {
-						if (v.stateId == 0 || v.stateId == 1) {
-							dataArr.push(v)
-						}
-					} else {
-						if (navIndex == v.stateId) {
-							dataArr.push(v)
-						}
-					}
+			if (Array.isArray(this.originalData)) {
+				this.infoData = this.originalData.filter( v => {
+					if( navIndex == 1) return v.stateId == 0 || v.stateId == 1
+					else return navIndex == v.stateId
 				})
-				that.infoData = dataArr
-				jinzhan(that.infoData)
+				jinzhan(this.infoData)
 				resolve();
 			}
+
+			reject('this.originalData 不是一个数组')
 		} else {
 			findMyListOk(1, 10).then(res => {
 				res = res.rows;
-				that.infoData = res;
-				jinzhan(that.infoData)
+				this.infoData = res;
+				jinzhan(this.infoData)
 				resolve();
 			})
 		}
 	}).then(() => {
-		setTimeout(function () {
-			that.liLength = that.$refs.li == undefined ? 0 : that.$refs.li.length;
-		}, 0)
+		this.total = this.infoData.length
+		setTimeout(() => this.liLength = this.$refs.li == undefined ? 0 : this.$refs.li.length, 0)
 	})
 
 }

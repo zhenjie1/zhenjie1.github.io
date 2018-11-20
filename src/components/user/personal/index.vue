@@ -107,38 +107,41 @@
 import { mapState, mapActions } from 'vuex'
 import { sosOrders, getUserInfo } from "@/config/getData";
 import bottomNav from '../../common/bottomNav/bottomNav'
+import { isLogin } from '../../../config/mUtils'
+
 export default {
-  data() {
-    return {
-      text: ""
-    };
-  },
-  computed:{
+	data() {
+		return {
+			text: ""
+		};
+	},
+	computed: {
 		...mapState([
 			'userInfo'
 		]),
-  },
-  components:{
-	  bottomNav
-  },
-  methods:{
-	  ...mapActions(['setUserInfo']),
-		getUserInfoEv(){
-			getUserInfo().then( res => {
+	},
+	components: {
+		bottomNav
+	},
+	methods: {
+		...mapActions(['setUserInfo']),
+		getUserInfoEv() {
+			getUserInfo().then(res => {
 				res = res.rows
 				this.setUserInfo(res)
 			})
 		},
-  },
-  created() {
-	this.getUserInfoEv();
-    if (this.userInfo == null) {
-      this.$vux.toast.text("请先登录！");
-      this.$router.push("/user/login");
-    } else {
-      this.text = this.userInfo.vipType == 1 ? "保障中" : "去购买";
-    }
-  }
+	},
+	created() {
+		this.getUserInfoEv();
+		if (!isLogin.call(this)) {
+			this.$vux.toast.text("请先登录！");
+			this.$router.push("/user/login");
+		} else {
+			// if (this.userInfo.userType != '3') this.$router.push('/rescue/task')
+			this.text = this.userInfo.vipType == 1 ? "保障中" : "去购买";
+		}
+	}
 };
 </script>
 
@@ -146,74 +149,22 @@ export default {
 <style lang="scss" scoped>
 @import "../../../assets/css/all.scss";
 
-.personal {
-  min-height: 100%;
-  width: 100%;
-  position: relative;
-  .options {
-    margin-top: 10px;
-    li {
-      display: flex;
-      justify-content: space-between;
-      background-color: white;
-      line-height: 50px;
-      padding: 0 16px;
-      font-size: 16px;
-      align-items: center;
-      .l,
-      .r {
-        display: flex;
-        align-items: center;
-      }
-      .r b {
-        color: #666;
-      }
-      .l i {
-        font-size: 22px;
-        margin-right: 15px;
-        color: $red;
-      }
-      .r i {
-        margin-left: 15px;
-        color: #9a9a9a;
-      }
-      b {
-        font-weight: normal;
-      }
-    }
-    li + li {
-      border-top: 1px solid #f5f5f5;
-    }
-  }
+.personal { position: relative; min-height: 100%; width: 100%;
+    .options { margin-top: 10px;
+        li { align-items: center; background-color: white; display: flex; font-size: 16px; justify-content: space-between; line-height: 50px; padding: 0 16px;
+            .l, .r { align-items: center; display: flex;}
+            .r b { color: #666666;}
+            .l i { color: $red; font-size: 22px; margin-right: 15px;}
+            .r i { color: #9A9A9A; margin-left: 15px;}
+            b { font-weight: normal;}}
+        li + li { border-top: 1px solid #F5F5F5;}}
 
-  .info {
-    display: flex;
-    padding: 15px 20px;
-    background-color: white;
-    align-items: center;
-    justify-content: space-between;
-    .avatar {
-      @include wh(70px, 70px);
-      border-radius: 100%;
-      overflow: hidden;
-    }
-    .center {
-      flex: 0.8;
-      h3 {
-        font-weight: normal;
-        font-size: 16px;
-      }
-      span {
-        color: #666;
-        font-size: 13px;
-      }
-    }
-    i {
-      font-size: 25px;
-      padding: 10px 0 10px 20px;
-      color: #b1b1b1;
-    }
-  }
-}
+    .info { align-items: center; background-color: white; display: flex; justify-content: space-between; padding: 15px 20px;
+        .avatar { @include wh(70px, 70px); border-radius: 100%; overflow: hidden;}
+        .center { flex: .8;
+            h3 { font-size: 16px; font-weight: normal;}
+            span { color: #666666; font-size: 13px;}}
+        i { color: #B1B1B1; font-size: 25px; padding: 10px 0 10px 20px;}}}
+
 </style>
 

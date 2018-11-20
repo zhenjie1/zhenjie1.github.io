@@ -76,7 +76,7 @@ export const isLogin = function () { //此方法不能使用箭头函数，因�
 }
 
 /*
-* 判断首页是否有经纬度参数，有责保存到vuex中
+* 判断首页是否有经纬度参数，有则保存到vuex中
 */
 export const isGeographicLocation = function() { //此方法不能使用箭头函数，因为调用的地方使用了 call(this)
 	var posQquery = window.location.href.split('#')[1];

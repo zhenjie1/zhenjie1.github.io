@@ -20,6 +20,7 @@
 <script type='text/javascript'>
 import { login } from "../../config/getData.js";
 import { mapActions, mapState, mapMutations } from "vuex";
+import { isLogin } from '../../config/mUtils';
 
 export default {
 	data() {
@@ -35,7 +36,11 @@ export default {
 			return !!this.username && !!this.password;
 		}
 	},
-	mounted() { },
+	created() {
+		if(isLogin.call(this)){
+			this.$router.go(1)
+		}
+	 },
 	methods: {
 		...mapActions(["setUserInfo"]),
 		loginEv() {

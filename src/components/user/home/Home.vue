@@ -33,7 +33,7 @@
 		</div>
 		<div class="advertising">
 			<!-- <img src="" alt=""> -->
-			<swiper :list='imgList'></swiper>
+			<swiper height='130px' :list='imgList'></swiper>
 		</div>
 		<div class="con" ref='con' :class='{"fixed":classFlag}'>
 			<ul class="nav">
@@ -73,12 +73,16 @@
 import { mapState, mapActions } from 'vuex'
 import Mapp from '../../../components/common/mapp/mapp'
 import Sense from './children/sense.vue'
-import {Swiper} from 'vux/src/components/swiper/'
+import { Swiper } from 'vux/src/components/swiper/'
 import Announcement from './children/announcement.vue'
 import { sosOrders } from '@/config/getData'
 import mapLngLat from '../../../assets/js/LatAndLon'
 import bottomNav from '../../common/bottomNav/bottomNav'
 import { isLogin, isGeographicLocation } from '../../../config/mUtils.js'
+
+import banner1 from '../.././../assets/images/banner1.png'
+import banner2 from '../.././../assets/images/banner2.png'
+console.log(banner1)
 
 export default {
 	data(){
@@ -94,9 +98,9 @@ export default {
 			isScreen:false,//地图是否全屏
 			currentView: 'sense',
 			imgList:[{
-				img: 'http://a.hiphotos.baidu.com/image/pic/item/14ce36d3d539b6006a6cc5d0e550352ac65cb733.jpg',
+				img: banner1,
 			}, {
-				img: 'http://a.hiphotos.baidu.com/image/pic/item/14ce36d3d539b6006a6cc5d0e550352ac65cb733.jpg',
+				img: banner2,
 			}],
 			classFlag:false
 		}

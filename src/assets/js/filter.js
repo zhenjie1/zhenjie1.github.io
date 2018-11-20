@@ -41,6 +41,7 @@ Vue.filter('sex', function(value){
 
 //血型
 Vue.filter('bloodType', function(value){
+	var arrVal = ['A','B','AB','O','Rh阳性','Rh阴性','MN','MNSs血型']
 	if(value === '' || value === undefined) return '未设置';
 
 	//判断是不是字母 或 文字
@@ -52,15 +53,7 @@ Vue.filter('bloodType', function(value){
 		value = parseInt(value)
 	}
 
-	var str;
-	switch(value){
-		case 0: str = 'A'; break;
-		case 1: str = 'B'; break;
-		case 2: str = 'AB'; break;
-		case 3: str = 'O'; break;
-		case 4: str = '保密'; break;
-		default: str = '未设置';
-	}
+	var str = arrVal[value]
 
 	return str;
 })

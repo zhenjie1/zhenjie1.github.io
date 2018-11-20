@@ -8,7 +8,7 @@ var that;
 
 export default function (_this) {
 	that = _this;
-	window.addEventListener('scroll', debounce(scrollEvent, 500))
+	window.addEventListener('scroll', debounce(scrollEvent, 100))
 }
 
 function scrollEvent() {
@@ -17,6 +17,7 @@ function scrollEvent() {
 		//判断是不是救援人员任务页面
 		if (that.$route.path.indexOf('/rescue/task') !== -1) {
 			//已完成数据
+			console.log(that)
 			if (that.total < that.pageNum * 10) return;
 			that.pageNum++;
 			taskLoad(that, that.pageNum)
@@ -53,7 +54,6 @@ function getScrollTop() {
 }
 
 //文档的总高度
-
 function getScrollHeight() {　　
 	var scrollHeight = 0,
 		bodyScrollHeight = 0,

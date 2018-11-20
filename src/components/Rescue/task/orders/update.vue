@@ -1,11 +1,11 @@
 <template>
 	<div class="update">
 		<div class="tit">
-			<input type="text" maxlength="20" placeholder="请输入报告的标题" v-model='title'>
+			<input type="text" maxlength="20" :placeholder='"请输入" + reportAndReturn + "的标题"' v-model='title'>
 		</div>
 		<div class="box">
 			<div class="con" v-for='(item,i) in arr' :key="i" @click='cil(i)'>
-				<textarea name="" placeholder="请在此输入救援报告信息内容" v-model='arr[i].value'></textarea>
+				<textarea name="" :placeholder="'请在此输入救援' + reportAndReturn + '信息内容'" v-model='arr[i].value'></textarea>
 				<div class="item">
 					<span>添加照片</span>
 					<input type="file" accept="image/*" multiple class="avatarStyle" @change='UpladFile($event)'>
@@ -32,7 +32,8 @@ export default {
 			index: '',
 			arr: [{ value: '', value1: '' }],
 			content: '',
-			contentImg: ''
+			contentImg: '',
+			reportAndReturn: ''
 		}
 	},
 	components: {
@@ -157,22 +158,110 @@ export default {
 			})
 		}
 	},
+	created() {
+		const status = this.$route.params.sta;
+		document.title = status == '0' ? '上传回访' : '上传报告'
+		this.reportAndReturn = document.title.replace('上传', '')
+
+	}
 }
 </script>
 
 <style lang='scss' scoped>
-.update { position: fixed; background-color: #F5F5F5; height: 100%; left: 0; overflow-y: auto; top: 0; width: 100%; z-index: 11;
-    .submit { position: fixed; background-color: #F02B2B; bottom: 0; left: 0;}
-    .tit { background-color: #FFFFFF; margin-bottom: 10px; padding: 10px 0;
-        input { border: none; font-size: 14px; padding: 10px; width: 100%;}}
-    .box { .con { background-color: #FFFFFF; display: flex; margin-bottom: 10px; padding: 10px;
-            textarea { border: none; font-size: 14px; height: 120px; resize: none; width: 60%;}
-            .item { position: relative; border: 1px dashed #CCCCCC; height: 100px; margin: 10px 0 0 10px; width: 100px;
-                .delet { position: absolute; background-color: #F02B2B; border-radius: 50%; color: #FFFFFF; font-size: 20px; height: 16px; line-height: 13px; right: -5px; text-align: center; top: -5px; width: 16px;}
-                img { position: absolute; height: 100%; left: 0; top: 0; width: 100%;}
-                .hide { display: none;}
-                span { position: absolute; left: 50%; text-align: center; top: 50%; transform: translate(-50%, -50%); width: 100%;}
-                input { height: 100%; opacity: 0; width: 100%;}}}}
-    .add { border: dashed 1px #F02B2B; color: #F02B2B; font-size: 20px; height: 40px; line-height: 40px; margin: 10px auto; margin-bottom: 60px; text-align: center; width: 90%;}}
-
+.update {
+  position: fixed;
+  background-color: #f5f5f5;
+  height: 100%;
+  left: 0;
+  overflow-y: auto;
+  top: 0;
+  width: 100%;
+  z-index: 11;
+  .submit {
+    position: fixed;
+    background-color: #f02b2b;
+    bottom: 0;
+    left: 0;
+  }
+  .tit {
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    padding: 10px 0;
+    input {
+      border: none;
+      font-size: 14px;
+      padding: 10px;
+      width: 100%;
+    }
+  }
+  .box {
+    .con {
+      background-color: #ffffff;
+      display: flex;
+      margin-bottom: 10px;
+      padding: 10px;
+      textarea {
+        border: none;
+        font-size: 14px;
+        height: 120px;
+        resize: none;
+        width: 60%;
+      }
+      .item {
+        position: relative;
+        border: 1px dashed #cccccc;
+        height: 100px;
+        margin: 10px 0 0 10px;
+        width: 100px;
+        .delet {
+          position: absolute;
+          background-color: #f02b2b;
+          border-radius: 50%;
+          color: #ffffff;
+          font-size: 20px;
+          height: 16px;
+          line-height: 13px;
+          right: -5px;
+          text-align: center;
+          top: -5px;
+          width: 16px;
+        }
+        img {
+          position: absolute;
+          height: 100%;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        .hide {
+          display: none;
+        }
+        span {
+          position: absolute;
+          left: 50%;
+          text-align: center;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 100%;
+        }
+        input {
+          height: 100%;
+          opacity: 0;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .add {
+    border: dashed 1px #f02b2b;
+    color: #f02b2b;
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    margin: 10px auto;
+    margin-bottom: 60px;
+    text-align: center;
+    width: 90%;
+  }
+}
 </style>

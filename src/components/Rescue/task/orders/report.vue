@@ -6,8 +6,8 @@
 		</div>
 		<div class="con">
 			<div class="box" v-for='item in zData.content'>
-				<p>{{item.content}}</p>
-				<img :src="item.contentImg" alt="">
+				<p v-if="item.content != ''">{{item.content}}</p>
+				<img :src="item.contentImg" v-if="item.contentImg != ''" alt="">
 			</div>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
         p { align-items: center; display: flex;
             i { display: block; margin: 0 4px; padding-bottom: 2px;}}}
     .con { padding: 12px;
-        .box { margin-bottom: 20px;
+        .box { margin-bottom: 20px;word-wrap:break-word ;
             p { font-size: 16px; margin-bottom: 10px; text-indent: 2em;}
             img { height: auto; width: 100%;}}}}
 

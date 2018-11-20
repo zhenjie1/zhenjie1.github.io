@@ -24,7 +24,7 @@
 							</div>
 						</div>
 						<div class="info">
-							<img src="" alt="" class="icon">
+							<img src="../../../assets/images/rescueDefault.jpg" alt="" class="icon">
 							<div class="con">
 								<h3>{{item.office | office}}</h3>
 								<p>
@@ -91,6 +91,7 @@ import { initFun, orderBtnFun, topNavMenuFun, setBtnTxtFun } from "../../../asse
 import addScroll from "@/assets/js/scrollLoad";
 import BottomLine from "../../common/bottomLine/BottomLine";
 import { mapState } from 'vuex'
+import LatAndLon from '../../../assets/js/LatAndLon'
 
 export default {
 	data() {
@@ -140,6 +141,9 @@ export default {
 			this.$router.push('/user/login')
 		}
 		addScroll(this);
+
+		//查看 url 是否带有经纬度，有则存到 vuex 中
+		LatAndLon.call(this)
 	},
 	methods: {
 		cancelRefuseEv(val) {
@@ -188,7 +192,7 @@ export default {
 			}
 		},
 		isShow() {
-			topNavMenuFun(this);
+			topNavMenuFun.call(this);
 		},
 		personal() {
 			if (this.userType == 3) {
@@ -198,7 +202,7 @@ export default {
 			}
 		},
 		initData() {
-			initFun(this, this.userType);
+			initFun.call(this, this.userType);
 		},
 		downEv(msg) {
 			if (msg === true) {
@@ -231,13 +235,7 @@ export default {
 			this.$router.push(this.homeUrl)
 		}
 
-		try {
-			this.userType = this.userInfo["userType"];
-		} catch (e) {
-			this.$router.push("/user/login");
-		}
-
-
+		this.userType = this.userInfo["userType"]
 
 		this.RescueMenu = this.userType == 3 ? userMenu : RescueMenu;
 		this.initData();

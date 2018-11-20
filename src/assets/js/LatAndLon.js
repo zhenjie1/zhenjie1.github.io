@@ -1,15 +1,17 @@
 import Vue from 'vue'
 import { isIos, isGeographicLocation, isHome } from '../../config/mUtils'
 
-export default function () {
+export default function (enterStr) {
 	if( isIos() ) return Promise.resolve({});	//如果是 ios，为了不让 ios 设备上显示 获取地理位置失败
-	if( !isHome() ) return Promise.resolve({}); //如果不是首页，没必要获取位置
 
 	//如果是 Android 传进来的经纬度，直接返回，无需调用原生 api
-	var position =  isGeographicLocation.call(this)
+	var position = isGeographicLocation.call(this)
+	console.log(position)
 	if(position){
 		return Promise.resolve(position)
 	}
+
+	if( !isHome() && enterStr !== 'rescue' ) return Promise.resolve({}); //如果不是首页，没必要获取位置
 
 	return new Promise((resolve, reject) => {
 		if (!navigator.geolocation) {
