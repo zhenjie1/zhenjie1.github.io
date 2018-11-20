@@ -1,10 +1,11 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpackc = require('webpack')
+
 module.exports = {
-	entry: {
-		vendor: ['vue', 'vue-router', 'vuex']
+	entry:{
+		vender:['vue','vuex','vue-router','axios']
 	},
-	output: {
+	output:{
 		path: path.join(__dirname, '../static'),
 		filename: 'dll.[name].js',
 		library: '[name]'

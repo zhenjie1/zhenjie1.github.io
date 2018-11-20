@@ -44,7 +44,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/dist/',
     //assetsPublicPath: './',//app运行环境
 
     /**
@@ -66,6 +66,6 @@ module.exports = {
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
-    bundleAnalyzerReport: true
+    bundleAnalyzerReport: false
   }
 }

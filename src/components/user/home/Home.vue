@@ -82,7 +82,6 @@ import { isLogin, isGeographicLocation } from '../../../config/mUtils.js'
 
 import banner1 from '../.././../assets/images/banner1.png'
 import banner2 from '../.././../assets/images/banner2.png'
-console.log(banner1)
 
 export default {
 	data(){

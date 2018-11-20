@@ -25,7 +25,7 @@
 
 
 <script>
-import { MessageBox } from 'mint-ui'
+import MessageBox from 'mint-ui/packages/message-box/'
 import { mapState } from 'vuex'
 import { recharge,rescueMoney,rescueInt, retreat } from '../../../../../config/getData'
 import Payment from '../../../../common/payment/Payment.vue'

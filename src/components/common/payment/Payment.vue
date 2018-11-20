@@ -23,7 +23,7 @@
 
 import { allMoney, userPass, insListDet, rescueMoney, paySave, zfbPay, zfbzftest } from "../../../config/getData";
 import Confirm from 'vux/src/components/confirm/'
-import { MessageBox } from "mint-ui";
+import MessageBox from 'mint-ui/packages/message-box/index'
 
 export default {
 	props: {
