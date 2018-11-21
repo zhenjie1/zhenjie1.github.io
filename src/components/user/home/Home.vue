@@ -157,6 +157,7 @@ export default {
 		},
 	},
 	mounted(){
+		console.log(this.$router)
 		//保存首页url
 		let isJW = isGeographicLocation.call(this)
 		const url = window.location.href.split('#')[1]

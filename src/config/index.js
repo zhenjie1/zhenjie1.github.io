@@ -4,7 +4,7 @@ import Vue from 'vue'
 import { URL } from './url'
 
 axios.defaults.withCredentials = true
-axios.defaults.timeout = 8000;
+axios.defaults.timeout = 15000;
 
 //http 拦截器
 axios.interceptors.request.use(config => {

@@ -44,7 +44,8 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/dist/',
+    // assetsPublicPath: '/dist/',
+    assetsPublicPath: '/',
     //assetsPublicPath: './',//app运行环境
 
     /**

@@ -1,7 +1,7 @@
-<template>
+	<template>
 	<div class="menuBottom" :class='{menuBottomHide : isMenuShow}'>
 		<ul>
-			<router-link :to='homeUrl' tag='li' :class="{checked: checkIndex == '1'}">
+			<router-link :to='homeUrl' tag='li' :class="{checked: checkIndex == '1'}" replace>
 				<div class="icon">
 					<i class="iconfont icon-home"></i>
 				</div>
@@ -13,7 +13,7 @@
 				</div>
 				<p>一键呼救</p>
 			</li>
-			<router-link to='/user/personal' tag='li' :class="{checked: checkIndex == '2'}">
+			<router-link to='/user/personal' tag='li' :class="{checked: checkIndex == '2'}" replace>
 				<div class="icon">
 					<i class="iconfont icon-wode1"></i>
 				</div>

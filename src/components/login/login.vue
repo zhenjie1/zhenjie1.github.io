@@ -49,7 +49,7 @@ export default {
 				if (res.code == 2) {
 					res = res.rows;
 					this.setUserInfo(res);
-					this.userInfo["userType"] == 3 ? this.$router.push(this.homeUrl) : this.$router.push("/rescue/task");
+					this.userInfo["userType"] == 3 ? this.$router.replace(this.homeUrl) : this.$router.replace("/rescue/task");
 				}
 			});
 		}
