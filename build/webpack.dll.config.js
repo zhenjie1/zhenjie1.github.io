@@ -10,12 +10,10 @@ module.exports = {
 		filename: 'dll.[name].js',
 		library: '[name]'
 	},
-	plugins: [
-		new webpack.DllPlugin({
+	plugins:[
+		new webpackc.DllPlugin({
 			path: path.join(__dirname, '../', '[name]-manifest.json'),
-			name: '[name]'
+			name:'[name]'
 		})
 	]
 }
-//主分支
-//分支
