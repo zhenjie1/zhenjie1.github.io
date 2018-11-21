@@ -6,8 +6,8 @@
 				<h3>昵称：{{userInfo.name}}</h3>
 				<span>查看或编辑个人信息</span>
 			</div>
-			<i class="iconfont icon-fenxiang"></i>
 		</router-link>
+			<i class="iconfont icon-fenxiang share"></i>
 		<ul class="options">
 			<router-link to='/user/personal/money' tag='li'>
 				<div class="l">
@@ -158,13 +158,13 @@ export default {
             .r i { color: #9A9A9A; margin-left: 15px;}
             b { font-weight: normal;}}
         li + li { border-top: 1px solid #F5F5F5;}}
+    .share { position: absolute; color: #B1B1B1;font-size: 25px; padding: 15px; right: 15px; top: 23px;}
 
     .info { align-items: center; background-color: white; display: flex; justify-content: space-between; padding: 15px 20px;
         .avatar { @include wh(70px, 70px); border-radius: 100%; overflow: hidden;}
         .center { flex: .8;
             h3 { font-size: 16px; font-weight: normal;}
-            span { color: #666666; font-size: 13px;}}
-        i { color: #B1B1B1; font-size: 25px; padding: 10px 0 10px 20px;}}}
+            span { color: #666666; font-size: 13px;}}}}
 
 </style>
 

@@ -101,3 +101,9 @@ export const isHome = () => {
 	var url = window.location.href.split('#')[1].split('?')[0];
 	return /home$/.test(url)
 }
+
+
+// 数据合并
+export const mergeObj = (newObj, oldObj) => {
+	return Object.assign(newObj,oldObj)
+}

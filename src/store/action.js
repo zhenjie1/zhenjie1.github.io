@@ -1,8 +1,9 @@
-import { setStore, loginReturnVal } from '../config/mUtils'
+import { setStore, loginReturnVal, mergeObj } from '../config/mUtils'
 
 export default {
-	setUserInfo: ({ commit }, info) => {
+	setUserInfo: ({ commit, state }, info) => {
 		if (info !== undefined) info = loginReturnVal(info)
+		if( info != undefined && state.userInfo ) info = mergeObj(state.userInfo, info)	//数据合并
 		commit('userInfo', info)
 		setStore('userInfo', info)
 	},
