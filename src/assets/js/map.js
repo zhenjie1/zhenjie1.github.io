@@ -1,8 +1,5 @@
-import mapLngLat from './LatAndLon'
-import { geoconv, findlist } from '../../config/getData.js'
-import { getStore } from '../../config/mUtils'
+import { findlist } from '../../config/getData.js'
 
-var iconUrl = 'http://zj.tianjistar.com/icon/daohang.png';
 var enterStr = null;
 
 var longitude = null,
