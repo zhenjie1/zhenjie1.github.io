@@ -1,7 +1,7 @@
 <template>
 	<div class="Rescue">
 		<div class="topImg">
-			<img src="https://wx4.sinaimg.cn/mw690/0062fb6Qly1fqoy9sxat2j309j0630w7.jpg" alt="">
+			<img src="../../../../../assets/images/rescueCard.png" alt="">
 		</div>
 		<div class="conText">
 			<div class="title">救援卡使用说明</div>
@@ -99,7 +99,7 @@ export default {
 
 .Rescue{@include screen;z-index: 11;text-align:center;
 	.topImg{overflow: hidden;border-radius: 6px;display: inline-block;width:94%;margin:15px 0;
-		img{width:100%;}
+		img{width:100%;background-color: transparent;}
 	}
 
 	.conText{text-align: left;background-color: white;margin:0 15px 76px;padding:20px;border-radius: 6px;line-height:1;

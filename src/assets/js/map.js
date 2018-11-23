@@ -8,7 +8,7 @@ var enterStr = null;
 var longitude = null,
 	latitude = null;
 
-var map, vm;
+var map, vm, userMarker;
 
 window.initialize = function () {
 	longitude = vm.$store.state.geographicLocation.Longitude
@@ -17,7 +17,7 @@ window.initialize = function () {
 	var ggPoint = new BMap.Point(longitude, latitude);
 
 	map = new BMap.Map("map");
-	map.centerAndZoom(ggPoint, 14);
+	map.centerAndZoom(ggPoint, 19);
 	map.enableScrollWheelZoom(true);
 
 	translateCallback(vm)
@@ -29,25 +29,17 @@ window.initialize = function () {
 	// }, 0)
 
 	function translateCallback(vm) {
-		new Promise((rej) => {
-
-			let lngAndLat = {
-				lng: longitude,
-				lat: latitude
-			}
+		new Promise((resolve) => {
+			let lngAndLat = { lng: longitude, lat: latitude };
 			map.setCenter(lngAndLat);
 
-			rej({
-				lng: lngAndLat.lng,
-				lat: lngAndLat.lat
-			})
-		}).then(rej => {
 			if (enterStr == 'home') {
-				getRescue(vm, map, rej)
+				getRescue(vm, map, lngAndLat)
 				inputAuto(map)
 			} else if (enterStr == 'rescue') {
-				var p1 = new BMap.Point(rej.lng, rej.lat);
+				var p1 = new BMap.Point(lngAndLat.lng, lngAndLat.lat);
 				var p2 = new BMap.Point(sessionStorage.lngLat.split(',')[1], sessionStorage.lngLat.split(',')[0]);
+
 				var driving = new BMap.DrivingRoute(map, {
 					renderOptions: {
 						map: map,
@@ -56,12 +48,11 @@ window.initialize = function () {
 				});
 				driving.search(p1, p2);
 			}
+			resolve()
 		}).catch(e => {
 			console.log(e)
 		})
 	}
-
-
 
 	map.setMapStyle({
 		styleJson: [{
@@ -73,6 +64,31 @@ window.initialize = function () {
 		}]
 	});
 };
+
+window.startMap = function () {
+	var myLongitude = this.geographicLocation.Longitude
+	var myLatitude = this.geographicLocation.Latitude
+	var heLongitude = 113.706701
+	var heLatitude = 34.756492
+	var myName, heName;
+	getGeocoder(myLongitude, myLatitude).then(res => {
+		myName = res
+	}).then(() => {
+		return getGeocoder(heLongitude, heLatitude).then(res => {
+			heName = res
+		})
+	}).then(() => {
+		console.log(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
+		bridge.startMapInAndroid(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
+	})
+
+}
+//更新我的位置
+window.myGeography = function () {
+	var point = new BMap.Point(113.736607, 34.776974)
+	userMarker.setPosition(point)
+	console.log(userMarker.getPosition())
+}
 
 //关键字搜索
 function inputAuto(map) {
@@ -130,42 +146,135 @@ export const mouseoverMap = function (val) {
 	map.panTo(new BMap.Point(val[0], val[1]))
 }
 
+function getGeocoder(longitude, latitude) {
+	var point = new BMap.Point(longitude, latitude)
+	var gc = new BMap.Geocoder();
+
+	return new Promise(resolve => {
+		gc.getLocation(point, function (res) {
+			resolve(res.address + res.surroundingPois[0]['title'])
+		})
+	})
+
+}
+
 function getRescue(vm, map, rej) {
 
 	//在当前位置添加图标
 	var pt = new BMap.Point(rej.lng, rej.lat);
-	var marker2 = new BMap.Marker(pt);
-	map.addOverlay(marker2);
+	addMarker(pt, map, 'user', )
 
 	//获取省市区
 	var gc = new BMap.Geocoder()
 	gc.getLocation(pt, function (res) {
 		res = res.addressComponents.district
-
 		vm.$store.dispatch('setDistrict', res)
 	})
 
+	//获取救援点
 	findlist().then(res => {
 		res = res.rows;
 		sessionStorage.setRescue = JSON.stringify(res)
-		var lngLatArr = [];
 
+		//计算出距离
+		level(res, rej);
+		res = res.sort(function (a, b) {
+			return a.spacing - b.spacing
+		})
 		if (res instanceof Array) {
 			//添加附近救援点
-			res.forEach(v => {
+			res.forEach((v, i) => {
 				var lngSpan = parseFloat(v['longitude']);
 				var latSpan = parseFloat(v['dimensions']);
 				var point = new BMap.Point(lngSpan, latSpan);
-				addMarker(point, map);
+
+				addMarker(point, map, 'rescue', i + 1, v);
+
 			})
 		}
+		// setTimeout(() => upDetaGeography(), 200)
+	})
+}
+
+function level(data, myPos) {
+	data.map((val, ind) => {
+		var lon = Math.abs(val.longitude - myPos.lng);
+		var lat = Math.abs(val.dimensions - myPos.lat);
+
+		data[ind].spacing = Math.sqrt(Math.pow(lon, 2) + Math.pow(lat, 2))
 	})
 }
 
 // 编写自定义函数,创建标注
-function addMarker(point, map) {
-	var marker = new BMap.Marker(point);
+var onlyMarkerKey;
+function addMarker(point, map, type, labelIndex, item) {
+	var myIconMax = new BMap.Icon("http://ty.tianjistar.com/static/img/myPosMin.png", new BMap.Size(44, 56));
+	var myIconMin = new BMap.Icon("http://ty.tianjistar.com/static/img/myPosMin.png", new BMap.Size(32, 42));
+
+	var rescueIconMax = new BMap.Icon("http://ty.tianjistar.com/static/img/rescueMin.png", new BMap.Size(46, 64));
+	var rescueIconMin = new BMap.Icon("http://ty.tianjistar.com/static/img/rescueMin.png", new BMap.Size(34, 46));
+
+
+	let labelStyleMin = { background: 'none', color: 'white', border: 'none', fontSize: '20px'}
+	let labelStyleMax = { background: 'none', color: 'white', border: 'none', fontSize: '28px'}
+
+	var myStyleMin = [myIconMax, [32, 42], labelStyleMin, [10, 4]]
+	var resuceStyleMin = [rescueIconMin, [32, 42], labelStyleMin, [10, 4]]
+	var resuceStyleMax = [rescueIconMax, [46, 64], labelStyleMax, [14, 6]]
+
+	let marker, label;
+	if (type === 'user') {
+		marker = new BMap.Marker(point, { icon: myIconMin });
+		onlyMarkerKey = marker.ba
+		userMarker = marker
+		marker.addEventListener('click', function(){
+			restore(resuceStyleMin)//把所有的救援点都变小,并删除多余的label
+			setLabelStyle(marker, undefined, myStyleMin)//给点击的这个变大
+		})
+	} else {
+		marker = new BMap.Marker(point, { icon: rescueIconMin });
+		label = new BMap.Label(labelIndex, { offset: new BMap.Size(10, 4) })
+		label.setStyle(labelStyleMin)
+		marker.setLabel(label)
+
+		marker.addEventListener('click', function (event, handler) {
+			restore(resuceStyleMin)//把所有的救援点都变小,并删除多余的label
+			setLabelStyle(marker, label, resuceStyleMax, item.name, point)//只给点击的这个变大
+		})
+	}
 	map.addOverlay(marker);
+}
+
+function restore(style) {
+	// debugger
+	var allOverlay = map.getOverlays();
+	for (var i = 0; i < allOverlay.length; i++) {
+		try{
+			if(allOverlay[i].ba === onlyMarkerKey) continue;
+			if(allOverlay[i]['onlyKey'] === '救援名称lable') {
+				map.removeOverlay(allOverlay[i])
+				continue
+			}
+			setLabelStyle(allOverlay[i], allOverlay[i].getLabel(), style)
+		}catch(e){
+
+		}
+	}
+}
+
+function setLabelStyle(marker, label, style, promptTxt, point) {
+	if( promptTxt ){
+		let nameLabel = new BMap.Label(promptTxt, { position: point, offset: new BMap.Size(10, 4) })
+		nameLabel.setStyle({background: 'rgba(255,255,255,.8)',border: 'none',padding: '2px 8px',boxShadow: '0 2px 6px rgba(0, 0, 0, .2)',borderRadius: '4px',transform: 'translate(-50%, 20px)',marginLeft:'-10px',color:'#333'})
+		nameLabel.onlyKey = '救援名称lable'
+		map.addOverlay(nameLabel)
+	}
+
+	marker.setIcon(style[0])
+
+	if( !label ) return
+	label.setStyle(style[2])
+	label.setOffset(new BMap.Size(style[3][0], style[3][1]))
 }
 
 
@@ -194,6 +303,12 @@ export const loadScript = function (enter, mvvm) {
 
 }
 
+//回到我的位置
+export const backMyPosEv = function () {
+	var lon = this.geographicLocation.Longitude;
+	var lat = this.geographicLocation.Latitude;
+	map.panTo(new BMap.Point(lon, lat))
+}
 
 //快速排序
 function quickSort(arr) {

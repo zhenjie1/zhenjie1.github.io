@@ -1,5 +1,6 @@
 <template>
 	<div class="home">
+		<!-- <div class="startMap" @click='startMap'>唤起地图</div> -->
 		<div class="map">
 			<mapp :screen='isScreen' :lngLat='lngAndLat' @screen='screenEv' @sos='sosOrdersEv'></mapp>
 			<div class="search" :class="{screen: isScreen}">
@@ -45,28 +46,6 @@
 			<!-- </transition> -->
 		</div>
 		<bottom-nav checkIndex='1' />
-		<!-- <div class="menuBottom" :class='{menuBottomHide : isMenuShow}'>
-			<ul>
-				<router-link to='/user' tag='li' class="checked">
-					<div class="icon">
-						<i class="iconfont icon-home"></i>
-					</div>
-					<p>首页</p>
-				</router-link>
-				<li class="middle" @click='sosOrdersEv'>
-					<div class="icon">
-						<i class="iconfont icon-dianhua"></i>
-					</div>
-					<p>一键呼救</p>
-				</li>
-				<router-link to='/user/personal' tag='li'>
-					<div class="icon">
-						<i class="iconfont icon-wode1"></i>
-					</div>
-					<p>个人</p>
-				</router-link>
-			</ul>
-		</div> -->
 	</div>
 </template>
 <script>
@@ -121,8 +100,11 @@ export default {
 	methods: {
 		...mapActions([
 			'setGeographicLocation',
-			'setHomeUrl'
+			'setHomeUrl',
 		]),
+		startMap(){
+			window.startMap.call(this)
+		},
 		setLngLat(item){
 			this.lngAndLat = item.longitude + ',' + item.dimensions
 		},
@@ -157,7 +139,6 @@ export default {
 		},
 	},
 	mounted(){
-		console.log(this.$router)
 		//保存首页url
 		let isJW = isGeographicLocation.call(this)
 		const url = window.location.href.split('#')[1]
@@ -188,7 +169,8 @@ export default {
 		...mapState([
 			'userInfo',
 			'homeUrl',
-			'district'
+			'district',
+			'geographicLocation'
 		])
 	},
 	components: {
@@ -210,6 +192,7 @@ export default {
 .search input::-moz-placeholder { color: white;}
 .search input:-ms-input-placeholder { color: white;}
 
+.startMap{position: fixed;left:50%;bottom:120px;transform: translateX(-50%);z-index: 1000;background-color: #3cc523;font-size: 16px;padding:10px 15px;color:white;}
 .home{position: relative;
 	.map{height: 370px;}
 	.fixed {

@@ -1,5 +1,5 @@
-import eruda from 'eruda'
-eruda.init()
+// import eruda from 'eruda'
+// eruda.init()
 
 import Vue from 'vue'
 import App from './App'
@@ -33,4 +33,6 @@ router.beforeEach((to, from, next) => {
 	}
 	next()
 })
-// alert(window.location.href)
+// // alert(window.location.href)
+
+

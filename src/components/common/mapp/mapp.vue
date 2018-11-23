@@ -7,12 +7,14 @@
 			<div class="menuTiao" @click='downScreen'><p></p></div>
 			<input type="button" value="一键呼救" class="sos" @click='sosEv'>
 		</div>
+		<img v-if="screen" src="../../../assets/images/backMyPos.png" alt="" @click='backMyPos' class="backMyPos">
 	</div>
 </div>
 </template>
 
 <script>
-import { loadScript, mouseoverMap } from '../../../assets/js/map'
+import { loadScript, mouseoverMap, backMyPosEv } from '../../../assets/js/map'
+import { mapState } from 'vuex'
 
 export default {
 	data(){
@@ -20,6 +22,9 @@ export default {
 			height:270 + 'px',
 			enter:window.location.href.indexOf('home') !== -1 ? 'home' : 'rescue'
 		}
+	},
+	computed:{
+		...mapState(['geographicLocation'])
 	},
 	props:['screen','lngLat'],
 	watch:{
@@ -37,6 +42,9 @@ export default {
 		}
 	},
 	methods:{
+		backMyPos(){
+			backMyPosEv.call(this)
+		},
 		sosEv(){
 			this.$emit('sos')
 		},
@@ -52,9 +60,11 @@ export default {
 }
 </script>
 
-
+<style>
+#map img{width:100%;}
+</style>
 <style lang="scss" scoped>
-
+.mapp .backMyPos{width:50px;height: 50px;position: fixed;left:15px;bottom:160px;}
 .mapp{position: relative;transition:height .4s ease;z-index:1 !important;left:0;top:0;width:100%;background-color: #f5f5f5;
 	.buttonStyle{position: absolute;left:0;bottom:-1px;width:100%;
 		.menuTiao{background-color: white;padding:13px 0;

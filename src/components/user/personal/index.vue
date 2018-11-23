@@ -1,9 +1,9 @@
 <template>
 	<div class="personal">
 		<router-link tag='div' to='personal/basic' class="info">
-			<!-- <img :src="userInfo.photo " alt="" class="avatar"> -->
+			<img :src="userInfo.photo " alt="" class="avatar">
 			<div class="center">
-				<!-- <h3>昵称：{{userInfo.name}}</h3> -->
+				<h3>昵称：{{userInfo.name}}</h3>
 				<span>查看或编辑个人信息</span>
 			</div>
 		</router-link>
@@ -152,14 +152,14 @@ export default {
 		}
 	},
 	created() {
-		// this.getUserInfoEv();
-		// if (!isLogin.call(this)) {
-		// 	this.$vux.toast.text("请先登录！");
-		// 	this.$router.push("/user/login");
-		// } else {
-		// 	// if (this.userInfo.userType != '3') this.$router.push('/rescue/task')
-		// 	this.text = this.userInfo.vipType == 1 ? "保障中" : "去购买";
-		// }
+		this.getUserInfoEv();
+		if (!isLogin.call(this)) {
+			this.$vux.toast.text("请先登录！");
+			this.$router.push("/user/login");
+		} else {
+			// if (this.userInfo.userType != '3') this.$router.push('/rescue/task')
+			this.text = this.userInfo.vipType == 1 ? "保障中" : "去购买";
+		}
 	}
 };
 </script>

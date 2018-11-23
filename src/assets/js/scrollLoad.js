@@ -17,7 +17,7 @@ function scrollEvent() {
 		//判断是不是救援人员任务页面
 		if (that.$route.path.indexOf('/rescue/task') !== -1) {
 			//已完成数据
-			console.log(that)
+			// console.log(that)
 			if (that.total < that.pageNum * 10) return;
 			that.pageNum++;
 			taskLoad(that, that.pageNum)

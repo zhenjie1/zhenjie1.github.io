@@ -3,11 +3,15 @@
 
 <head>
 	<meta charset="utf-8">
+	<meta name="theme-color" content="#1976d2">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0,minimal-ui">
 	<title>天佑</title>
 	<style>
-		.tangram-suggestion-main{z-index:11;position: fixed !important;}
+		.tangram-suggestion-main {
+			z-index: 11;
+			position: fixed !important;
+		}
 	</style>
 </head>
 
@@ -17,6 +21,16 @@
 	<!--<script src="https://cdn.bootcss.com/vue/2.5.9/vue.min.js"></script>
 	<script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
 	<script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>-->
+	<script>
+		function upDetaGeography() {
+			// try {
+				myGeography(arguments)	//更新我的位置
+				// rescueGeography(arguments)	//更新救援人员的位置
+			// } catch (e) { }
+			// console.log(arguments)
+			// console.log('更新地图')
+		}
+	</script>
 </body>
 
 </html>
