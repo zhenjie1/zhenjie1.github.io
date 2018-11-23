@@ -17,7 +17,7 @@ window.initialize = function () {
 	var ggPoint = new BMap.Point(longitude, latitude);
 
 	map = new BMap.Map("map");
-	map.centerAndZoom(ggPoint, 19);
+	map.centerAndZoom(ggPoint, 17);
 	map.enableScrollWheelZoom(true);
 
 	translateCallback(vm)
@@ -87,7 +87,18 @@ window.startMap = function () {
 window.myGeography = function () {
 	var point = new BMap.Point(113.736607, 34.776974)
 	userMarker.setPosition(point)
-	console.log(userMarker.getPosition())
+
+	var geographicLocation = {
+		Latitude: point.lat,
+		Longitude: point.lng
+	}
+	try {
+		vm.$store.dispatch('setGeographicLocation', geographicLocation)
+		map.panTo(point);
+	} catch (e) {
+		console.error(e)
+	}
+
 }
 
 //关键字搜索
@@ -162,7 +173,7 @@ function getRescue(vm, map, rej) {
 
 	//在当前位置添加图标
 	var pt = new BMap.Point(rej.lng, rej.lat);
-	addMarker(pt, map, 'user', )
+	addMarker(pt, map, 'user')
 
 	//获取省市区
 	var gc = new BMap.Geocoder()
@@ -192,7 +203,7 @@ function getRescue(vm, map, rej) {
 
 			})
 		}
-		// setTimeout(() => upDetaGeography(), 200)
+		setTimeout(() => upDetaGeography(), 1000)
 	})
 }
 
@@ -215,8 +226,8 @@ function addMarker(point, map, type, labelIndex, item) {
 	var rescueIconMin = new BMap.Icon("http://ty.tianjistar.com/static/img/rescueMin.png", new BMap.Size(34, 46));
 
 
-	let labelStyleMin = { background: 'none', color: 'white', border: 'none', fontSize: '20px'}
-	let labelStyleMax = { background: 'none', color: 'white', border: 'none', fontSize: '28px'}
+	let labelStyleMin = { background: 'none', color: 'white', border: 'none', fontSize: '20px' }
+	let labelStyleMax = { background: 'none', color: 'white', border: 'none', fontSize: '28px' }
 
 	var myStyleMin = [myIconMax, [32, 42], labelStyleMin, [10, 4]]
 	var resuceStyleMin = [rescueIconMin, [32, 42], labelStyleMin, [10, 4]]
@@ -227,7 +238,7 @@ function addMarker(point, map, type, labelIndex, item) {
 		marker = new BMap.Marker(point, { icon: myIconMin });
 		onlyMarkerKey = marker.ba
 		userMarker = marker
-		marker.addEventListener('click', function(){
+		marker.addEventListener('click', function () {
 			restore(resuceStyleMin)//把所有的救援点都变小,并删除多余的label
 			setLabelStyle(marker, undefined, myStyleMin)//给点击的这个变大
 		})
@@ -249,30 +260,30 @@ function restore(style) {
 	// debugger
 	var allOverlay = map.getOverlays();
 	for (var i = 0; i < allOverlay.length; i++) {
-		try{
-			if(allOverlay[i].ba === onlyMarkerKey) continue;
-			if(allOverlay[i]['onlyKey'] === '救援名称lable') {
+		try {
+			if (allOverlay[i].ba === onlyMarkerKey) continue;
+			if (allOverlay[i]['onlyKey'] === '救援名称lable') {
 				map.removeOverlay(allOverlay[i])
 				continue
 			}
 			setLabelStyle(allOverlay[i], allOverlay[i].getLabel(), style)
-		}catch(e){
+		} catch (e) {
 
 		}
 	}
 }
 
 function setLabelStyle(marker, label, style, promptTxt, point) {
-	if( promptTxt ){
+	if (promptTxt) {
 		let nameLabel = new BMap.Label(promptTxt, { position: point, offset: new BMap.Size(10, 4) })
-		nameLabel.setStyle({background: 'rgba(255,255,255,.8)',border: 'none',padding: '2px 8px',boxShadow: '0 2px 6px rgba(0, 0, 0, .2)',borderRadius: '4px',transform: 'translate(-50%, 20px)',marginLeft:'-10px',color:'#333'})
+		nameLabel.setStyle({ background: 'rgba(255,255,255,.8)', border: 'none', padding: '2px 8px', boxShadow: '0 2px 6px rgba(0, 0, 0, .2)', borderRadius: '4px', transform: 'translate(-50%, 20px)', marginLeft: '-10px', color: '#333' })
 		nameLabel.onlyKey = '救援名称lable'
 		map.addOverlay(nameLabel)
 	}
 
 	marker.setIcon(style[0])
 
-	if( !label ) return
+	if (!label) return
 	label.setStyle(style[2])
 	label.setOffset(new BMap.Size(style[3][0], style[3][1]))
 }
@@ -307,7 +318,8 @@ export const loadScript = function (enter, mvvm) {
 export const backMyPosEv = function () {
 	var lon = this.geographicLocation.Longitude;
 	var lat = this.geographicLocation.Latitude;
-	map.panTo(new BMap.Point(lon, lat))
+	map.panTo(new BMap.Point(lon, lat));
+	map.setZoom(18)
 }
 
 //快速排序
