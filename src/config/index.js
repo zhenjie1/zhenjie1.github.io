@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import Vue from 'vue'
 import { URL } from './url'
+import { mapActions} from 'vuex'
 
 axios.defaults.withCredentials = true
 axios.defaults.timeout = 15000;
@@ -41,6 +42,7 @@ export default async function (url = '', data = {}, type = 'POST', urlAll = null
 
 	ajax = ajax.then(res => res.data)
 		.then(res => {
+			// console.log(mapActions(['setUserInfo']))
 			if (res.code == 102) {
 				Vue.$vux.toast.text('请先登录！')
 				window.location.href = '/mobile/#/user/login'

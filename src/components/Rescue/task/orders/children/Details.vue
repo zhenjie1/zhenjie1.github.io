@@ -14,7 +14,7 @@
 		</div>
 		<div class="rescueDetails">
 			<div class="tit">
-				<img src="" alt="">
+				<img src="../../../../../assets/images/rescueDefault.jpg" alt="">
 				<div class="r">
 					<h3>{{detaData.office.name}}<span>{{this.status}}</span></h3>
 					<p>接单时间：<span>{{detaData.acceptDate}}</span></p>

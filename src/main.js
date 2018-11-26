@@ -33,6 +33,7 @@ router.beforeEach((to, from, next) => {
 	}
 	next()
 })
+
 // // alert(window.location.href)
 
 
