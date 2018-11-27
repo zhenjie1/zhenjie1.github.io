@@ -80,6 +80,7 @@ const rePhoto = () => import('../components/insurance/buy/photo')//保险图片
 const playInfo = () => import('../components/Rescue/personal/children/playinfo')
 
 export default new Router({
+	// mode: 'history',
 	routes: [
 		{
 			path: '/',

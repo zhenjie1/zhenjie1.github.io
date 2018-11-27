@@ -140,17 +140,7 @@ export default {
 		},
 	},
 	mounted(){
-		console.log(typeof Worker !== 'undefined')
 
-		//test ----- 开始
-		// if( typeof Worker !== 'undefined'){
-		// 	let w = new Worker('./worker.js')
-		// 	w.onmessage = function(v){
-		// 		console.log(v)
-		// 	}
-		// }
-		// console.log(Worker)
-		//test ----- 结束
 		//保存首页url
 		let isJW = isGeographicLocation.call(this)
 		const url = window.location.href.split('#')[1]

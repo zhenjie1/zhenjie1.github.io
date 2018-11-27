@@ -1,5 +1,5 @@
-// import eruda from 'eruda'
-// eruda.init()
+import eruda from 'eruda'
+eruda.init()
 
 import Vue from 'vue'
 import App from './App'
@@ -17,7 +17,10 @@ Vue.use(loading)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+window.vm = new Vue({
+	data:{
+		startKey: 'hello'
+	},
 	el: '#app',
 	router,
 	components: {
@@ -32,6 +35,7 @@ router.beforeEach((to, from, next) => {
 		document.title = to.meta.title
 	}
 	next()
+
 })
 
 // // alert(window.location.href)

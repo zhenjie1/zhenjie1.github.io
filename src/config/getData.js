@@ -1,4 +1,22 @@
 import fetch from './index.js'
+import { ak, service_id } from './url.js'
+
+// 百度地图 -- 上传设备
+export const addEntity = (orderId) => fetch('http://yingyan.baidu.com/api/v3/entity/add', {
+	ak,
+	service_id,
+	entity_name: orderId
+});
+// 百度地图 -- 上传位置
+export const addPoint = (entity_name, latitude, longitude, loc_time) => fetch('http://yingyan.baidu.com/api/v3/track/addpoint', {
+	ak,
+	service_id,
+	entity_name,
+	latitude,
+	longitude,
+	loc_time,
+	coord_type_input: 'bd09ll'
+})
 
 //发送验证码
 export const phoneSendCode = phone => fetch('/sms/send', {
@@ -30,20 +48,20 @@ export const login = (username, password, mobileLogin) => fetch('/a/login', {
 export const userInf = () => fetch('/a/mobile/user', {})
 
 //修改密码
-export const updatePas = (password,newPassword) => fetch('/a/mobile/updatePassword',{
+export const updatePas = (password, newPassword) => fetch('/a/mobile/updatePassword', {
 	password,
 	newPassword
 })
 
 // 验证个人信息
-export const verifMessage = (name,idNumber,mobile) => fetch('/a/Payment/verifMessage',{
+export const verifMessage = (name, idNumber, mobile) => fetch('/a/Payment/verifMessage', {
 	name,
 	idNumber,
 	mobile
 })
 
 // 设置新支付密码
-export const settingsPayPass = (token,newpay) => fetch('/a/Payment/settingsPayPass',{
+export const settingsPayPass = (token, newpay) => fetch('/a/Payment/settingsPayPass', {
 	token,
 	newpay
 })
@@ -55,7 +73,7 @@ export const cancelOffice = (id, remarks) => fetch('/a/mobile/order/cancelOffice
 })
 
 //出勤人员查询
-export const findMyJUserList = () => fetch('/a/mobile/findMyJUserList', )
+export const findMyJUserList = () => fetch('/a/mobile/findMyJUserList')
 
 //等待接单
 export const findMissedlist = stateId => fetch('/a/mobile/order/findMissedlist', {
@@ -71,7 +89,7 @@ export const findMyListOk = (pageNo, pageSize = 100) => fetch('/a/mobile/order/f
 	pageSize
 })
 // 救援人员查询订单详情
-export const jiuorder = (id) => fetch('/a/mobile/order/jiuorderFindById',{
+export const jiuorder = (id) => fetch('/a/mobile/order/jiuorderFindById', {
 	id
 })
 
@@ -101,7 +119,7 @@ export const userSearchAllRescue = (pageNo, type) => fetch('/a/mobile/order/find
 	pageSize: 10
 })
 //用户 - 救援人员查询任务
-export const findListTask = (pageNo,pageSize,state) => fetch('/a/ordersTask/findListTask',{
+export const findListTask = (pageNo, pageSize, state) => fetch('/a/ordersTask/findListTask', {
 	pageNo,
 	pageSize: 10,
 	state
@@ -167,88 +185,88 @@ export const userProgress = id => fetch('/a/orderStauts/findByOrderId', {
 export const allMoney = () => fetch('/a/tyMoney/findMoney')
 
 //实名认证
-export const verified = (actualName,idNumber) => fetch('/a/mobile/actualName', {
+export const verified = (actualName, idNumber) => fetch('/a/mobile/actualName', {
 	idNumber,
 	actualName
 })
 //保险种类
-export const insItmeNav = () =>fetch('/mobile/office/findSpecies')
+export const insItmeNav = () => fetch('/mobile/office/findSpecies')
 
 
 //保险列表
-export const insListing = (pageNo,pageSize,isType) => fetch('/a/mobile/insurance/findInsuranceList',{
+export const insListing = (pageNo, pageSize, isType) => fetch('/a/mobile/insurance/findInsuranceList', {
 	pageNo,
 	pageSize,
 	isType
 })
 //保险列表详情接收
-export const  insListReceive = id => fetch('/a/mobile/insurance/findInsuranceById',{
+export const insListReceive = id => fetch('/a/mobile/insurance/findInsuranceById', {
 	id
 })
 
 //保险购买
-export const insListDet = (id,token) => fetch('/a/mobile/payInsurance/pay',{
-	id,token
+export const insListDet = (id, token) => fetch('/a/mobile/payInsurance/pay', {
+	id, token
 })
 
 
 //保险记录
-export const insRecord = (pageNo,pageSize,type) => fetch('/a/mobile/orderInsurance/findList',{
+export const insRecord = (pageNo, pageSize, type) => fetch('/a/mobile/orderInsurance/findList', {
 	pageNo,
 	pageSize,
 	type
-},'POST')
+}, 'POST')
 //保险住院记录、医保图片上传
 
 export const insUpImages = (data, type, config) => fetch('/a/alioss/uploadFile', data, 'POST', type, config)
 // 保存购买保险信息
-export const paySave = (id,dayId,typeMen,userName,user_id_number,isMc,isHospital,hospitalImgs,token,isUploadimg) => fetch('/a/mobile/payInsurance/save',{id,dayId,typeMen,userName,user_id_number,isMc,isHospital,hospitalImgs,token,isUploadimg})
+export const paySave = (id, dayId, typeMen, userName, user_id_number, isMc, isHospital, hospitalImgs, token, isUploadimg) => fetch('/a/mobile/payInsurance/save', { id, dayId, typeMen, userName, user_id_number, isMc, isHospital, hospitalImgs, token, isUploadimg })
 
 //	查询理赔记录接口
-export const queryIns = orderinsId => fetch('/a/mobile/ofclaimsInsurance/findOfclaimsByOrder',{
+export const queryIns = orderinsId => fetch('/a/mobile/ofclaimsInsurance/findOfclaimsByOrder', {
 	orderinsId
 })
 
 //购买详情
-export const insRecordDet = (id) => fetch('/a/mobile/orderInsurance/findOrderInsuranceById',{
+export const insRecordDet = (id) => fetch('/a/mobile/orderInsurance/findOrderInsuranceById', {
 	id
-},'POST')
+}, 'POST')
 // 退保校验
-export const checkR = (id) => fetch('/a/mobile/orderInsurance/checkInsOrderHesita',{
+export const checkR = (id) => fetch('/a/mobile/orderInsurance/checkInsOrderHesita', {
 	id
 })
 // 退保
-export const retreat = (id,remarks,cancelInsurImgs) => fetch('/a/mobile/orderInsurance/cancelOrderInsurance',{
+export const retreat = (id, remarks, cancelInsurImgs) => fetch('/a/mobile/orderInsurance/cancelOrderInsurance', {
 	id,
 	remarks,
 	cancelInsurImgs
 })
 //用户
-export const userJson = (username,password) => fetch('/a/login',{
-	username,password
+export const userJson = (username, password) => fetch('/a/login', {
+	username, password
 })
 //用户密码提交
-export const userPass = (newpass) =>fetch ('/a/Payment/checkPayPass',{
+export const userPass = (newpass) => fetch('/a/Payment/checkPayPass', {
 	newpass
 })
 
 
 //用户 - 救援卡信息
-export const rescueInt =  () =>fetch ('/mobile/office/findMemberList')
+export const rescueInt = () => fetch('/mobile/office/findMemberList')
 
 //用户 - 购买救援卡  支付
-export const rescueMoney = (id,token) =>fetch ('/a/tyMoney/buy',{
+export const rescueMoney = (id, token) => fetch('/a/tyMoney/buy', {
 	id,
 	token
 })
 // 修改新的支付密码
-export const modifyPayPass = (paypass,newpaypass) => fetch('/a/Payment/modifyPayPass',{
+export const modifyPayPass = (paypass, newpaypass) => fetch('/a/Payment/modifyPayPass', {
 	paypass,
 	newpaypass
 })
 
 // 上传报告或者回访 0回访  1报告
-export const dUpload = (orderId,content,contentImg,title,docuTyoe) => fetch('/document/upload',{
+export const dUpload = (orderId, content, contentImg, title, docuTyoe) => fetch('/document/upload', {
 	orderId,
 	content,
 	contentImg,
@@ -257,16 +275,16 @@ export const dUpload = (orderId,content,contentImg,title,docuTyoe) => fetch('/do
 })
 
 // 查看报告
-export const report = (orderId,type) => fetch('/document/viewDocument',{
+export const report = (orderId, type) => fetch('/document/viewDocument', {
 	orderId,
 	type
 })
 
 // 查询银行卡
-export const dealForNJ = () => fetch('/a/tyMoney/AllDealForNJ',{})
+export const dealForNJ = () => fetch('/a/tyMoney/AllDealForNJ', {})
 
 // 提现
-export const withdrawals = (applyMoney,bankName,bankCard,token) => fetch('/a/tyMoney/withdrawals',{
+export const withdrawals = (applyMoney, bankName, bankCard, token) => fetch('/a/tyMoney/withdrawals', {
 	applyMoney,
 	bankName,
 	bankCard,
@@ -274,38 +292,38 @@ export const withdrawals = (applyMoney,bankName,bankCard,token) => fetch('/a/tyM
 })
 
 // 根据卡号获得银行卡名字
-export const findCard = (card) => fetch('/a/bank/bank/findCard',{card})
+export const findCard = (card) => fetch('/a/bank/bank/findCard', { card })
 
 // 绑定银行卡
-export const bindingCard = (mobile,bankcard,realName, openingBank) => fetch('/a/tyMoney/bindingCard',{
+export const bindingCard = (mobile, bankcard, realName, openingBank) => fetch('/a/tyMoney/bindingCard', {
 	mobile,
 	bankcard,
 	realName,
 	openingBank
 })
 // 确认银行卡
-export const bindingOk = (yzm) => fetch('/a/tyMoney/bindingOk',{
+export const bindingOk = (yzm) => fetch('/a/tyMoney/bindingOk', {
 	yzm
 })
 
 // 获得银行卡
-export const AllDealForNJ = () => fetch('/a/tyMoney/AllDealForNJ',{})
+export const AllDealForNJ = () => fetch('/a/tyMoney/AllDealForNJ', {})
 
 // 解绑银行卡
-export const releaseCard = (bankcard,token) => fetch('/a/tyMoney/releaseCard',{bankcard,token})
+export const releaseCard = (bankcard, token) => fetch('/a/tyMoney/releaseCard', { bankcard, token })
 
 // 获得交易信息
-export const jRecord = (pageNo,pageSize) => fetch('/a/tyMoney/transactionRecord',{pageNo,pageSize})
+export const jRecord = (pageNo, pageSize) => fetch('/a/tyMoney/transactionRecord', { pageNo, pageSize })
 
 // 用户协议 0注册 1保险
-export const view = (type) => fetch('/protocol/view',{type})
+export const view = (type) => fetch('/protocol/view', { type })
 
 //支付宝支付
-export const zfbPay = (price) =>fetch('/a/pay/app',{ price })
+export const zfbPay = (price) => fetch('/a/pay/app', { price })
 
 
 //
-export const zfbzftest = (price) => fetch('/a/pay/MobilePay',{ price })
+export const zfbzftest = (price) => fetch('/a/pay/MobilePay', { price })
 
 
 

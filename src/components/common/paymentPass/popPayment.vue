@@ -24,6 +24,8 @@
 <script>
 import { mapState ,mapActions } from 'vuex'
 import { rescueMoney, userPass ,rescueInt, userInf} from "../../../config/getData";
+import debounce from 'lodash.debounce'
+
 export default {
   props: {
 	value: Boolean,
@@ -49,7 +51,7 @@ export default {
 	  ...mapActions([
 		  'setUserInfo'
 	  ]),
-    submit() {
+    submit:debounce(function() {
       if (!this.paymentPass) {
         this.$vux.toast.text("请输入支付密码");
         return;
@@ -70,7 +72,7 @@ export default {
         });
 
       });
-    },
+    },500),
     hide() {
       this.$emit("input", false);
     },

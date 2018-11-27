@@ -81,6 +81,7 @@ window.startMap = function () {
 
 }
 //更新我的位置
+var myGeography;
 window.myGeography = function () {
 	var point = new BMap.Point(113.736607, 34.776974)
 	userMarker.setPosition(point)

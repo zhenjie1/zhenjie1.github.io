@@ -85,7 +85,7 @@ import Confirm from "vux/src/components/confirm/";
 import socket from "@/assets/js/websocket.js";
 import Personnel from "./orders/personnel";
 import { RescueMenu, userMenu, rescueType } from "@/assets/js/config";
-import { findMissedlist, orderBtn, findMyListOk, cancelOrder, cancelOffice } from "@/config/getData";
+import { findMissedlist, orderBtn, findMyListOk, cancelOrder, cancelOffice, addEntity, addPoint } from "@/config/getData";
 import { setStore, isLogin } from "../../../config/mUtils";
 import { initFun, orderBtnFun, topNavMenuFun, setBtnTxtFun } from "../../../assets/js/orders";
 import addScroll from "@/assets/js/scrollLoad";
@@ -143,7 +143,7 @@ export default {
 		addScroll(this);
 
 		//查看 url 是否带有经纬度，有则存到 vuex 中
-		LatAndLon.call(this)
+		LatAndLon.call(this);
 	},
 	methods: {
 		cancelRefuseEv(val) {
