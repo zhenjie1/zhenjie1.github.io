@@ -1,11 +1,11 @@
-import { findMissedlist, findlistok, findMyListOk, userWaitAccept, userSearchAllRescue, userRescue, userRescueOk, findListTask } from '../../config/getData'
+import { findMissedlist, findlistok, findMyListOk, userWaitAccept, userSearchAllRescue, userRescue, userRescueOk, findListTask, addEntity } from '../../config/getData'
 var userType;
 
-function getUserType (){
-	try{
+function getUserType() {
+	try {
 		return this.$store.state.userInfo.userType
-	}catch(e){
-		setTimeout( () => getUserType(), 100)
+	} catch (e) {
+		setTimeout(() => getUserType(), 100)
 	}
 }
 
@@ -40,6 +40,14 @@ export const initFun = function () {
 				this.originalData = res
 				this.liLength = res.length
 				jinzhan(this.infoData)
+
+
+				//上传设备
+				// console.log(this.infoData[0].uuid)
+				addEntity(this.infoData[0].uuid).then(res => {
+					console.log(res)
+				})
+				//更新位置
 			})
 			break;
 		case 4: //救援用户
@@ -188,8 +196,8 @@ function leaderAjax(navIndex) {
 		if (navIndex != 4) {
 
 			if (Array.isArray(this.originalData)) {
-				this.infoData = this.originalData.filter( v => {
-					if( navIndex == 1) return v.stateId == 0 || v.stateId == 1
+				this.infoData = this.originalData.filter(v => {
+					if (navIndex == 1) return v.stateId == 0 || v.stateId == 1
 					else return navIndex == v.stateId
 				})
 				jinzhan(this.infoData)

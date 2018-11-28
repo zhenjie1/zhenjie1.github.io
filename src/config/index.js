@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import Vue from 'vue'
 import { URL } from './url'
+import { mapActions } from 'vuex'
 
 axios.defaults.withCredentials = true
 axios.defaults.timeout = 15000;
@@ -32,15 +33,17 @@ axios.interceptors.response.use(data => {// 响应成功关闭loading
 
 export default async function (url = '', data = {}, type = 'POST', urlAll = null, config = {}) {
 
-	url = URL + url;
+	url = url.indexOf('http') !== -1 ? url : URL + url;
 
 	if (urlAll === null) data = qs.stringify(data);
+
 	type = type.toUpperCase()
 
 	var ajax = type == 'POST' ? axios.post(url, data, config) : axios.get(url, data, config);
 
 	ajax = ajax.then(res => res.data)
 		.then(res => {
+			// console.log(mapActions(['setUserInfo']))
 			if (res.code == 102) {
 				Vue.$vux.toast.text('请先登录！')
 				window.location.href = '/mobile/#/user/login'

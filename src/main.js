@@ -1,5 +1,5 @@
-// import eruda from 'eruda'
-// eruda.init()
+import eruda from 'eruda'
+eruda.init()
 
 import Vue from 'vue'
 import App from './App'
@@ -19,6 +19,12 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 window.vm = new Vue({
+<<<<<<< HEAD
+=======
+	data:{
+		startKey: 'hello'
+	},
+>>>>>>> dev
 	el: '#app',
 	router,
 	components: {
@@ -35,7 +41,9 @@ router.beforeEach((to, from, next) => {
 		vm.$store.dispatch('setTitle', title)
 	}
 	next()
+
 })
+
 // // alert(window.location.href)
 
 

@@ -28,62 +28,63 @@
 <script>
 import MessageBox from 'mint-ui/packages/message-box/'
 import { mapState } from 'vuex'
-import { recharge,rescueMoney,rescueInt, retreat } from '../../../../../config/getData'
+import { recharge, rescueMoney, rescueInt, retreat } from '../../../../../config/getData'
 import Payment from '../../../../common/payment/Payment.vue'
 import popPayment from '../../../../common/paymentPass/popPayment'
-import {URL} from '../../../../../config/url.js'
+import { URL } from '../../../../../config/url.js'
 import { isLogin } from '../../../../../config/mUtils'
 import titleHeader from '../../../../common/title'
 
 export default {
-	components:{
+
+	components: {
 		Payment,
 		popPayment,
 		titleHeader
 	},
-	computed:{
+	computed: {
 		...mapState([
 			'userInfo'
 		])
 	},
-	data(){
+	data() {
 		return {
-			showPayment:false,
-			jyId:'',
-			pageNum:0,
-			cont:'',
-			img:'',
-			price:'',
-			isShow:true
+			showPayment: false,
+			jyId: '',
+			pageNum: 0,
+			cont: '',
+			img: '',
+			price: '',
+			isShow: true
 		}
 	},
-	methods:{
-		paymentHide(val){
+	methods: {
+		paymentHide(val) {
 			this.showPayment = val
 		},
-		rechargeEv(index){
-			if(index == 2){
-				window.location.href='http://zjlist0226.oicp.io:29037/a/pay/MobilePay?price=0.05'
+		rechargeEv(index) {
+			if (index == 2) {
+				window.location.href = 'http://zjlist0226.oicp.io:29037/a/pay/MobilePay?price=0.05'
 			}
 		},
-		upData(){
-			if(!isLogin.call(this)){
-				 this.$vux.toast.text('请先登录!');
-				 return this.$router.push('/user/login')
+		upData: function () {
+			if (!isLogin.call(this)) {
+				this.$vux.toast.text('请先登录!');
+				return this.$router.push('/user/login')
 			}
-			if(this.userInfo.realName ==1) {
+			if (this.userInfo.realName == 1) {
 				this.showPayment = true
-			}else {
+			} else {
 				MessageBox.confirm('请先进行实名认证，为您更好的提供救援帮助').then(action => {
 					this.$router.push('/user/personal/verified')
 				})
 			}
 		}
 	},
-	mounted(){
-		if(!this.userInfo){
+	mounted() {
+		if (!this.userInfo) {
 			this.isShow = true
-		}else if(this.userInfo.vipType == 1) {
+		} else if (this.userInfo.vipType == 1) {
 			this.isShow = false;
 		}
 		rescueInt().then(res => {
@@ -97,33 +98,24 @@ export default {
 
 
 <style lang="scss" scoped>
-@import '../../../../../assets/css/all';
+@import "../../../../../assets/css/all";
 
-.Rescue{@include screen;z-index: 11;text-align:center;
-	.topImg{overflow: hidden;border-radius: 6px;display: inline-block;width:94%;margin:15px 0;
-		img{width:100%;background-color: transparent;}
-	}
+.Rescue { @include screen; text-align: center; z-index: 11;
+    .topImg { border-radius: 6px; display: inline-block; margin: 15px 0; overflow: hidden; width: 94%;
+        img { background-color: transparent; width: 100%;}}
 
-	.conText{text-align: left;background-color: white;margin:0 15px 76px;padding:20px;border-radius: 6px;line-height:1;
-		.title{font-size: 15px;text-align: center;margin:0 auto 23px;position: relative;width:150px;
-			&:after,&:before{content:'';display: block;width:0;height: 0;padding:3px;background-color: #666;border-radius: 50%;position: absolute;top:50%;transform: translateY(-50%);}
-			&:after{right:0}
-		}
-		dl{
-			dt{color:#5C5C5C;margin:20px 0 10px;}
-			dd{color:#7F7F7F;line-height: 22px;}
-		}
-	}
-	.bottomBtn{overflow: hidden;position: fixed;left:0;bottom:0;width:100%;background-color:white;
-		span{float:left;line-height: 56px;font-size: 15px;color:#F02B2B;margin-left: 15px;}
-		input{float:right;height: 56px;border:none;background-color: #F02B2B;color:white;padding:0 30px;font-size: 17px;}
+    .conText { background-color: white; border-radius: 6px; line-height: 1; margin: 0 15px 76px; padding: 20px; text-align: left;
+        .title { position: relative; font-size: 15px; margin: 0 auto 23px; text-align: center; width: 150px;
+            &:after, &:before { position: absolute; background-color: #666666; border-radius: 50%; content: ""; display: block; height: 0; padding: 3px; top: 50%; transform: translateY(-50%); width: 0;}
+            &:after { right: 0;}}
+        dl { dt { color: #5C5C5C; margin: 20px 0 10px;}
+            dd { color: #7F7F7F; line-height: 22px;}}}
+    .bottomBtn { position: fixed; background-color: white; bottom: 0; left: 0; overflow: hidden; width: 100%;
+        span { color: #F02B2B; float: left; font-size: 15px; line-height: 56px; margin-left: 15px;}
+        input { background-color: #F02B2B; border: none; color: white; float: right; font-size: 17px; height: 56px; padding: 0 30px;}
 
-		.weui-cell{width:120px;position: fixed;right:0;bottom:0;height: 36px;opacity: 0;}
-
-	}
-	button {background-color: #F02B2B;color:white;padding:0 30px;font-size: 16px;border: none;display: block;line-height: 48px;width: 100%;}
-
-}
+        .weui-cell { position: fixed; bottom: 0; height: 36px; opacity: 0; right: 0; width: 120px;}}
+    button { background-color: #F02B2B; border: none; color: white; display: block; font-size: 16px; line-height: 48px; padding: 0 30px; width: 100%;}}
 
 </style>
 

@@ -48,6 +48,11 @@ var webpackConfig = {
 			exclude: /node_modules/,
 			// include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
 		},
+		// {
+		// 	test: /\.worker\.js$/,
+		// 	loader: 'worker-loader',
+		// 	exclude: /node_modules/,
+		// },
 		{
 			test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
 			loader: 'url-loader',

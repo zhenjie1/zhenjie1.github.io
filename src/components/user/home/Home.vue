@@ -62,6 +62,7 @@ import { isLogin, isGeographicLocation } from '../../../config/mUtils.js'
 import banner1 from '../.././../assets/images/banner1.png'
 import banner2 from '../.././../assets/images/banner2.png'
 
+
 export default {
 	data(){
 		return {
@@ -139,6 +140,7 @@ export default {
 		},
 	},
 	mounted(){
+
 		//保存首页url
 		let isJW = isGeographicLocation.call(this)
 		const url = window.location.href.split('#')[1]
