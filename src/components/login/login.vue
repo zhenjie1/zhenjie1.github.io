@@ -2,8 +2,6 @@
 	<div class="login">
 		<div class="logo"><img src="" alt=""></div>
 		<!-- <a href="http://www.baidu.com/"></a> -->
-		<input type="button" value="123">
-		<input type="text" placeholder="66">
 		<form class="form" @submit.prevent='loginEv'>
 			<label><input type="text" placeholder="请输入手机号/天机卡号" name='username' v-model="username"></label>
 			<label>

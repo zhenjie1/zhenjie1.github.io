@@ -1,4 +1,4 @@
-import { findMissedlist, findlistok, findMyListOk, userWaitAccept, userSearchAllRescue, userRescue, userRescueOk, findListTask, addEntity } from '../../config/getData'
+import { findMissedlist, findlistok, findMyListOk, userWaitAccept, userSearchAllRescue, userRescue, userRescueOk, findListTask } from '../../config/getData'
 var userType;
 
 function getUserType() {
@@ -40,14 +40,6 @@ export const initFun = function () {
 				this.originalData = res
 				this.liLength = res.length
 				jinzhan(this.infoData)
-
-
-				//上传设备
-				// console.log(this.infoData[0].uuid)
-				addEntity(this.infoData[0].uuid).then(res => {
-					console.log(res)
-				})
-				//更新位置
 			})
 			break;
 		case 4: //救援用户

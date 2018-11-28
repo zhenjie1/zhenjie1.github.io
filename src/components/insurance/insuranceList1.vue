@@ -25,9 +25,9 @@
 		data(){
 			return {
 				inList:[
-					
+
 				],
-				
+
 			}
 		},
 		methods:{
@@ -36,7 +36,7 @@
 					this.inList=res.rows;
 				})
 			}
-			
+
 		},
 		mounted () {
 			this.getData(this.list)
