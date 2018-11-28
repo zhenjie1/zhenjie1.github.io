@@ -19,12 +19,6 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 window.vm = new Vue({
-<<<<<<< HEAD
-=======
-	data:{
-		startKey: 'hello'
-	},
->>>>>>> dev
 	el: '#app',
 	router,
 	components: {
