@@ -180,7 +180,7 @@
 <style lang='scss' scoped>
 	$size:44px;
 	.personal{position: fixed;left:20px;bottom: 20px;background-color: white;border-radius: 100%;width:$size;height: $size;line-height:$size;box-shadow: 0 4px 10px rgba(0,0,0,.1);text-align:center;
-		i{font-size:30px;font-weight: bold;}
+		i{font-size:24px;font-weight: bold;}
 	}
 	.fr {float: right;}
 	.fl {float: left;}
@@ -192,6 +192,7 @@
 	.recordList {border-bottom: 1px solid #ddd;}
 	.recordList h5 {line-height: 30px;font-size: 14px;}
 	.recordNav {background: #fff;}
+	.recordNav li span{font-size: 14px;}
 	.recordNavLi {line-height: 41px;color: #686868;font-size: 13px;width: 33.3%;text-align: center;letter-spacing: 1px;}
 	.recordNavLi.active {color: #f02b2b;border-bottom: 2px solid #F02B2B;}
 	.recDfkList {height: 68px;background-color: #fff;padding: 6px 0 7px;margin-top: 10px;position: relative;}

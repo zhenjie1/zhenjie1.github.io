@@ -11,11 +11,16 @@ Vue.use(Vuex)
 const state = {
 	userInfo: null, //用户信息
 	geographicLocation: null,//用户经纬度
-	homeUrl:'/',	//首页url
-	district: ''
+	homeUrl: '/',	//首页url
+	district: '',
+	title: {
+		isShow: true,
+		reloadIsShow: true,
+		returnIsShow: false,
+		text: "首页"
+	}
 }
-var store;
-export default store = new Vuex.Store({
+export default new Vuex.Store({
 	modules: {
 		i18n: vuexI18n.store
 	},
@@ -23,5 +28,5 @@ export default store = new Vuex.Store({
 	getters,
 	actions,
 	mutations,
-	plugins:[createPersistedState()]
+	plugins: [createPersistedState()]
 })

@@ -13,5 +13,8 @@ export default {
 	},
 	saveDistrict(state, district){
 		state.district = district
+	},
+	saveTitle(state, title ){
+		state.title = title
 	}
 }

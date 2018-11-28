@@ -1,5 +1,6 @@
 <template>
 <div class="remind">
+	<title-header />
 	<dl>
 		<dt class="time">{{time}}</dt>
 		<dd v-for='(item,i) in dataArr' v-bind:key="i">
@@ -24,6 +25,7 @@
 
 <script>
 	import { jRecord } from '../../../../config/getData'
+	import titleHeader from '../../../common/title'
 	export default {
 		data() {
 			return {
@@ -55,7 +57,7 @@
 			.replace(/mm/g,preArr[min]||min)
 			.replace(/ss/g,preArr[sec]||sec);
 
-		    return newTime;         
+		    return newTime;
 			}
 		},
 		created() {
@@ -80,8 +82,8 @@
 			formatDate(new Date().getTime(),'YY年MM月DD日');//2017年05月12日
 			formatDate(new Date().getTime(),'今天是YY/MM/DD hh:mm:ss');//今天是2017/05/12 10:07:45*/
 		},
-		mounted() {
-			
+		components: {
+			titleHeader
 		}
 	}
 </script>
@@ -89,7 +91,7 @@
 <style lang="scss" scoped>
 @import '../../../../assets/css/all';
 
-.remind{@include screen;min-height: 100%;overflow-y: auto;
+.remind{@include screen;min-height: 100%;overflow-y: auto;z-index:20;
 	dl{line-height: 1;
 		dt{text-align: center;padding-top:15px;width: 100%;height: auto;}
 		dd{background-color: white;margin:15px;padding:18px 15px 40px;border:1px solid #efefef;

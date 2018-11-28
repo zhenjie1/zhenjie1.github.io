@@ -8,6 +8,7 @@ import './assets/js/filter'
 import router from './router'
 import 'mint-ui/lib/style.css'
 import "../src/assets/js/back.js";
+import { titleConfig } from './config/mUtils.js'
 
 import Toast from 'vux/src/plugins/toast/index'
 import loading from 'vux/src/plugins/loading/'
@@ -17,7 +18,7 @@ Vue.use(loading)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+window.vm = new Vue({
 	el: '#app',
 	router,
 	components: {
@@ -28,8 +29,10 @@ new Vue({
 })
 
 router.beforeEach((to, from, next) => {
+	const title = titleConfig(to)
 	if (to.meta.title) {
 		document.title = to.meta.title
+		vm.$store.dispatch('setTitle', title)
 	}
 	next()
 })

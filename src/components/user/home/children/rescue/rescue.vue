@@ -1,5 +1,6 @@
 <template>
 	<div class="Rescue">
+		<title-header />
 		<div class="topImg">
 			<img src="../../../../../assets/images/rescueCard.png" alt="">
 		</div>
@@ -32,12 +33,13 @@ import Payment from '../../../../common/payment/Payment.vue'
 import popPayment from '../../../../common/paymentPass/popPayment'
 import {URL} from '../../../../../config/url.js'
 import { isLogin } from '../../../../../config/mUtils'
+import titleHeader from '../../../../common/title'
 
 export default {
-
 	components:{
 		Payment,
-		popPayment
+		popPayment,
+		titleHeader
 	},
 	computed:{
 		...mapState([

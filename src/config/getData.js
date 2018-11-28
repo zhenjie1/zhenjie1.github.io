@@ -300,6 +300,11 @@ export const jRecord = (pageNo,pageSize) => fetch('/a/tyMoney/transactionRecord'
 // 用户协议 0注册 1保险
 export const view = (type) => fetch('/protocol/view',{type})
 
+//保险 - 投保条约
+export const getProtocol = id => fetch('/protocol/getProInfo', {
+	id
+})
+
 //支付宝支付
 export const zfbPay = (price) =>fetch('/a/pay/app',{ price })
 

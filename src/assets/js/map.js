@@ -200,7 +200,7 @@ function getRescue(vm, map, rej) {
 
 			})
 		}
-		setTimeout(() => upDetaGeography(), 1000)
+		// setTimeout(() => upDetaGeography(), 1000)
 	})
 }
 

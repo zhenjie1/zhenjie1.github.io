@@ -86,11 +86,6 @@ export default new Router({
 			redirect: '/user'
 		},
 		{
-			path: '/Date',
-			component: Date,
-			meta: { title: '日期' }
-		},
-		{
 			path: '/setting',
 			component: Setting,
 			meta: { title: '设置' },
@@ -129,6 +124,7 @@ export default new Router({
 				{
 					path: 'buyRecord/:status?',
 					name: 'buyRecord',
+					meta: { title: '保险记录' },
 					component: buyRecord
 				},
 				{//退保
@@ -187,7 +183,7 @@ export default new Router({
 					meta: { title: '新用户注册' }
 				},
 				{
-					path: 'agree/:type?',
+					path: 'agree/:type?/:protocolId?',
 					component: agree,
 					meta: { title: '协议' }
 				},
@@ -223,6 +219,7 @@ export default new Router({
 						{
 							path: 'remind',
 							component: remind,
+							meta: { title: '我的消息' }
 						}
 					]
 				},

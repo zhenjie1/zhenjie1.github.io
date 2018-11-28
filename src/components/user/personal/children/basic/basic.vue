@@ -1,5 +1,6 @@
 <template>
 <div class="basic">
+	<title-header />
 	<toast v-model="showPositionValue" type="text" :time="2000" width='auto' :text="seleceVal.avatarTxt" position="top"></toast>
 	<ul class="infoDetail">
 		<li class="AvatarBox" @click='show.avatar = true'>
@@ -82,6 +83,7 @@ import Confirm from 'vux/src/components/confirm/'
 import Datetime from 'vux/src/components/datetime/'
 import Avatar from '../../../../common/avatar/avatar'
 import Toast from 'vux/src/components/toast/'
+import titleHeader from '../../../../common/title'
 
 import { getUserInfo, editUserInfo } from '@/config/getData'
 import { setStore } from '../../../../../config/mUtils'
@@ -131,7 +133,8 @@ export default {
 		Actionsheet,
 		Confirm,
 		Avatar,
-		Toast
+		Toast,
+		titleHeader
 	},
 	methods:{
 		...mapActions([
@@ -263,7 +266,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../../../../assets/css/all.scss';
 
-.basic{@include screen;
+.basic{@include screen;z-index: 20;
 	ul{margin-bottom: 10px;
 		li{display: flex;justify-content: space-between;background-color: white;line-height: 50px;padding:0 15px;
 			a{display: block;box-sizing: border-box;}

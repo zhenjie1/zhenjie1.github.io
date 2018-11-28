@@ -73,29 +73,6 @@
 				</div>
 			</router-link>
 		</ul>
-
-		<!-- <div class="menuBottom">
-			<ul>
-				<router-link to='/user' tag='li'>
-					<div class="icon">
-						<i class="iconfont icon-home"></i>
-					</div>
-					<p>首页</p>
-				</router-link>
-				<li class="middle" @click='sosOrdersEv'>
-					<div class="icon">
-						<i class="iconfont icon-dianhua"></i>
-					</div>
-					<p>一键呼救</p>
-				</li>
-				<router-link to='/user/personal' tag='li' class="checked">
-					<div class="icon">
-						<i class="iconfont icon-wode1"></i>
-					</div>
-					<p>个人</p>
-				</router-link>
-			</ul>
-		</div> -->
 		<bottom-nav checkIndex='2' />
 		<transition name='breadcrumb'>
 			<router-view />
@@ -168,7 +145,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../../assets/css/all.scss";
 
-.personal { position: relative; min-height: 100%; width: 100%;
+.personal { position: relative;width: 100%;height: 100%;
     .options { margin-top: 10px;
         li { align-items: center; background-color: white; display: flex; font-size: 16px; justify-content: space-between; line-height: 50px; padding: 0 16px;
             .l, .r { align-items: center; display: flex;}

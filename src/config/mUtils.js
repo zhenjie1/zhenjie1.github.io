@@ -107,3 +107,32 @@ export const isHome = () => {
 export const mergeObj = (newObj, oldObj) => {
 	return Object.assign(newObj,oldObj)
 }
+
+export const titleConfig = ( to ) => {
+	// console.log(to)
+	const path = to.path
+
+	const reloadHide = []
+	const returnHide = ['/user/personal','/user/home']
+	const titleHide = ['/user/login','/user/agree.?']
+
+	let title = {
+		text: to.meta.title,		//标题文字
+		reloadIsShow: true,	//是否显示刷新按钮
+		returnIsShow: true,	//是否显示返回按钮
+		isShow: true,	//是否显示标题
+	}
+	reloadHide.map( v => {
+		var reg = new RegExp('^' + v + '$')
+		if( reg.test(path) ) title.reloadIsShow = false
+	})
+	returnHide.map( v => {
+		var reg = new RegExp('^' + v + '$')
+		if( reg.test(path) ) title.returnIsShow = false
+	})
+	titleHide.map( v => {
+		var reg = new RegExp('^' + v + '$')
+		if( reg.test(path) ) title.isShow = false
+	})
+	return title
+}

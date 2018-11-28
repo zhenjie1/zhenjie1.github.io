@@ -1,5 +1,6 @@
 <template>
 <div class="articlePan">
+	<title-header />
     <div class="title">
         <h1>{{data.title}}</h1>
         <p>
@@ -16,12 +17,16 @@
 
 <script>
 import { articleDetails } from '../../../../config/getData'
+import titleHeader from '../../../common/title'
 export default {
 	data(){
 		return{
 			data:[],
 			textLen:0
 		}
+	},
+	components:{
+		titleHeader
 	},
 	computed: {
 		// speed(){
