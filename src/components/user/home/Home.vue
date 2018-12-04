@@ -120,7 +120,7 @@ export default {
 			this.isScreen = true
 		},
 		sosOrdersEv(){
-			mapLngLat(this).then( res => {
+			mapLngLat.call(this,home).then( res => {
 				var [x,y] = [res.Longitude,res.Latitude];
 
 				sosOrders(x,y).then( res => {
@@ -141,10 +141,9 @@ export default {
 	},
 	mounted(){
 
-		//保存首页url
+		//如果url 携带了经纬度参数, 保存首页url
 		let isJW = isGeographicLocation.call(this)
-		const url = window.location.href.split('#')[1]
-		if( isJW ) this.setHomeUrl(url)
+		if( isJW ) this.setHomeUrl(this.$route.fullPath)
 
 		//如果已经登录,区分救援端与客户端
 		let isLogins = isLogin.call(this);

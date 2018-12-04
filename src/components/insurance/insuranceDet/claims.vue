@@ -1,17 +1,12 @@
 <template>
-	<div class="claimsWarp" v-html="text">
-	<!-- {{text}} -->
-		<!-- <div class="claimsCon">
-			<div class="claimsConTit">理赔流程</div>
-			<div class="claimsConText">1.报案：发生事故后48个小时内拨打客服热线222222电话报案，我司客服人员将告知理赔所需材料及相关事宜。</div>
-			<div class="claimsConText">2.申请：理赔材料齐全后，请将材料快递至我司。</div>
-			<div class="claimsConText">3.审核：收到材料后，我司将进行及时审核和调查。</div>
-			<div class="claimsConText">4.结案：根据审核结构进行理赔并将理赔款支付至被保险人的指定账户。</div>
-		</div> -->
+	<div class="claimsWarp">
+		<title-header />
+		<p v-html="text"></p>
 	</div>
 </template>
 
 <script>
+import titleHeader from '../../common/title'
 	export default {
 		data(){
 			return {
@@ -19,7 +14,10 @@
 			}
 		},
 		mounted() {
-			this.text = window.sessionStorage.recordDet
+			this.text = sessionStorage.claims
+		},
+		components:{
+			titleHeader
 		}
 	}
 </script>
@@ -27,7 +25,9 @@
 <style scoped lang='scss'>
 @import '../../../assets/css/all.scss';
 
-.claimsWarp{@include screen;box-sizing: border-box;padding: 15px;font-size: 16px;}
+.claimsWarp{@include screen;box-sizing: border-box;font-size: 16px;z-index: 20;
+	p{padding:15px;}
+}
 	/* .fr {float: right;}
 	.fl {float: left;}
 	.clearfix:after {content: "";display: block;clear: both;}

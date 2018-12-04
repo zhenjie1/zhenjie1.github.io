@@ -21,6 +21,11 @@
 	<script src="/static/dll.vender.js"></script>
 	<script>
 		function upDetaGeography() {
+			let latitude = arguments[0],
+				longitude = arguments[1]
+			// console.log(argme)
+				myGeography(latitude, longitude)	//更新我的位置
+
 			// try {
 				// myGeography(arguments)	//更新我的位置
 				// rescueGeography(arguments)	//更新救援人员的位置

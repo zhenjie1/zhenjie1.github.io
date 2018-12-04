@@ -1,5 +1,5 @@
 <template>
-	<div class="titleNav" v-show="title.isShow">
+	<div class="titleNav" :class="title.theme" v-show="title.isShow">
 		<i class="iconfont icon-jiantou2 retuenBtn" v-show="title.returnIsShow" @click='$router.go(-1)'></i>
 		{{title.text}}
 		<i class="iconfont icon-shuaxin reload" v-show="title.reloadIsShow" @click='reload'></i>
@@ -27,5 +27,10 @@ $titleHeight: 50px;
 	i.retuenBtn,i.reload{position: absolute;top:0;padding: 0 15px;display: block;line-height: $titleHeight;}
 	i.retuenBtn{left:0;}
 	i.reload{right:0;}
+}
+
+.titleNav.simple{background-color: transparent;position: fixed;z-index:15;font-size:0;
+	i{background-color: rgba(0,0,0,.5);color: white;line-height: 36px;top: 20px;padding: 0 20px;border-top-right-radius: 3px;border-bottom-right-radius: 3px;}
+	.reload{display: none;}
 }
 </style>

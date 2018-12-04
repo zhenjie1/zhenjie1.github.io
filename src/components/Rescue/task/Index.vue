@@ -39,7 +39,7 @@
 						<span>备注</span>
 						<p>{{item.remarks}}</p>
 					</div>
-					<router-link to='/rescue/map' @click.native='mapEv(item)' v-if='userType != 3'>
+					<router-link to='/rescue/map' @click.native='mapEv(item)'>
 						<div class="position">
 							<i class="iconfont icon-weizhi"></i>
 							<p>{{item.place}}</p>
@@ -47,16 +47,16 @@
 							<b href="">查看地图 <i class="iconfont icon-shuangjiantouyou"></i></b>
 						</div>
 					</router-link>
-					<div v-else>
+					<!-- <div v-else>
 						<div class="position">
 							<i class="iconfont icon-weizhi"></i>
 							<p>{{item.place}}</p>
 						</div>
-					</div>
+					</div> -->
 					<div class="btn" v-if='item.stateId !=99'>
 						<div v-for="(val,ind) in item.btn" :key='ind' :class="{file: val.type == 'file'}">
 							<span v-if="val.type == 'file'">{{val.name}}</span>
-							<input :type="val.type" :value='val.type == "button" ? val.name : ""' accept="image/*" capture="camera" @click='accept(item,ind,val.name)' @change="imgResult">
+							<input :type="val.type" :value='val.type == "button" ? val.name : ""' accept="image/*" capture="camera" @click='accept(item, ind, val.name)' @change="imgResult">
 						</div>
 					</div>
 				</li>
@@ -85,13 +85,16 @@ import Confirm from "vux/src/components/confirm/";
 import socket from "@/assets/js/websocket.js";
 import Personnel from "./orders/personnel";
 import { RescueMenu, userMenu, rescueType } from "@/assets/js/config";
-import { findMissedlist, orderBtn, findMyListOk, cancelOrder, cancelOffice, addEntity, addPoint } from "@/config/getData";
-import { setStore, isLogin } from "../../../config/mUtils";
+import { findMissedlist, orderBtn, findMyListOk, cancelOrder, cancelOffice, addPoint } from "@/config/getData";
+import { getStore, setStore, isLogin, setInterUploadLatitudeLongitude } from "../../../config/mUtils";
 import { initFun, orderBtnFun, topNavMenuFun, setBtnTxtFun } from "../../../assets/js/orders";
 import addScroll from "@/assets/js/scrollLoad";
 import BottomLine from "../../common/bottomLine/BottomLine";
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import LatAndLon from '../../../assets/js/LatAndLon'
+
+import latitudeLongitudeUpload from '../../../assets/js/latitudeLongitudeUpload.js'
+
 
 export default {
 	data() {
@@ -136,16 +139,28 @@ export default {
 		$route: "initData"
 	},
 	created() {
+
 		if (!isLogin.call(this)) {
 			this.$vux.toast.text('请先登录！')
 			this.$router.push('/user/login')
+			return
 		}
-		addScroll(this);
+		this.initData();
+
+		if(this.userType == '3') addScroll(this);
+
+		//如果登录的人需要采集点，定时用 webSocket 推送
+		var rescueId = getStore('rescueId')
+		// console.log(rescueId, this.userInfo.id)
+		if(rescueId === this.userInfo.id){
+			setInterUploadLatitudeLongitude(rescueId)
+		}
 
 		//查看 url 是否带有经纬度，有则存到 vuex 中
-		LatAndLon.call(this);
+		LatAndLon.call(this, 'rescue');
 	},
 	methods: {
+		...mapActions(['setGeographicLocation']),
 		cancelRefuseEv(val) {
 			if (val == "") {
 				this.$vux.toast.text("请输入拒绝理由！");
@@ -202,7 +217,33 @@ export default {
 			}
 		},
 		initData() {
-			initFun.call(this, this.userType);
+			//区分救援端与客户端
+			if (isLogin.call(this) && this.$route.query.type && (this.$route.query.type != '2' && this.$route.query.type != '4')) {
+				this.$router.push(this.homeUrl)
+			}
+
+			this.userType = this.userInfo["userType"]
+			this.RescueMenu = this.userType == 3 ? userMenu : RescueMenu;
+
+			//初始化数据请求
+			initFun.call(this, this.userType).then( res => {
+				latitudeLongitudeUpload.call(this, this.infoData)
+			});
+
+			//对推送过来的数据进行处理
+			// if(this.userType != 3){
+			socket(data => {
+				if (data.code == 1) {
+					this.$vux.toast.text("你有新的任务");
+					this.infoData.splice(0, 0, data.rows);
+				} else if (data.code == 3) {
+					// this.$vux.toast.text(data.msg);
+				} else if (data.code == 2) {
+					this.$vux.toast.text("你有新的任务");
+					this.infoData.splice(0, 0, data.rows);
+				}
+			});
+
 		},
 		downEv(msg) {
 			if (msg === true) {
@@ -218,44 +259,19 @@ export default {
 			} else this.$vux.toast.text(msg);
 		},
 		statusSet(item) {
-			orderBtn(item.id, item.stateId + 1).then(res => {
+			return orderBtn(item.id, item.stateId + 1).then(res => {
 				if (res.code == 2) {
 					item.stateId = item.stateId + 1;
 				}
+
+				return res
 			});
 		},
 		//点击按钮
 		accept(item, ind, name) {
 			orderBtnFun(this, this.userType, item, ind, name);
-		}
-	},
-	mounted() {
-		//区分救援端与客户端
-		if (isLogin.call(this) && this.$route.query.type && (this.$route.query.type != '2' && this.$route.query.type != '4')) {
-			this.$router.push(this.homeUrl)
-		}
+		},
 
-		this.userType = this.userInfo["userType"]
-
-		this.RescueMenu = this.userType == 3 ? userMenu : RescueMenu;
-		this.initData();
-		var that = this;
-
-		//对推送过来的数据进行处理
-		// if(this.userType != 3){
-		socket(data => {
-			if (data.code == 1) {
-				this.$vux.toast.text("你有新的任务");
-				// this.infoData = data.rows
-				this.infoData.splice(0, 0, data.rows);
-			} else if (data.code == 3) {
-				// this.$vux.toast.text(data.msg);
-			} else if (data.code == 2) {
-				this.$vux.toast.text("你有新的任务");
-				this.infoData.splice(0, 0, data.rows);
-			}
-		});
-		// }
 	},
 	components: {
 		Personnel,
@@ -303,11 +319,11 @@ export default {
     .note { border-bottom: 1px solid $e6; font-size: 14px; line-height: 1; padding: 10px 15px;
         i { color: $red; display: inline-block; margin-right: 4px;}
         p { color: $gray; font-size: 12px; line-height: 1.5; margin: 4px 0 0 24px;}}
-    .position { border-bottom: 1px solid $e6; display: flex; font-size: 12px; line-height: 36px;
+    .position { border-bottom: 1px solid $e6; display: flex; font-size: 12px; justify-content: space-between; line-height: 36px;
         i { font-size: inherit; margin: 0 4px 0 15px;}
         p { height: 36px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 55%;}
         span { margin: 0 4px;}
-        b { color: $red; font-weight: normal;
+        b { color: $red; font-weight: normal; margin: 0 10px;
             i { margin-left: -2px;}}}
     // }
     .btn { display: flex; font-size: 14px; justify-content: flex-end; padding: 5px 0;

@@ -18,6 +18,15 @@ export const addPoint = (entity_name, latitude, longitude, loc_time) => fetch('h
 	coord_type_input: 'bd09ll'
 })
 
+// //百度鹰眼 -- 客户查询救援人员位置
+// export const getRescusTrack = (entity_name, start_time, end_time) => fetch('http://yingyan.baidu.com/api/v3/track/gettrack', {
+// 	ak,
+// 	service_id,
+// 	entity_name,
+// 	start_time,
+// 	end_time
+// }, 'GET')
+
 //发送验证码
 export const phoneSendCode = phone => fetch('/sms/send', {
 	phone

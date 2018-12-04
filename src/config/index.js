@@ -5,7 +5,7 @@ import { URL } from './url'
 import { mapActions } from 'vuex'
 
 axios.defaults.withCredentials = true
-axios.defaults.timeout = 15000;
+axios.defaults.timeout = 5000;
 
 //http 拦截器
 axios.interceptors.request.use(config => {

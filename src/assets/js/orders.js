@@ -1,4 +1,7 @@
-import { findMissedlist, findlistok, findMyListOk, userWaitAccept, userSearchAllRescue, userRescue, userRescueOk, findListTask, addEntity } from '../../config/getData'
+import { findMissedlist, findlistok, findMyListOk, userWaitAccept, userSearchAllRescue, userRescue, userRescueOk, findListTask } from '../../config/getData'
+import { setInterUploadLatitudeLongitude, setStore } from '../../config/mUtils'
+import store from '../../store/index'
+
 var userType;
 
 function getUserType() {
@@ -21,9 +24,10 @@ export const initFun = function () {
 	userType = getUserType.call(this);
 
 	const type = parseInt(this.userType);
+	let backVal;
 	switch (type) {
 		case 2: //救援队长
-			findMissedlist().then(res => {
+			backVal = findMissedlist().then(res => {
 				res = res.rows
 				this.infoData = res
 				this.originalData = res
@@ -33,7 +37,7 @@ export const initFun = function () {
 			})
 			break;
 		case 3: //普通用户
-			userSearchAllRescue(1).then(res => {
+			backVal = userSearchAllRescue(1).then(res => {
 				this.total = res.total
 				res = res.rows
 				this.infoData = res
@@ -41,17 +45,10 @@ export const initFun = function () {
 				this.liLength = res.length
 				jinzhan(this.infoData)
 
-
-				//上传设备
-				// console.log(this.infoData[0].uuid)
-				addEntity(this.infoData[0].uuid).then(res => {
-					console.log(res)
-				})
-				//更新位置
 			})
 			break;
 		case 4: //救援用户
-			findListTask(1).then(res => {
+			backVal = findListTask(1).then(res => {
 				res = res.rows
 				this.infoData = res
 				this.originalData = res
@@ -61,6 +58,8 @@ export const initFun = function () {
 			})
 			break;
 	}
+
+	return backVal
 }
 
 
@@ -91,8 +90,19 @@ export const orderBtnFun = (that, type, item, ind, name) => {
 		}
 	} else if (type === 4) {
 		leaderBtnEv(that, item, ind, name)
+		// playerBtnEv.call(that, item, ind, name);
 	}
+}
 
+function playerBtnEv(item, index, name) {
+	// console.log(item, index, name, item.stateId)
+	var state = parseInt(item.stateId)
+	console.log(state)
+	switch (state) {
+		case 1:
+
+			break;
+	}
 }
 
 //点击顶部导航
@@ -230,6 +240,22 @@ function leaderBtnEv(that, item, ind, name) {
 				that.isShowPer = true;
 			} else {
 				that.showCancelRefuse = true
+			}
+			break;
+		case 1:
+			if (name == '确认出发') {
+				//改变订单状态
+				that.statusSet(item).then(res => {
+					var collectionId = res.rows
+					var loginId = store.state.userInfo.id
+					console.log( collectionId, loginId, collectionId === loginId)
+
+					setStore('rescueId', collectionId)
+					if (collectionId === loginId) {	//判断是否需要上传经纬度
+						//定时器开启，把救援端的经纬度传给后台，后台上传到百度
+						setInterUploadLatitudeLongitude.call(that, collectionId)
+					}
+				})
 			}
 			break;
 		case 2:

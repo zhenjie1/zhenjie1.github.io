@@ -8,13 +8,14 @@ var longitude = null,
 var map, vm, userMarker;
 
 window.initialize = function () {
-	longitude = vm.$store.state.geographicLocation.Longitude
-	latitude = vm.$store.state.geographicLocation.Latitude
+	const geographicLocation = vm.$store.state.geographicLocation
+	longitude = geographicLocation && geographicLocation.Longitude
+	latitude = geographicLocation && geographicLocation.Latitude
 
 	var ggPoint = new BMap.Point(longitude, latitude);
 
 	map = new BMap.Map("map");
-	map.centerAndZoom(ggPoint, 17);
+	map.centerAndZoom(ggPoint, 19);
 	map.enableScrollWheelZoom(true);
 
 	translateCallback(vm)
@@ -81,9 +82,11 @@ window.startMap = function () {
 
 }
 //更新我的位置
-var myGeography;
-window.myGeography = function () {
-	var point = new BMap.Point(113.736607, 34.776974)
+// var myGeography;
+window.myGeography = function (latitude, longitude) {
+	console.log(latitude,longitude)
+	// return
+	var point = new BMap.Point(latitude, longitude)
 	userMarker.setPosition(point)
 
 	var geographicLocation = {
@@ -92,7 +95,7 @@ window.myGeography = function () {
 	}
 	try {
 		vm.$store.dispatch('setGeographicLocation', geographicLocation)
-		map.panTo(point);
+		// map.panTo(point);
 	} catch (e) {
 		console.error(e)
 	}

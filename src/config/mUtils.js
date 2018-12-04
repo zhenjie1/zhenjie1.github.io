@@ -1,3 +1,5 @@
+import store from '../store/index';
+// console.log(ss)
 /**
  * 存储localStorage
  */
@@ -17,7 +19,7 @@ export const getStore = name => {
 	try {
 		return JSON.parse(window.localStorage.getItem(name));
 	} catch (e) {
-
+		return window.localStorage.getItem(name)
 	}
 }
 
@@ -78,20 +80,13 @@ export const isLogin = function () { //此方法不能使用箭头函数，因�
 /*
 * 判断首页是否有经纬度参数，有则保存到vuex中
 */
-export const isGeographicLocation = function() { //此方法不能使用箭头函数，因为调用的地方使用了 call(this)
-	var posQquery = window.location.href.split('#')[1];
-	if (posQquery.indexOf("?") === -1) return false;
+export const isGeographicLocation = function () { //此方法不能使用箭头函数，因为调用的地方使用了 call(this)
+	var query = this.$route.query;
+	var isRetuen = JSON.stringify(query) === '{}' || query.Latitude == undefined || query.Longitude == undefined;
+	if (isRetuen) return false;
 
-	var position = {};
-	var q = posQquery.split('?')[1].split('&')
-
-	q.forEach(v => position[v.split('=')[0]] = v.split('=')[1])
-
-	if( !position.Longitude || !position.Latitude  ) return false
-
-	this.$store.dispatch('setGeographicLocation', position)	//保存位置
-	return position
-
+	this.$store.dispatch('setGeographicLocation', query)	//保存位置
+	return query
 }
 
 /*
@@ -105,34 +100,85 @@ export const isHome = () => {
 
 // 数据合并
 export const mergeObj = (newObj, oldObj) => {
-	return Object.assign(newObj,oldObj)
+	return Object.assign(newObj, oldObj)
 }
 
-export const titleConfig = ( to ) => {
+export const titleConfig = (to) => {
 	// console.log(to)
 	const path = to.path
 
 	const reloadHide = []
-	const returnHide = ['/user/personal','/user/home']
-	const titleHide = ['/user/login','/user/agree.?']
+	const returnHide = ['/user/personal', '/user/home']
+	const titleHide = ['/user/login', '/user/agree.?']
+
+	const simpleTheme = ['/rescue/map']
 
 	let title = {
 		text: to.meta.title,		//标题文字
 		reloadIsShow: true,	//是否显示刷新按钮
 		returnIsShow: true,	//是否显示返回按钮
 		isShow: true,	//是否显示标题
+		theme: ''
 	}
-	reloadHide.map( v => {
+	reloadHide.map(v => {
 		var reg = new RegExp('^' + v + '$')
-		if( reg.test(path) ) title.reloadIsShow = false
+		if (reg.test(path)) title.reloadIsShow = false
 	})
-	returnHide.map( v => {
+	returnHide.map(v => {
 		var reg = new RegExp('^' + v + '$')
-		if( reg.test(path) ) title.returnIsShow = false
+		if (reg.test(path)) title.returnIsShow = false
 	})
-	titleHide.map( v => {
+	titleHide.map(v => {
 		var reg = new RegExp('^' + v + '$')
-		if( reg.test(path) ) title.isShow = false
+		if (reg.test(path)) title.isShow = false
+	})
+	simpleTheme.map(v => {
+		var reg = new RegExp('^' + v + '$')
+		if (reg.test(path)) title.theme = 'simple'
 	})
 	return title
+}
+
+//定时器开启，把救援端的经纬度传给后台，后台上传到百度
+//this 环境是 Vue 实例
+export const setInterUploadLatitudeLongitude = function (id) {
+	var rescusPositioonPoint_list = [];
+	var [collection, upload] = [5000, 30000];// 5秒采集一次， 30秒上传一次
+
+	uploadLatitudeLongitude(id, rescusPositioonPoint_list)
+	setInterval(() => uploadLatitudeLongitude(id, rescusPositioonPoint_list), collection);
+
+	setInterval(() => {
+		socket.send(JSON.stringify(rescusPositioonPoint_list))
+		rescusPositioonPoint_list = [];
+	}, upload);
+}
+//websocket 推送 给服务器
+function uploadLatitudeLongitude(id, pointSaveArr) {
+	let latLon = store.state.geographicLocation;
+	pointSaveArr.push({
+		latitude: latLon.Latitude,
+		longitude: latLon.Longitude,
+		entity_name: id,
+		loc_time: parseInt(new Date().getTime() / 1000),
+		coord_type_input: 'wgs84'
+	})
+
+	// try {
+	// 	socket.send(JSON.stringify(pointSaveArr))
+	// } catch (err) {
+
+	// }
+}
+
+export const sendJsonp = function (url, data, cbFunName) {
+	let script = document.createElement("script");
+	var query = '?';
+	for (let i in data) {
+		query += i + '=' + data[i] + '&'
+	}
+	query += 'callback=' + cbFunName
+	// console.log(query)
+	script.src = url + query;
+	document.body.appendChild(script);
 }

@@ -1,22 +1,24 @@
 import { socketUrl } from '../../config/url'
 var wsUrl = 'ws://' + socketUrl + '/a/tjSocket'
 
+// window.ws = undefined;
 export default function (cb) {
-	var ws = new WebSocket(wsUrl)
+	window.socket = new WebSocket(wsUrl)
 
-	ws.onopen = function (evt) {
+	socket.onopen = function (evt) {
 		console.log("连接成功");
-		ws.send("Hello WebSockets!");
 	};
 
-	ws.onmessage = function (evt) {
+	socket.onmessage = function (evt) {
 		var data = typeof evt.data == 'string' ? JSON.parse(evt.data) : evt.data;
 
 		cb(data)
 	};
 
 
-	ws.onclose = function (evt) {
+	socket.onclose = function (evt) {
 		console.log("断开连接");
 	};
 }
+
+// export socket;

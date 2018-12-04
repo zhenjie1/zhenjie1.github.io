@@ -155,7 +155,8 @@ export default {
   methods: {
     // 理赔跳转
     lpBtn() {
-		this.$router.push('/user/insuranceList/claims/' + this.zData.claimProcess)
+		sessionStorage.claims = this.zData.claimProcess
+		this.$router.push('/user/insuranceList/claims/')
     },
     //投保期限选择
     choose: function(index) {
