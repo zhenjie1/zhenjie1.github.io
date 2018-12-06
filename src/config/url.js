@@ -1,5 +1,5 @@
-// export const socketUrl = 'ty.tianjistar.com';
-export const socketUrl = '172.18.1.90:8181';
+export const socketUrl = 'ty.tianjistar.com';
+// export const socketUrl = '172.18.1.90:8181';
 // export const socketUrl = '172.18.1.82:8181';
 
 // 线上

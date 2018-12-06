@@ -5,7 +5,7 @@ import { URL } from './url'
 import { mapActions } from 'vuex'
 
 axios.defaults.withCredentials = true
-axios.defaults.timeout = 5000;
+// axios.defaults.timeout = 5000;
 
 //http 拦截器
 axios.interceptors.request.use(config => {
@@ -24,16 +24,19 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(data => {// 响应成功关闭loading
 	Vue.$vux.loading.hide()
 	return data
-}, error => {
-	Vue.$vux.loading.hide()
-	Vue.$vux.toast.text('请求失败', 'middle')
-	return Promise.reject(error)
-})
+}
+	, error => {
+		Vue.$vux.loading.hide()
+		Vue.$vux.toast.text('请求失败', 'middle')
+		return Promise.reject(error)
+	}
+)
 // axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 
 export default async function (url = '', data = {}, type = 'POST', urlAll = null, config = {}) {
 
 	url = url.indexOf('http') !== -1 ? url : URL + url;
+	console.log(data)
 
 	if (urlAll === null) data = qs.stringify(data);
 
@@ -63,7 +66,7 @@ export default async function (url = '', data = {}, type = 'POST', urlAll = null
 
 		})
 		.catch(e => {
-			console.log('报错了，快去看看代码吧！ -- ', e)
+			console.log('报错了，快去看看代码吧！ -- ')
 			//			window.location.href = '/#/user/login'
 		});
 	return ajax

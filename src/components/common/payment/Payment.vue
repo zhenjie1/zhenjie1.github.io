@@ -81,6 +81,7 @@ export default {
 		},
 		buyRescusCard(){
 			var d = this.data;
+			console.log(d)
 			// 保存+购买保险
 			paySave( d.id, d.dayId, d.typeMen, d.userName, d.user_id_number, d.isMc, d.isHospital, d.hospitalImgs, this.token, d.isUploadimg ).then(res => {
 				if (res && res.code == 2) {
@@ -107,36 +108,37 @@ export default {
 					this.token = res.rows.token;
 
 					if (this.pageNum == 1) {
-					// 购买保险
-					insListDet(this.id, this.token).then(res => {
-						allMoney().then(res => {
-						if (res.code == 2) {
-							this.$vux.toast.text("购买成功");
-							setTimeout(() => window.location.reload(), 2000 );
-						} else if (res.code == 101) {
-							this.$vux.toast.text("验证失败");
-						} else if (res.code == 300) {
-							this.$vux.toast.text("余额不足请充值");
-						}
-						this.money = res.rows.money;
-						this.options[0]["txt"] = `可用余额 ${this.money} 元`;
+						// 购买保险
+						insListDet(this.id, this.token).then(res => {
+							allMoney().then(res => {
+							if (res.code == 2) {
+								this.$vux.toast.text("购买成功");
+								setTimeout(() => window.location.reload(), 2000 );
+							} else if (res.code == 101) {
+								this.$vux.toast.text("验证失败");
+							} else if (res.code == 300) {
+								this.$vux.toast.text("余额不足请充值");
+							}
+							this.money = res.rows.money;
+							this.options[0]["txt"] = `可用余额 ${this.money} 元`;
+							});
 						});
-					});
 					} else if (this.pageNum == 0) {
-					// 救援卡
-					rescueMoney(this.rescueId, this.token).then(res => {
-						this.$vux.toast.text(res.msg);
-						if (res.code == 2) {
-						this.$emit("vipType", 1);
-						this.$router.push("/user/personal");
-						}
-						allMoney().then(res => {
-						this.money = res.rows.money;
-						this.options[0]["txt"] = `可用余额 ${this.money} 元`;
+						// 救援卡
+						rescueMoney(this.rescueId, this.token).then(res => {
+							this.$vux.toast.text(res.msg);
+							if (res.code == 2) {
+							this.$emit("vipType", 1);
+							this.$router.push("/user/personal");
+							}
+							allMoney().then(res => {
+							this.money = res.rows.money;
+							this.options[0]["txt"] = `可用余额 ${this.money} 元`;
+							});
 						});
-					});
 					} else if (this.pageNum == 2) {
-						this.buyRescusCard()
+						// this.buyRescusCard()
+						this.$emit('payTJH', this.token)
 					}
 				});
 				});

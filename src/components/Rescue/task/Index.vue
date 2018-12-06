@@ -86,15 +86,12 @@ import socket from "@/assets/js/websocket.js";
 import Personnel from "./orders/personnel";
 import { RescueMenu, userMenu, rescueType } from "@/assets/js/config";
 import { findMissedlist, orderBtn, findMyListOk, cancelOrder, cancelOffice, addPoint } from "@/config/getData";
-import { getStore, setStore, isLogin, setInterUploadLatitudeLongitude } from "../../../config/mUtils";
+import { getStore, setStore, isLogin, setInterUploadLatitudeLongitude, clearUploadPointInter } from "../../../config/mUtils";
 import { initFun, orderBtnFun, topNavMenuFun, setBtnTxtFun } from "../../../assets/js/orders";
 import addScroll from "@/assets/js/scrollLoad";
 import BottomLine from "../../common/bottomLine/BottomLine";
 import { mapState, mapActions } from 'vuex'
 import LatAndLon from '../../../assets/js/LatAndLon'
-
-import latitudeLongitudeUpload from '../../../assets/js/latitudeLongitudeUpload.js'
-
 
 export default {
 	data() {
@@ -158,6 +155,10 @@ export default {
 
 		//查看 url 是否带有经纬度，有则存到 vuex 中
 		LatAndLon.call(this, 'rescue');
+	},
+	beforeDestroy(){
+		clearUploadPointInter()
+		console.log('清除定时器')
 	},
 	methods: {
 		...mapActions(['setGeographicLocation']),
@@ -227,7 +228,7 @@ export default {
 
 			//初始化数据请求
 			initFun.call(this, this.userType).then( res => {
-				latitudeLongitudeUpload.call(this, this.infoData)
+				setStore('orderInitData', this.infoData)	//缓存初始化数据，方便客户获取救援端位置
 			});
 
 			//对推送过来的数据进行处理

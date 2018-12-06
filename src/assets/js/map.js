@@ -1,11 +1,15 @@
 import { findlist } from '../../config/getData.js'
+import { getStore } from '../../config/mUtils'
+import globalVal from './globalVar'
+import store from '../../store/index'
+import latitudeLongitudeUpload from './latitudeLongitudeUpload'
 
 var enterStr = null;
 
 var longitude = null,
 	latitude = null;
-
-var map, vm, userMarker;
+// console.log(!!store.state.userInfo)
+var map, vm, userMarker, userType = !store.state.userInfo ? '3' : store.state.userInfo.userType ;
 
 window.initialize = function () {
 	const geographicLocation = vm.$store.state.geographicLocation
@@ -15,6 +19,8 @@ window.initialize = function () {
 	var ggPoint = new BMap.Point(longitude, latitude);
 
 	map = new BMap.Map("map");
+	globalVal.BMap = BMap
+	globalVal.map = map
 	map.centerAndZoom(ggPoint, 19);
 	map.enableScrollWheelZoom(true);
 
@@ -34,7 +40,10 @@ window.initialize = function () {
 			if (enterStr == 'home') {
 				getRescue(vm, map, lngAndLat)
 				inputAuto(map)
-			} else if (enterStr == 'rescue') {
+			}else if(enterStr == 'rescue' && userType == '3'){	//如果是客户端
+
+				clientMapFun()
+			}else if (enterStr == 'rescue' && (userType == '2' || userType == '4') ) {	//如果是救援端
 				var p1 = new BMap.Point(lngAndLat.lng, lngAndLat.lat);
 				var p2 = new BMap.Point(sessionStorage.lngLat.split(',')[1], sessionStorage.lngLat.split(',')[0]);
 
@@ -62,6 +71,14 @@ window.initialize = function () {
 		}]
 	});
 };
+
+//客户端进入地图页面执行
+function clientMapFun(){
+	var initData = getStore('orderInitData')
+
+	var pointArr = globalVal.clientSearchPoint;
+	latitudeLongitudeUpload( initData )
+}
 
 window.startMap = function () {
 	var myLongitude = this.geographicLocation.Longitude
@@ -347,6 +364,3 @@ function quickSort(arr) {
 	//递归
 	return quickSort(left).concat([pivot], quickSort(right));
 }
-
-
-

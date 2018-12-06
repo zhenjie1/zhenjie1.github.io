@@ -104,14 +104,14 @@ export const mergeObj = (newObj, oldObj) => {
 }
 
 export const titleConfig = (to) => {
-	// console.log(to)
+	console.log(to)
 	const path = to.path
 
 	const reloadHide = []
 	const returnHide = ['/user/personal', '/user/home']
 	const titleHide = ['/user/login', '/user/agree.?']
 
-	const simpleTheme = ['/rescue/map']
+	const simpleTheme = ['/rescue/map','/user/insuranceList/insuranceDet']
 
 	let title = {
 		text: to.meta.title,		//标题文字
@@ -133,7 +133,7 @@ export const titleConfig = (to) => {
 		if (reg.test(path)) title.isShow = false
 	})
 	simpleTheme.map(v => {
-		var reg = new RegExp('^' + v + '$')
+		var reg = new RegExp('^' + v)
 		if (reg.test(path)) title.theme = 'simple'
 	})
 	return title
@@ -141,17 +141,23 @@ export const titleConfig = (to) => {
 
 //定时器开启，把救援端的经纬度传给后台，后台上传到百度
 //this 环境是 Vue 实例
+var setInterUploadFn, setInterSendPointFn;
 export const setInterUploadLatitudeLongitude = function (id) {
 	var rescusPositioonPoint_list = [];
 	var [collection, upload] = [5000, 30000];// 5秒采集一次， 30秒上传一次
 
 	uploadLatitudeLongitude(id, rescusPositioonPoint_list)
-	setInterval(() => uploadLatitudeLongitude(id, rescusPositioonPoint_list), collection);
+	setInterUploadFn = setInterval(() => uploadLatitudeLongitude(id, rescusPositioonPoint_list), collection);
 
-	setInterval(() => {
+	setInterSendPointFn = setInterval(() => {
 		socket.send(JSON.stringify(rescusPositioonPoint_list))
 		rescusPositioonPoint_list = [];
 	}, upload);
+}
+
+export const clearUploadPointInter = function(){
+	clearInterval(setInterUploadFn);
+	clearInterval(setInterSendPointFn);
 }
 //websocket 推送 给服务器
 function uploadLatitudeLongitude(id, pointSaveArr) {

@@ -26,7 +26,8 @@
 <script>
 import MyCode from './code'
 import Pass from './pass'
-import { phoneSendCode, checkCode } from '../../../config/getData.js'
+import { phoneSendCode, checkCode, userCheck } from '../../../config/getData.js'
+import { throws } from 'assert';
 
 export default {
 	data(){
@@ -66,13 +67,27 @@ export default {
 			} )
 		},
 		next(){
-			phoneSendCode(this.phone).then( res => {
+			//检查手机号是否注册过
+			let phoneReg = /^1[3-9][0-9]{9}$/;
+			if(!phoneReg.test(this.phone)) return this.$vux.toast.text('手机号格式不正确')
 
-				if(res && res.code == 2){
-					this.childIndex = 1
+			userCheck(this.phone).then( res => {
+
+				if( res.code != 2) {
+					this.$vux.toast.text(res.msg)
+					throw new Error(res.msg)
 				}
 
+			}).then( res => {
+				phoneSendCode(this.phone).then( res => {
+
+					if(res && res.code == 2){
+						this.childIndex = 1
+					}
+
+				})
 			})
+
 		}
 	}
 }

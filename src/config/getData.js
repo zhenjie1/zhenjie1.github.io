@@ -47,6 +47,10 @@ export const registered = (mobile, password, validateCode) => fetch('/mobile/reg
 	validateCode
 })
 
+export const userCheck = phone => fetch('/mobile/userCheck',{
+	phone
+})
+
 //登录
 export const login = (username, password, mobileLogin) => fetch('/a/login', {
 	username,
@@ -229,7 +233,7 @@ export const insRecord = (pageNo, pageSize, type) => fetch('/a/mobile/orderInsur
 
 export const insUpImages = (data, type, config) => fetch('/a/alioss/uploadFile', data, 'POST', type, config)
 // 保存购买保险信息
-export const paySave = (id, dayId, typeMen, userName, user_id_number, isMc, isHospital, hospitalImgs, token, isUploadimg) => fetch('/a/mobile/payInsurance/save', { id, dayId, typeMen, userName, user_id_number, isMc, isHospital, hospitalImgs, token, isUploadimg })
+export const paySave = data => fetch('/a/mobile/payInsurance/save', data)
 
 //	查询理赔记录接口
 export const queryIns = orderinsId => fetch('/a/mobile/ofclaimsInsurance/findOfclaimsByOrder', {

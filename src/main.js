@@ -12,8 +12,10 @@ import { titleConfig } from './config/mUtils.js'
 
 import Toast from 'vux/src/plugins/toast/index'
 import loading from 'vux/src/plugins/loading/'
+import Datetime from 'vux/src/plugins/datetime/'
 Vue.use(Toast)
 Vue.use(loading)
+Vue.use(Datetime)
 
 Vue.config.productionTip = false
 
