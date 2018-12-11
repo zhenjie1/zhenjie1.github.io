@@ -6,10 +6,12 @@ import latitudeLongitudeUpload from './latitudeLongitudeUpload'
 
 var enterStr = null;
 
+var setInterPoiintObj = null;
+
 var longitude = null,
 	latitude = null;
 // console.log(!!store.state.userInfo)
-var map, vm, userMarker, userType = !store.state.userInfo ? '3' : store.state.userInfo.userType ;
+var map, vm, userMarker, userType = !store.state.userInfo ? '3' : store.state.userInfo.userType;
 
 window.initialize = function () {
 	const geographicLocation = vm.$store.state.geographicLocation
@@ -40,10 +42,9 @@ window.initialize = function () {
 			if (enterStr == 'home') {
 				getRescue(vm, map, lngAndLat)
 				inputAuto(map)
-			}else if(enterStr == 'rescue' && userType == '3'){	//如果是客户端
-
+			} else if (enterStr == 'rescue' && userType == '3') {	//如果是客户端
 				clientMapFun()
-			}else if (enterStr == 'rescue' && (userType == '2' || userType == '4') ) {	//如果是救援端
+			} else if (enterStr == 'rescue' && (userType == '2' || userType == '4')) {	//如果是救援端
 				var p1 = new BMap.Point(lngAndLat.lng, lngAndLat.lat);
 				var p2 = new BMap.Point(sessionStorage.lngLat.split(',')[1], sessionStorage.lngLat.split(',')[0]);
 
@@ -73,18 +74,28 @@ window.initialize = function () {
 };
 
 //客户端进入地图页面执行
-function clientMapFun(){
+function clientMapFun() {
 	var initData = getStore('orderInitData')
 
-	var pointArr = globalVal.clientSearchPoint;
-	latitudeLongitudeUpload( initData )
+	latitudeLongitudeUpload(initData);
+	setInterPoiintObj = setInterval(() => latitudeLongitudeUpload(initData), 30000)	//每30秒，更新救援人员位置
 }
 
-window.startMap = function () {
+//清除定时器 - 客户获取救援人员位置
+export const setInterPoiintFn = function () {
+	try {
+		console.log('清除定时器 - 客户获取救援人员位置')
+		clearInterval(setInterPoiintObj)
+	} catch (err) {
+
+	}
+}
+
+window.startMap = function (lng,lat) {
 	var myLongitude = this.geographicLocation.Longitude
 	var myLatitude = this.geographicLocation.Latitude
-	var heLongitude = 113.706701
-	var heLatitude = 34.756492
+	var heLongitude = lng
+	var heLatitude = lat
 	var myName, heName;
 	getGeocoder(myLongitude, myLatitude).then(res => {
 		myName = res
@@ -93,29 +104,13 @@ window.startMap = function () {
 			heName = res
 		})
 	}).then(() => {
-		console.log(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
-		bridge.startMapInAndroid(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
+		try {	//下面的代码在安卓环境烟可以运行，所以 try 了一下
+			console.log(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
+			bridge.startMapInAndroid(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
+		} catch (err) {
+			console.error(err)
+		}
 	})
-
-}
-//更新我的位置
-// var myGeography;
-window.myGeography = function (latitude, longitude) {
-	console.log(latitude,longitude)
-	// return
-	var point = new BMap.Point(latitude, longitude)
-	userMarker.setPosition(point)
-
-	var geographicLocation = {
-		Latitude: point.lat,
-		Longitude: point.lng
-	}
-	try {
-		vm.$store.dispatch('setGeographicLocation', geographicLocation)
-		// map.panTo(point);
-	} catch (e) {
-		console.error(e)
-	}
 
 }
 

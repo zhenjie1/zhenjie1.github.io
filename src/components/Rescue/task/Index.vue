@@ -1,14 +1,13 @@
 <template>
 	<div class="task">
 		<ul class="nav">
-			<li v-for="(menuVal,ind) in RescueMenu" :key="ind" :class="{checked: ind == navIndex-1}" @click='navIndex = ind + 1,isShow()'>
+			<li v-for="(menuVal,ind) in RescueMenu" :key="ind" v-if="menuVal != ''" :class="{checked: ind == navIndex}" @click='topNavEv( ind )'>
 				<span>{{menuVal}}</span>
 			</li>
 		</ul>
-
 		<div class="ordersComm Orders">
 			<ul>
-				<li v-for="(item,index) in infoData" v-if="listIsShow(item)" :ref='"li"' @click='localItem(item)' :key="index" :class='"order"'>
+				<li v-for="(item,index) in infoData" :ref='"li"' @click='localItem(item)' :key="index" :class='"order"' v-if="isOrderShow(item)">
 					<!-- {{index}} -->
 					<router-link to='/rescue/task/details'>
 						<div class="title">
@@ -70,6 +69,7 @@
 		<confirm v-model="showCancel" :hide-on-blur='true' :show-input='true' placeholder='请输入取消理由' @on-confirm='cancelEv' :title='"取消理由"' theme="android" confirm-text='确定' cancel-text='取消'></confirm>
 		<confirm v-model="showCancelRefuse" :hide-on-blur='true' :show-input='true' placeholder='请输入拒绝理由' @on-confirm='cancelRefuseEv' :title='"拒绝理由"' theme="android" confirm-text='确定' cancel-text='取消'></confirm>
 
+		<!-- 我是底线 -->
 		<bottom-line v-if="liLength > 0"></bottom-line>
 
 		<div class="Empty" v-if="liLength == 0"><i class="iconfont icon-icondd1"></i>
@@ -85,9 +85,9 @@ import Confirm from "vux/src/components/confirm/";
 import socket from "@/assets/js/websocket.js";
 import Personnel from "./orders/personnel";
 import { RescueMenu, userMenu, rescueType } from "@/assets/js/config";
-import { findMissedlist, orderBtn, findMyListOk, cancelOrder, cancelOffice, addPoint } from "@/config/getData";
+import { orderBtn, cancelOrder, cancelOffice } from "@/config/getData";
 import { getStore, setStore, isLogin, setInterUploadLatitudeLongitude, clearUploadPointInter } from "../../../config/mUtils";
-import { initFun, orderBtnFun, topNavMenuFun, setBtnTxtFun } from "../../../assets/js/orders";
+import { initFun, orderBtnFun, setBtnTxtFun, orderSendAjax, orderIsShow } from "../../../assets/js/orders";
 import addScroll from "@/assets/js/scrollLoad";
 import BottomLine from "../../common/bottomLine/BottomLine";
 import { mapState, mapActions } from 'vuex'
@@ -101,12 +101,12 @@ export default {
 			navIndex: 1,
 			currentView: "orders",
 			isShowPer: false,
-			infoData: [],
 			pageNum: 1,
 			liLength: -1,
 			userType: "", //用户类型
 			total: 0, //共多少条数据
 			socketData: {},
+			infoData: [],
 			originalData: [],
 			originaId: "",
 			clickObj: "",
@@ -118,7 +118,10 @@ export default {
 		...mapState([
 			'userInfo',
 			'homeUrl'
-		])
+		]),
+		navIndexStore(){
+			return getStore('taskOrderIndex') || 0
+		}
 	},
 	filters: {
 		office(str) {
@@ -136,29 +139,23 @@ export default {
 		$route: "initData"
 	},
 	created() {
-
 		if (!isLogin.call(this)) {
 			this.$vux.toast.text('请先登录！')
 			this.$router.push('/user/login')
 			return
 		}
+
+		//必须先设置 navIndex 的值，后执行 this.initData  方法
+		this.navIndex = getStore('taskOrderIndex') || 0
 		this.initData();
 
 		if(this.userType == '3') addScroll(this);
-
-		//如果登录的人需要采集点，定时用 webSocket 推送
-		var rescueId = getStore('rescueId')
-		// console.log(rescueId, this.userInfo.id)
-		if(rescueId === this.userInfo.id){
-			setInterUploadLatitudeLongitude(rescueId)
-		}
 
 		//查看 url 是否带有经纬度，有则存到 vuex 中
 		LatAndLon.call(this, 'rescue');
 	},
 	beforeDestroy(){
 		clearUploadPointInter()
-		console.log('清除定时器')
 	},
 	methods: {
 		...mapActions(['setGeographicLocation']),
@@ -170,6 +167,15 @@ export default {
 			cancelOffice(this.originaId, val).then(res => {
 				this.clickObj.stateId = "99";
 			});
+		},
+		isOrderShow(item){
+			item.stateId = parseInt(item.stateId)
+			return orderIsShow.call(this).indexOf(item.stateId) !== -1
+		},
+		getCollectionId(){
+			let data = this.originalData.filter( v => v.stateId == 2)
+			if( data.length == 0) return '';
+			return data[0]
 		},
 		localItem(item) {
 			setStore("viewCurrentData", item);
@@ -193,22 +199,10 @@ export default {
 				// this.$vux.toast.text("您未拍摄照片");
 			}
 		},
-		listIsShow(item) {
-			// if(this.userType == 2){
-			// 	if(this.navIndex == 1) return item.stateId == 0 || item.stateId == 1
-			// 	return item.stateId == this.navIndex
-			// }else if(this.userType == 3){
-			// 	return true;
-			// }
-			if (this.userType == 3) {
-				return true;
-			} else {
-				if (this.navIndex == 1) return item.stateId == 0 || item.stateId == 1;
-				return item.stateId == this.navIndex;
-			}
-		},
-		isShow() {
-			topNavMenuFun.call(this);
+		topNavEv(index) {	//点击顶部导航
+			this.navIndex = index
+			setStore('taskOrderIndex', this.navIndex)
+			orderSendAjax.call(this)
 		},
 		personal() {
 			if (this.userType == 3) {
@@ -228,6 +222,14 @@ export default {
 
 			//初始化数据请求
 			initFun.call(this, this.userType).then( res => {
+
+				//如果登录的人需要采集点，定时用 webSocket 推送
+				var rescueId = this.getCollectionId();
+				console.log(rescueId.collectionId , this.userInfo.id)
+				if(rescueId.collectionId === this.userInfo.id){
+					setInterUploadLatitudeLongitude(rescueId.id)
+				}
+
 				setStore('orderInitData', this.infoData)	//缓存初始化数据，方便客户获取救援端位置
 			});
 
@@ -262,9 +264,12 @@ export default {
 		statusSet(item) {
 			return orderBtn(item.id, item.stateId + 1).then(res => {
 				if (res.code == 2) {
-					item.stateId = item.stateId + 1;
+					this.$set(item, 'stateId', item.stateId + 1)
 				}
-
+				var filterArr = this.infoData.filter( v => {
+					orderIsShow.call(this).indexOf(parseInt(v.stateId)) !== -1
+				})
+				this.liLength = filterArr.length
 				return res
 			});
 		},

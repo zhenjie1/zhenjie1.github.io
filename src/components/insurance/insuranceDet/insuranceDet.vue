@@ -58,9 +58,9 @@
 				</ul>
 			</div>
 
-			<x-input title="车牌号" v-model="plateNumber" placeholder='车牌号'></x-input>
-			<datetime title="行驶证发证日期" v-model="certificateTime" placeholder='请选择行驶证发证日期' value-text-align="left"></datetime>
-			<x-address title='投保地区' :list='ChinaAddressV4Data' placeholder='请选择投保地区' v-model="areaInsured" value-text-align="left"/>
+			<x-input title="车牌号" v-if="initData.isCarnum == '1'" v-model="plateNumber" placeholder='车牌号'></x-input>
+			<datetime title="行驶证发证日期" v-if="initData.isCarnumdate == '1'" v-model="certificateTime" placeholder='请选择行驶证发证日期' value-text-align="left"></datetime>
+			<x-address title='投保地区' v-if="initData.isInsurearea == '1'" :list='ChinaAddressV4Data' placeholder='请选择投保地区' v-model="areaInsured" value-text-align="left"/>
 		</group>
 		<div class="insurUpImg">
 			<router-link tag='div' class="clearfix" v-show='ybIndex == 1' :to="'/user/insuranceList/insuranceDet'+this.id +'/insurImgUp'">
@@ -109,6 +109,7 @@ export default {
   },
   data() {
     return {
+		initData:{},
 	  ChinaAddressV4Data: ChinaAddressV4Data,
       tip: "点击上传证明(医保/住院证明)",
       isA: false,
@@ -228,11 +229,11 @@ export default {
         this.$vux.toast.text("请阅读并同意投保条约");
       } else if (this.ybIndex == 1 && localStorage.ImgDataArr == undefined) {
         this.$vux.toast.text("请上传住院证明");
-      } else if(!this.plateNumber){
+      } else if( this.initData.isCarnum == '1' && !this.plateNumber){
 		this.$vux.toast.text("请填写车牌号");
-	  } else if(!this.certificateTime){
+	  } else if( this.initData.isCarnumdate == '1' && !this.certificateTime){
 		this.$vux.toast.text("请选择行驶证发证日期");
-	  } else if(!this.areaInsured.length){
+	  } else if(this.initData.isInsurearea == '1' && !this.areaInsured.length){
 		this.$vux.toast.text("请选择投保地区");
 	  } else {
 		let [userName, user_id_number, typeMen, isMc, isHospital] = [this.input1, this.input2, this.penIndex, this.ybIndex, this.zyIndex]
@@ -246,7 +247,7 @@ export default {
 		let isUploadimg = this.zData.isUploadimg;
 		let isCarnum = this.plateNumber,
 			isCarnumdate = this.certificateTime,
-			isInsurearea = document.querySelector('.vux-popup-picker-value.vux-cell-value').innerText;
+			isInsurearea =  this.initData.isInsurearea == '1' ? document.querySelector('.vux-popup-picker-value.vux-cell-value').innerText : '';
         if (!dayId) dayId = this.dateData[0].insuranceId;
 
 		this.propsData = { id, dayId, typeMen, userName, user_id_number, isMc, isHospital, hospitalImgs, paymon, isCarnum, isCarnumdate, isInsurearea };
@@ -261,6 +262,7 @@ export default {
     //保险天数选项初始值
     var id = this.$route.params.id;
     insListReceive(id).then(res => {
+	  this.initData = res.rows
 	  this.topBanner = res.rows.cover
 	  this.dateData = res.rows.insuranceList;
 	  this.protocolid = res.rows.protocolid

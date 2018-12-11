@@ -39,7 +39,7 @@ router.beforeEach((to, from, next) => {
 	next()
 
 })
-
+// console.log(window.location.href)
 // // alert(window.location.href)
 
 

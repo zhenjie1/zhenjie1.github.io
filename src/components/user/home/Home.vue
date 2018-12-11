@@ -1,6 +1,5 @@
 <template>
 	<div class="home">
-		<!-- <div class="startMap" @click='startMap'>唤起地图</div> -->
 		<div class="map">
 			<mapp :screen='isScreen' :lngLat='lngAndLat' @screen='screenEv' @sos='sosOrdersEv'></mapp>
 			<div class="search" :class="{screen: isScreen}">
@@ -103,9 +102,6 @@ export default {
 			'setGeographicLocation',
 			'setHomeUrl',
 		]),
-		startMap(){
-			window.startMap.call(this)
-		},
 		setLngLat(item){
 			this.lngAndLat = item.longitude + ',' + item.dimensions
 		},
@@ -193,7 +189,6 @@ export default {
 .search input::-moz-placeholder { color: white;}
 .search input:-ms-input-placeholder { color: white;}
 
-.startMap{position: fixed;left:50%;bottom:120px;transform: translateX(-50%);z-index: 1000;background-color: #3cc523;font-size: 16px;padding:10px 15px;color:white;}
 .home{position: relative;
 	.map{height: 370px;}
 	.fixed {

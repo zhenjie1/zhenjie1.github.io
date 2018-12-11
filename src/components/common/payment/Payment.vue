@@ -81,7 +81,6 @@ export default {
 		},
 		buyRescusCard(){
 			var d = this.data;
-			console.log(d)
 			// 保存+购买保险
 			paySave( d.id, d.dayId, d.typeMen, d.userName, d.user_id_number, d.isMc, d.isHospital, d.hospitalImgs, this.token, d.isUploadimg ).then(res => {
 				if (res && res.code == 2) {

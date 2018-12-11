@@ -36,7 +36,6 @@ axios.interceptors.response.use(data => {// 响应成功关闭loading
 export default async function (url = '', data = {}, type = 'POST', urlAll = null, config = {}) {
 
 	url = url.indexOf('http') !== -1 ? url : URL + url;
-	console.log(data)
 
 	if (urlAll === null) data = qs.stringify(data);
 
@@ -71,3 +70,4 @@ export default async function (url = '', data = {}, type = 'POST', urlAll = null
 		});
 	return ajax
 }
+

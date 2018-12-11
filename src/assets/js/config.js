@@ -16,5 +16,5 @@ export const userType = {
 }
 
 //救援端 menu 配置
-export const RescueMenu = ['接单','救援途中','施救中','已完成']
+export const RescueMenu = ['','接单','救援途中','施救中','已完成']
 export const userMenu = ['全部','接单','施救中','已完成', '已取消']

@@ -104,7 +104,7 @@ export const mergeObj = (newObj, oldObj) => {
 }
 
 export const titleConfig = (to) => {
-	console.log(to)
+	// console.log(to)
 	const path = to.path
 
 	const reloadHide = []
@@ -144,15 +144,17 @@ export const titleConfig = (to) => {
 var setInterUploadFn, setInterSendPointFn;
 export const setInterUploadLatitudeLongitude = function (id) {
 	var rescusPositioonPoint_list = [];
-	var [collection, upload] = [5000, 30000];// 5秒采集一次， 30秒上传一次
+	var [collection, upload] = [1000, 5000];// 5秒采集一次， 30秒上传一次
 
 	uploadLatitudeLongitude(id, rescusPositioonPoint_list)
 	setInterUploadFn = setInterval(() => uploadLatitudeLongitude(id, rescusPositioonPoint_list), collection);
 
-	setInterSendPointFn = setInterval(() => {
+	// setInterSendPointFn = setInterval(() => {
+		// console.log('推送了一次', rescusPositioonPoint_list)
+		// console.log(JSON.stringify(rescusPositioonPoint_list))
 		socket.send(JSON.stringify(rescusPositioonPoint_list))
 		rescusPositioonPoint_list = [];
-	}, upload);
+	// }, upload);
 }
 
 export const clearUploadPointInter = function(){
@@ -163,28 +165,29 @@ export const clearUploadPointInter = function(){
 function uploadLatitudeLongitude(id, pointSaveArr) {
 	let latLon = store.state.geographicLocation;
 	pointSaveArr.push({
-		latitude: latLon.Latitude,
-		longitude: latLon.Longitude,
+		latitude: latLon.Longitude,
+		longitude: latLon.Latitude,
 		entity_name: id,
 		loc_time: parseInt(new Date().getTime() / 1000),
-		coord_type_input: 'wgs84'
+		coord_type_input: 'bd09ll'
 	})
-
-	// try {
-	// 	socket.send(JSON.stringify(pointSaveArr))
-	// } catch (err) {
-
-	// }
 }
 
 export const sendJsonp = function (url, data, cbFunName) {
+
 	let script = document.createElement("script");
+	script.className = 'jsonpRequest'
+
 	var query = '?';
-	for (let i in data) {
-		query += i + '=' + data[i] + '&'
-	}
+	for (let i in data) query += i + '=' + data[i] + '&'
 	query += 'callback=' + cbFunName
-	// console.log(query)
+
 	script.src = url + query;
 	document.body.appendChild(script);
+
+
+	//删除页面上的jsonp script
+	var body = document.body;
+	var jsonpEl = document.getElementsByClassName('jsonpRequest')[0]
+	body.removeChild(jsonpEl)
 }

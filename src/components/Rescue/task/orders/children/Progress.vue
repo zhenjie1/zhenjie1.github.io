@@ -1,5 +1,6 @@
 <template>
 	<div class="progress">
+		<title-header />
 		<div class="rescueInfo">
 			<div class="init">
 				<p>救援单号：<span>{{detaData.uuid}}</span></p>
@@ -25,6 +26,7 @@
 <script>
 import { getStore } from '../../../../../config/mUtils'
 import { userProgress } from '../../../../../config/getData'
+import titleHeader from '../../../../common/title'
 export default {
 	data(){
 		return {
@@ -32,6 +34,7 @@ export default {
 			progressData:[]
 		}
 	},
+	components:{titleHeader},
 	mounted(){
 		this.detaData = getStore('viewCurrentData')
 		let id = this.detaData.id;
