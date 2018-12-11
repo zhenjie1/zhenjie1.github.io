@@ -1,20 +1,29 @@
 import { findlist } from '../../config/getData.js'
+import { getStore } from '../../config/mUtils'
+import globalVal from './globalVar'
+import store from '../../store/index'
+import latitudeLongitudeUpload from './latitudeLongitudeUpload'
 
 var enterStr = null;
 
+var setInterPoiintObj = null;
+
 var longitude = null,
 	latitude = null;
-
-var map, vm, userMarker;
+// console.log(!!store.state.userInfo)
+var map, vm, userMarker, userType = !store.state.userInfo ? '3' : store.state.userInfo.userType;
 
 window.initialize = function () {
-	longitude = vm.$store.state.geographicLocation.Longitude
-	latitude = vm.$store.state.geographicLocation.Latitude
+	const geographicLocation = vm.$store.state.geographicLocation
+	longitude = geographicLocation && geographicLocation.Longitude
+	latitude = geographicLocation && geographicLocation.Latitude
 
 	var ggPoint = new BMap.Point(longitude, latitude);
 
 	map = new BMap.Map("map");
-	map.centerAndZoom(ggPoint, 17);
+	globalVal.BMap = BMap
+	globalVal.map = map
+	map.centerAndZoom(ggPoint, 19);
 	map.enableScrollWheelZoom(true);
 
 	translateCallback(vm)
@@ -33,7 +42,9 @@ window.initialize = function () {
 			if (enterStr == 'home') {
 				getRescue(vm, map, lngAndLat)
 				inputAuto(map)
-			} else if (enterStr == 'rescue') {
+			} else if (enterStr == 'rescue' && userType == '3') {	//如果是客户端
+				clientMapFun()
+			} else if (enterStr == 'rescue' && (userType == '2' || userType == '4')) {	//如果是救援端
 				var p1 = new BMap.Point(lngAndLat.lng, lngAndLat.lat);
 				var p2 = new BMap.Point(sessionStorage.lngLat.split(',')[1], sessionStorage.lngLat.split(',')[0]);
 
@@ -62,11 +73,29 @@ window.initialize = function () {
 	});
 };
 
-window.startMap = function () {
+//客户端进入地图页面执行
+function clientMapFun() {
+	var initData = getStore('orderInitData')
+
+	latitudeLongitudeUpload(initData);
+	setInterPoiintObj = setInterval(() => latitudeLongitudeUpload(initData), 30000)	//每30秒，更新救援人员位置
+}
+
+//清除定时器 - 客户获取救援人员位置
+export const setInterPoiintFn = function () {
+	try {
+		console.log('清除定时器 - 客户获取救援人员位置')
+		clearInterval(setInterPoiintObj)
+	} catch (err) {
+
+	}
+}
+
+window.startMap = function (lng,lat) {
 	var myLongitude = this.geographicLocation.Longitude
 	var myLatitude = this.geographicLocation.Latitude
-	var heLongitude = 113.706701
-	var heLatitude = 34.756492
+	var heLongitude = lng
+	var heLatitude = lat
 	var myName, heName;
 	getGeocoder(myLongitude, myLatitude).then(res => {
 		myName = res
@@ -75,27 +104,13 @@ window.startMap = function () {
 			heName = res
 		})
 	}).then(() => {
-		console.log(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
-		bridge.startMapInAndroid(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
+		try {	//下面的代码在安卓环境烟可以运行，所以 try 了一下
+			console.log(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
+			bridge.startMapInAndroid(myName, myLatitude, myLongitude, heName, heLatitude, heLongitude)
+		} catch (err) {
+			console.error(err)
+		}
 	})
-
-}
-//更新我的位置
-var myGeography;
-window.myGeography = function () {
-	var point = new BMap.Point(113.736607, 34.776974)
-	userMarker.setPosition(point)
-
-	var geographicLocation = {
-		Latitude: point.lat,
-		Longitude: point.lng
-	}
-	try {
-		vm.$store.dispatch('setGeographicLocation', geographicLocation)
-		map.panTo(point);
-	} catch (e) {
-		console.error(e)
-	}
 
 }
 
@@ -344,6 +359,3 @@ function quickSort(arr) {
 	//递归
 	return quickSort(left).concat([pivot], quickSort(right));
 }
-
-
-

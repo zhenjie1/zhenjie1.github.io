@@ -40,16 +40,14 @@
 					<i class="iconfont icon-jiantou"></i>
 				</div>
 			</router-link>
-			<router-link to='/user/buyRecord'>
-				<li>
-					<div class="l">
-						<i class="iconfont icon-jiaoyijilu"></i>
-						<span>保险记录</span>
-					</div>
-					<div class="r">
-						<i class="iconfont icon-jiantou"></i>
-					</div>
-				</li>
+			<router-link to='/user/buyRecord' tag='li'>
+				<div class="l">
+					<i class="iconfont icon-jiaoyijilu"></i>
+					<span>保险记录</span>
+				</div>
+				<div class="r">
+					<i class="iconfont icon-jiantou"></i>
+				</div>
 			</router-link>
 			<router-link to='personal/remind' tag='li'>
 				<div class="l">

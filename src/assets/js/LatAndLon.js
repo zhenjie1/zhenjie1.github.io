@@ -6,13 +6,14 @@ export default function (enterStr) {
 
 	//如果是 Android 传进来的经纬度，直接返回，无需调用原生 api
 	var position = isGeographicLocation.call(this)
-	console.log(position)
 	if(position){
 		return Promise.resolve(position)
 	}
 
+	if( enterStr == 'rescue') return Promise.resolve({});
 	if( !isHome() && enterStr !== 'rescue' ) return Promise.resolve({}); //如果不是首页，没必要获取位置
 
+	console.log('原生定位开始')
 	return new Promise((resolve, reject) => {
 		if (!navigator.geolocation) {
 			alert("你的浏览器不支持定位，无法获取到您的位置！");

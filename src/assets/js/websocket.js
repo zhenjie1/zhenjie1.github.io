@@ -1,22 +1,30 @@
 import { socketUrl } from '../../config/url'
+import { uploadOrderStatus } from './orders'
+
 var wsUrl = 'ws://' + socketUrl + '/a/tjSocket'
 
-export default function (cb) {
-	var ws = new WebSocket(wsUrl)
+// window.ws = undefined;
+export default function connectionSocket(cb) {
+	window.socket = new WebSocket(wsUrl)
 
-	ws.onopen = function (evt) {
+	socket.onopen = function (data) {
 		console.log("连接成功");
-		ws.send("Hello WebSockets!");
 	};
 
-	ws.onmessage = function (evt) {
-		var data = typeof evt.data == 'string' ? JSON.parse(evt.data) : evt.data;
+	socket.onmessage = function (data) {
+		var data = typeof data.data == 'string' ? JSON.parse(data.data) : data.data;
 
-		cb(data)
+		if(data.type == '120') uploadOrderStatus(data)
+
+		cb && cb(data)
 	};
 
+	// socket.onclose = function (data) {
+	// 	console.log("断开连接");
+	// };
 
-	ws.onclose = function (evt) {
-		console.log("断开连接");
-	};
+	socket.onerror = function (err) {
+		setTimeout(connectionSocket, 2000)//设置延迟时间，防止死循环
+	}
 }
+

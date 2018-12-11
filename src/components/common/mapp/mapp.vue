@@ -1,6 +1,7 @@
 <template>
 <div class="mapp" :style="{height:height}" :class="{screen: screen === true}">
 	<div id="map"></div>
+	<div class="startMap" @click='startMap' v-if="userInfo && userInfo.userType != 3">导航</div>
 	<div class="buttonStyle" v-if="enter == 'home'">
 		<div class="style"></div>
 		<div class="btn" v-if="screen">
@@ -13,7 +14,8 @@
 </template>
 
 <script>
-import { loadScript, mouseoverMap, backMyPosEv } from '../../../assets/js/map'
+import { loadScript, mouseoverMap, backMyPosEv, setInterPoiintFn } from '../../../assets/js/map'
+import { getStore } from '../../../config/mUtils'
 import { mapState } from 'vuex'
 
 export default {
@@ -24,7 +26,7 @@ export default {
 		}
 	},
 	computed:{
-		...mapState(['geographicLocation'])
+		...mapState(['geographicLocation','userInfo'])
 	},
 	props:['screen','lngLat'],
 	watch:{
@@ -42,6 +44,11 @@ export default {
 		}
 	},
 	methods:{
+		startMap(){
+			var helngLat = getStore('viewCurrentData').jingwei.split(',')
+			console.log(helngLat)
+			window.startMap.call(this, helngLat[1], helngLat[0])
+		},
 		backMyPos(){
 			backMyPosEv.call(this)
 		},
@@ -56,6 +63,9 @@ export default {
 	mounted(){
 		if(this.enter === 'rescue') this.height = document.documentElement.offsetHeight + 'px'
 		loadScript(this.enter, this);
+	},
+	beforeDestroy(){
+		setInterPoiintFn();
 	}
 }
 </script>
@@ -64,6 +74,7 @@ export default {
 #map img{width:100%;}
 </style>
 <style lang="scss" scoped>
+.startMap{position: fixed;left:50%;bottom:40px;transform: translateX(-50%);z-index: 1000;background-color: white;font-size: 16px;padding:10px 15px;color:#333;border-radius: 4px;box-shadow: 0 3px 10px rgba(0,0,0,.3);}
 .mapp .backMyPos{width:50px;height: 50px;position: fixed;left:15px;bottom:160px;}
 .mapp{position: relative;transition:height .4s ease;z-index:1 !important;left:0;top:0;width:100%;background-color: #f5f5f5;
 	.buttonStyle{position: absolute;left:0;bottom:-1px;width:100%;

@@ -17,7 +17,8 @@ const state = {
 		isShow: true,
 		reloadIsShow: true,
 		returnIsShow: false,
-		text: "首页"
+		text: "天佑",
+		theme: ''
 	}
 }
 export default new Vuex.Store({

@@ -1,5 +1,8 @@
-import { findMissedlist, findlistok, findMyListOk, userWaitAccept, userSearchAllRescue, userRescue, userRescueOk, findListTask } from '../../config/getData'
-var userType;
+import { findMyListOk, userSearchAllRescue, userRescueOk, findListTask, duizhangSearchOrder } from '../../config/getData'
+import { setInterUploadLatitudeLongitude, setStore } from '../../config/mUtils'
+import store from '../../store/index'
+
+var userType, that;
 
 function getUserType() {
 	try {
@@ -16,43 +19,64 @@ function jinzhan(infoData) {
 		}
 	}
 }
+
+export const orderIsShow = function (initStatusCode) {
+	if (initStatusCode) return initStatusCode
+
+	let [navIndex, userType] = [this.navIndex, this.userInfo.userType]
+	userType = parseInt(userType)
+
+	var statusCode = userType === 3 ? navIndex + 1 : navIndex;
+
+	if (userType === 3) {
+		if (navIndex == 4) statusCode = 99
+		else if (navIndex == 0) statusCode = [0, 1, 2, 3, 4]
+		else if (navIndex == 1) statusCode = [0, 1, 2]
+	} else {
+		if (navIndex === 1) statusCode = [0, 1]
+	}
+	if(!Array.isArray(statusCode)) statusCode = [statusCode]
+	return statusCode
+}
+
+export const orderSendAjax = function (initStatusCode) {
+	let [navIndex, userType] = [this.navIndex, this.userInfo.userType]
+	userType = parseInt(userType)
+
+	let statusCode = orderIsShow.call(this, initStatusCode)
+	console.log(statusCode)
+
+	return sendSearch.call(this, userType, statusCode).then(res => {
+		this.originalData = this.infoData = res
+		this.liLength = res.length
+		jinzhan(this.infoData)
+		return this.infoData
+	})
+}
+
+function sendSearch(userType, statusCode) {
+	var getOrderData = [undefined, undefined, duizhangSearchOrder, userSearchAllRescue, findListTask];
+	if (!getOrderData[userType]) throw new Error('userType异常，必须为 2 | 3 | 4')
+	if (!Array.isArray(statusCode)) statusCode = [statusCode]
+
+	var allSend = statusCode.map(state => {
+		return getOrderData[userType](1, state) //第一个参数是页数，第二个参数是 stateId，第三个参数是每页数量，默认为10
+	});
+
+	var dataArr = []
+	return Promise.all(allSend).then(res => {
+		res.map(v => dataArr.push(...v.rows))
+		return dataArr
+	})
+}
+
 //页面初始化调用
 export const initFun = function () {
+	that = this;
 	userType = getUserType.call(this);
 
-	const type = parseInt(this.userType);
-	switch (type) {
-		case 2: //救援队长
-			findMissedlist().then(res => {
-				res = res.rows
-				this.infoData = res
-				this.originalData = res
-				jinzhan(this.infoData)
-			}).then(() => {
-				topNavMenuFun.call(this)
-			})
-			break;
-		case 3: //普通用户
-			userSearchAllRescue(1).then(res => {
-				this.total = res.total
-				res = res.rows
-				this.infoData = res
-				this.originalData = res
-				this.liLength = res.length
-				jinzhan(this.infoData)
-			})
-			break;
-		case 4: //救援用户
-			findListTask(1).then(res => {
-				res = res.rows
-				this.infoData = res
-				this.originalData = res
-				jinzhan(this.infoData)
-			}).then(() => {
-				topNavMenuFun.call(this)
-			})
-			break;
-	}
+	var requestList = (userType != 3 && this.navIndex === 0) ? [0, 1, 2, 3, 4] : undefined;	//设置为 undefined 可以让程序自动寻找订单
+	return orderSendAjax.call(this, requestList);
 }
 
 
@@ -84,22 +108,11 @@ export const orderBtnFun = (that, type, item, ind, name) => {
 	} else if (type === 4) {
 		leaderBtnEv(that, item, ind, name)
 	}
-
-}
-
-//点击顶部导航
-export const topNavMenuFun = function () {
-	var navIndex = this.navIndex;
-	if (userType == 3) {
-		userAjax.call(this, navIndex)
-	} else {
-		leaderAjax.call(this, navIndex)
-	}
 }
 
 //设置按钮文字 和 上面的状态
 export const setBtnTxtFun = function (str, item) {
-	const status = ['等待接单', '等待出发', '已到达救援地点', '施救中', '完成']
+	const status = ['等待接单', '等待出发', '救援人员已出发', '施救中', '完成']
 	status[99] = '已取消'
 
 	var statusId4Txt1 = item.typeReport === '0' ? '上传报告' : '查看报告';
@@ -130,87 +143,8 @@ export const setBtnTxtFun = function (str, item) {
 	}
 
 	return status[str]
-
-}
-//获取用户数据
-async function userAjax(navIndex) {
-	switch (navIndex) {
-		case 1: //全部
-			await userSearchAllRescue(1).then(res => {
-				this.total = res.total
-				res = res.rows
-				this.infoData = res
-				this.originalData = res
-				jinzhan(this.infoData)
-			})
-			break;
-		case 2: //等待接单
-			await userWaitAccept().then(res => {
-				res = res.rows
-				this.infoData = res
-				this.originalData = res
-				jinzhan(this.infoData)
-			})
-			break;
-		case 3: //施救中
-			await userRescue().then(res => {
-				res = res.rows
-				this.infoData = res
-				this.originalData = res
-				jinzhan(this.infoData)
-			})
-			break;
-		case 4: //已完成
-			await userRescueOk(1).then(res => {
-				res = res.rows;
-				this.infoData = res
-				this.originalData = res
-				jinzhan(this.infoData)
-			})
-			break;
-		case 5: //已取消
-			await userSearchAllRescue(1, '99').then(res => {
-				res = res.rows;
-				this.infoData = res
-				this.originalData = res
-				jinzhan(this.infoData)
-			})
-			break;
-	}
-	if (this.$refs.li) {
-		this.liLength = this.$refs.li.length;
-	}
 }
 
-//获取队长订单数据
-function leaderAjax(navIndex) {
-	new Promise((resolve, reject) => {
-		if (navIndex != 4) {
-
-			if (Array.isArray(this.originalData)) {
-				this.infoData = this.originalData.filter(v => {
-					if (navIndex == 1) return v.stateId == 0 || v.stateId == 1
-					else return navIndex == v.stateId
-				})
-				jinzhan(this.infoData)
-				resolve();
-			}
-
-			reject('this.originalData 不是一个数组')
-		} else {
-			findMyListOk(1, 10).then(res => {
-				res = res.rows;
-				this.infoData = res;
-				jinzhan(this.infoData)
-				resolve();
-			})
-		}
-	}).then(() => {
-		this.total = this.infoData.length
-		setTimeout(() => this.liLength = this.$refs.li == undefined ? 0 : this.$refs.li.length, 0)
-	})
-
-}
 
 //队长
 function leaderBtnEv(that, item, ind, name) {
@@ -222,6 +156,22 @@ function leaderBtnEv(that, item, ind, name) {
 				that.isShowPer = true;
 			} else {
 				that.showCancelRefuse = true
+			}
+			break;
+		case 1:
+			if (name == '确认出发') {
+				//改变订单状态
+				that.statusSet(item).then(res => {
+					var collectionId = res.rows
+					var loginId = store.state.userInfo.id
+					that.liLength = that.infoData.length
+
+					setStore('rescueId', collectionId)
+					if (collectionId === loginId) {	//判断是否需要上传经纬度
+						//定时器开启，把救援端的经纬度传给后台，后台上传到百度
+						setInterUploadLatitudeLongitude.call(that, collectionId)
+					}
+				})
 			}
 			break;
 		case 2:
@@ -255,4 +205,15 @@ function leaderBtnEv(that, item, ind, name) {
 			console.log('报错了，快去看看代码吧！')
 			that.statusSet(item);
 	}
+}
+
+
+// 救援人员点击 ’确认出发‘，客户收到推送做处理
+export const uploadOrderStatus = function (data) {
+	// debugger
+
+	console.log('\n')
+	console.log(data)
+	console.log(that, that.originalData)
+	console.log('\n')
 }

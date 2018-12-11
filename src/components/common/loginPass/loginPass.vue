@@ -1,5 +1,6 @@
 <template>
 	<div class="verification">
+		<title-header></title-header>
 		<input type="password" class="text t1" v-model="password" placeholder="请输入原始密码">
 		<input type="password" class="text t2" v-model="newPassword"  placeholder="请输入新的密码">
 		<input type="password" class="text t2" v-model="newPassword1" placeholder="请再次输入新的密码" @input='yz'>
@@ -10,6 +11,7 @@
 
 <script>
 import { updatePas } from "../../../config/getData"
+import titleHeader from '../../common/title'
 export default {
 	data(){
 		return {
@@ -45,8 +47,8 @@ export default {
 			}
 		}
 	},
-	mounted() {
-
+	components: {
+		titleHeader
 	}
 }
 </script>
@@ -55,7 +57,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../../assets/css/all';
 
-.verification{@include screen;background-color: #fff;
+.verification{@include screen;background-color: #fff;z-index: 10;
 	*{display: block;margin:0 auto;}
 	.text{border:none;border-bottom:1px solid #e6e6e6;background-color: white;width:100%;height: 20px;padding:10px 2%;font-size:14px;margin: 10px 0;}
 	.button{width:74%;border:1px solid $red;background-color: transparent;color:$red;height: 48px;margin-top:60px;font-size: 16px;border-radius: 3px;}

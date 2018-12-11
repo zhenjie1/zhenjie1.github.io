@@ -1,5 +1,6 @@
 <template>
 	<div class="details">
+		<title-header />
 		<div class="rescueInfo">
 			<div class="init">
 				<p>救援单号：<span>{{detaData.uuid}}</span></p>
@@ -70,6 +71,7 @@ import { getStore } from '../../../../../config/mUtils'
 import { jiuorder,cancelOrder,cancelOffice } from '../../../../../config/getData'
 import Confirm from 'vux/src/components/confirm/'
 import { mapState } from 'vuex'
+import titleHeader from '../../../../common/title'
 
 export default {
 	data(){
@@ -86,7 +88,7 @@ export default {
 			'userInfo'
 		])
 	},
-	components:{Confirm},
+	components:{Confirm, titleHeader},
 	methods:{
 		cancelRefuseEv(val){
 			if(val == ''){

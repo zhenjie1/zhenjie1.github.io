@@ -18,6 +18,15 @@ export const addPoint = (entity_name, latitude, longitude, loc_time) => fetch('h
 	coord_type_input: 'bd09ll'
 })
 
+// //百度鹰眼 -- 客户查询救援人员位置
+// export const getRescusTrack = (entity_name, start_time, end_time) => fetch('http://yingyan.baidu.com/api/v3/track/gettrack', {
+// 	ak,
+// 	service_id,
+// 	entity_name,
+// 	start_time,
+// 	end_time
+// }, 'GET')
+
 //发送验证码
 export const phoneSendCode = phone => fetch('/sms/send', {
 	phone
@@ -36,6 +45,10 @@ export const registered = (mobile, password, validateCode) => fetch('/mobile/reg
 	mobile,
 	password,
 	validateCode
+})
+
+export const userCheck = phone => fetch('/mobile/userCheck', {
+	phone
 })
 
 //登录
@@ -75,19 +88,12 @@ export const cancelOffice = (id, remarks) => fetch('/a/mobile/order/cancelOffice
 //出勤人员查询
 export const findMyJUserList = () => fetch('/a/mobile/findMyJUserList')
 
-//等待接单
-export const findMissedlist = stateId => fetch('/a/mobile/order/findMissedlist', {
-	stateId
-})
-
-//查询正在营救
-export const findlistok = () => fetch('/a/mobile/order/findlistok')
-
 //查询完成的订单
 export const findMyListOk = (pageNo, pageSize = 100) => fetch('/a/mobile/order/findMyListOk', {
 	pageNo,
 	pageSize
 })
+
 // 救援人员查询订单详情
 export const jiuorder = (id) => fetch('/a/mobile/order/jiuorderFindById', {
 	id
@@ -112,27 +118,8 @@ export const sosOrders = (longitude, dimensions) => fetch('/a/mobile/order/sosOr
 	dimensions
 })
 
-//队长 - 查询所有订单
-export const userSearchAllRescue = (pageNo, type) => fetch('/a/mobile/order/findUserOrderListAdIos', {
-	pageNo,
-	state: type,
-	pageSize: 10
-})
-//用户 - 救援人员查询任务
-export const findListTask = (pageNo, pageSize, state) => fetch('/a/ordersTask/findListTask', {
-	pageNo,
-	pageSize: 10,
-	state
-})
-
 //用户 - 查询附近救援点
 export const findlist = () => fetch('/mobile/office/findlist')
-
-//用户 - 未接单数据
-export const userWaitAccept = () => fetch('/a/mobile/order/findlist')
-
-//用户 - 正在施救数据
-export const userRescue = () => fetch('/a/mobile/order/findSos')
 
 //用户 - 已完成订单
 export const userRescueOk = pageNo => fetch('/a/mobile/order/findOk', {
@@ -220,7 +207,7 @@ export const insRecord = (pageNo, pageSize, type) => fetch('/a/mobile/orderInsur
 
 export const insUpImages = (data, type, config) => fetch('/a/alioss/uploadFile', data, 'POST', type, config)
 // 保存购买保险信息
-export const paySave = (id, dayId, typeMen, userName, user_id_number, isMc, isHospital, hospitalImgs, token, isUploadimg) => fetch('/a/mobile/payInsurance/save', { id, dayId, typeMen, userName, user_id_number, isMc, isHospital, hospitalImgs, token, isUploadimg })
+export const paySave = data => fetch('/a/mobile/payInsurance/save', data)
 
 //	查询理赔记录接口
 export const queryIns = orderinsId => fetch('/a/mobile/ofclaimsInsurance/findOfclaimsByOrder', {
@@ -335,3 +322,23 @@ export const zfbzftest = (price) => fetch('/a/pay/MobilePay', { price })
 
 
 
+//队长查询订单接口
+export const duizhangSearchOrder = (pageNo = 1, state = 1, pageSize = 10) => fetch('/a/mobile/order/findOfficeMyOrders', {
+	pageNo,
+	state,
+	pageSize
+})
+
+//用户查询订单接口
+export const userSearchAllRescue = (pageNo, state, pageSize = 10) => fetch('/a/mobile/order/findUserOrderListAdIos', {
+	pageNo,
+	state,
+	pageSize
+})
+
+//用户 - 救援人员查询任务
+export const findListTask = (pageNo, state, pageSize = 10) => fetch('/a/ordersTask/findListTask', {
+	pageNo,
+	pageSize,
+	state
+})
