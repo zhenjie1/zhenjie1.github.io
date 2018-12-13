@@ -87,7 +87,7 @@ import Personnel from "./orders/personnel";
 import { RescueMenu, userMenu, rescueType } from "@/assets/js/config";
 import { orderBtn, cancelOrder, cancelOffice } from "@/config/getData";
 import { getStore, setStore, isLogin, setInterUploadLatitudeLongitude, clearUploadPointInter } from "../../../config/mUtils";
-import { initFun, orderBtnFun, setBtnTxtFun, orderSendAjax, orderIsShow } from "../../../assets/js/orders";
+import { initFun, orderBtnFun, setBtnTxtFun, orderSendAjax, orderIsShow, isSetInterUploadLatitudeLongitude } from "../../../assets/js/orders";
 import addScroll from "@/assets/js/scrollLoad";
 import BottomLine from "../../common/bottomLine/BottomLine";
 import { mapState, mapActions } from 'vuex'
@@ -170,13 +170,10 @@ export default {
 		},
 		isOrderShow(item){
 			item.stateId = parseInt(item.stateId)
+			if(orderIsShow.call(this).indexOf(item.stateId) === -1) this.liLength = 0;
 			return orderIsShow.call(this).indexOf(item.stateId) !== -1
 		},
-		getCollectionId(){
-			let data = this.originalData.filter( v => v.stateId == 2)
-			if( data.length == 0) return '';
-			return data[0]
-		},
+
 		localItem(item) {
 			setStore("viewCurrentData", item);
 		},
@@ -220,15 +217,17 @@ export default {
 			this.userType = this.userInfo["userType"]
 			this.RescueMenu = this.userType == 3 ? userMenu : RescueMenu;
 
+			if(this.userType == 2){
+				document.title = '队长'
+			}else if(this.userType == 4){
+				document.title = '队员'
+			}
+
 			//初始化数据请求
 			initFun.call(this, this.userType).then( res => {
 
 				//如果登录的人需要采集点，定时用 webSocket 推送
-				var rescueId = this.getCollectionId();
-				console.log(rescueId.collectionId , this.userInfo.id)
-				if(rescueId.collectionId === this.userInfo.id){
-					setInterUploadLatitudeLongitude(rescueId.id)
-				}
+				isSetInterUploadLatitudeLongitude.call(this)
 
 				setStore('orderInitData', this.infoData)	//缓存初始化数据，方便客户获取救援端位置
 			});

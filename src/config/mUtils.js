@@ -141,20 +141,19 @@ export const titleConfig = (to) => {
 
 //定时器开启，把救援端的经纬度传给后台，后台上传到百度
 //this 环境是 Vue 实例
+//id : 订单的id，不是采集人的id，也不是队长或队员的id
 var setInterUploadFn, setInterSendPointFn;
 export const setInterUploadLatitudeLongitude = function (id) {
 	var rescusPositioonPoint_list = [];
-	var [collection, upload] = [1000, 5000];// 5秒采集一次， 30秒上传一次
+	var [collection, upload] = [2000, 10000];// 5秒采集一次， 30秒上传一次
 
 	uploadLatitudeLongitude(id, rescusPositioonPoint_list)
 	setInterUploadFn = setInterval(() => uploadLatitudeLongitude(id, rescusPositioonPoint_list), collection);
 
-	// setInterSendPointFn = setInterval(() => {
-		// console.log('推送了一次', rescusPositioonPoint_list)
-		// console.log(JSON.stringify(rescusPositioonPoint_list))
+	setInterSendPointFn = setInterval(() => {
 		socket.send(JSON.stringify(rescusPositioonPoint_list))
 		rescusPositioonPoint_list = [];
-	// }, upload);
+	}, upload);
 }
 
 export const clearUploadPointInter = function(){
@@ -165,8 +164,8 @@ export const clearUploadPointInter = function(){
 function uploadLatitudeLongitude(id, pointSaveArr) {
 	let latLon = store.state.geographicLocation;
 	pointSaveArr.push({
-		latitude: latLon.Longitude,
-		longitude: latLon.Latitude,
+		latitude: latLon.Latitude,
+		longitude: latLon.Longitude,
 		entity_name: id,
 		loc_time: parseInt(new Date().getTime() / 1000),
 		coord_type_input: 'bd09ll'
