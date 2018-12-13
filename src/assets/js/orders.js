@@ -35,7 +35,7 @@ export const orderIsShow = function (initStatusCode) {
 	} else {
 		if (navIndex === 1) statusCode = [0, 1]
 	}
-	if(!Array.isArray(statusCode)) statusCode = [statusCode]
+	if (!Array.isArray(statusCode)) statusCode = [statusCode]
 	return statusCode
 }
 
@@ -44,7 +44,6 @@ export const orderSendAjax = function (initStatusCode) {
 	userType = parseInt(userType)
 
 	let statusCode = orderIsShow.call(this, initStatusCode)
-	console.log(statusCode)
 
 	return sendSearch.call(this, userType, statusCode).then(res => {
 		this.originalData = this.infoData = res
@@ -59,9 +58,8 @@ function sendSearch(userType, statusCode) {
 	if (!getOrderData[userType]) throw new Error('userType异常，必须为 2 | 3 | 4')
 	if (!Array.isArray(statusCode)) statusCode = [statusCode]
 
-	var allSend = statusCode.map(state => {
-		return getOrderData[userType](1, state) //第一个参数是页数，第二个参数是 stateId，第三个参数是每页数量，默认为10
-	});
+	//第一个参数是页数，第二个参数是 stateId，第三个参数是每页数量，默认为10
+	var allSend = statusCode.map(state => getOrderData[userType](1, state));
 
 	var dataArr = []
 	return Promise.all(allSend).then(res => {
@@ -145,6 +143,17 @@ export const setBtnTxtFun = function (str, item) {
 	return status[str]
 }
 
+export const isSetInterUploadLatitudeLongitude = function () {
+	//如果登录的人需要采集点，定时用 webSocket 推送
+
+	let data = this.originalData.filter(v => v.stateId == 2)
+	if (data.length == 0) return '';
+	let rescueId = data[0]
+	// console.log(rescueId.collectionId , this.userInfo.id)
+	if (rescueId.collectionId === this.userInfo.id) {
+		setInterUploadLatitudeLongitude(rescueId.id)
+	}
+}
 
 //队长
 function leaderBtnEv(that, item, ind, name) {
@@ -167,6 +176,7 @@ function leaderBtnEv(that, item, ind, name) {
 					that.liLength = that.infoData.length
 
 					setStore('rescueId', collectionId)
+					debugger
 					if (collectionId === loginId) {	//判断是否需要上传经纬度
 						//定时器开启，把救援端的经纬度传给后台，后台上传到百度
 						setInterUploadLatitudeLongitude.call(that, collectionId)
@@ -210,10 +220,7 @@ function leaderBtnEv(that, item, ind, name) {
 
 // 救援人员点击 ’确认出发‘，客户收到推送做处理
 export const uploadOrderStatus = function (data) {
-	// debugger
-
-	console.log('\n')
-	console.log(data)
-	console.log(that, that.originalData)
-	console.log('\n')
+	that.infoData.map(v => v.id === data.orderId && v.stateId++)
+	vm.$vux.toast.text('订单状态已改变！')
+	isSetInterUploadLatitudeLongitude.call(that)
 }
