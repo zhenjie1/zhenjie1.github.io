@@ -48,6 +48,7 @@ window.initialize = function () {
 				var p1 = new BMap.Point(lngAndLat.lng, lngAndLat.lat);
 				var p2 = new BMap.Point(sessionStorage.lngLat.split(',')[1], sessionStorage.lngLat.split(',')[0]);
 
+				// debugger
 				var driving = new BMap.DrivingRoute(map, {
 					renderOptions: {
 						map: map,
@@ -78,7 +79,7 @@ function clientMapFun() {
 	var initData = getStore('orderInitData')
 
 	latitudeLongitudeUpload(initData);
-	setInterPoiintObj = setInterval(() => latitudeLongitudeUpload(initData), 30000)	//每30秒，更新救援人员位置
+	setInterPoiintObj = setInterval(() => latitudeLongitudeUpload(initData), 3000)	//每30秒，更新救援人员位置
 }
 
 //清除定时器 - 客户获取救援人员位置

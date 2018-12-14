@@ -145,7 +145,6 @@ export const setBtnTxtFun = function (str, item) {
 
 export const isSetInterUploadLatitudeLongitude = function () {
 	//如果登录的人需要采集点，定时用 webSocket 推送
-
 	let data = this.originalData.filter(v => v.stateId == 2)
 	if (data.length == 0) return '';
 	let rescueId = data[0]
@@ -176,7 +175,7 @@ function leaderBtnEv(that, item, ind, name) {
 					that.liLength = that.infoData.length
 
 					setStore('rescueId', collectionId)
-					debugger
+					// debugger
 					if (collectionId === loginId) {	//判断是否需要上传经纬度
 						//定时器开启，把救援端的经纬度传给后台，后台上传到百度
 						setInterUploadLatitudeLongitude.call(that, collectionId)

@@ -146,7 +146,7 @@ export default {
 		}
 
 		//必须先设置 navIndex 的值，后执行 this.initData  方法
-		this.navIndex = getStore('taskOrderIndex') || 0
+		this.navIndex = getStore('taskOrderIndex') || (this.userInfo.userType != '3' ? 1 : 0)
 		this.initData();
 
 		if(this.userType == '3') addScroll(this);

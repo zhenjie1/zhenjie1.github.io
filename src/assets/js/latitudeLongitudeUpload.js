@@ -1,11 +1,8 @@
 import { sendJsonp } from '../../config/mUtils'
 import { ak, service_id } from '../../config/url'
-import Vue from 'vue'
 import globalVal from './globalVar'
 import store from '../../store/index'
-import assign from 'lodash.assign'
 
-window.assign = assign
 var allTimeArr = []
 export default function (res) {
 	if (!Array.isArray(res)) return;
@@ -53,6 +50,7 @@ function executionOrder() {
 		num++;
 		if (num >= allTimeArr.length - 1) {	//保证查询完只执行一次
 			getRescusTrackFn(allData, res)
+			allData = []
 			num = 0;
 		}
 		allData.push(...res.points)
@@ -61,7 +59,7 @@ function executionOrder() {
 
 var polyline = {};
 function getRescusTrackFn(data) {
-	console.info(data)
+	// console.info(data)
 	globalVal.map.removeOverlay(polyline)	//先清除上次画的路线
 	if (data && data.length == 0) return;	//空数组，救援人员还未开始上传位置
 
@@ -73,7 +71,7 @@ function getRescusTrackFn(data) {
 
 	// globalVal.map.panTo(new globalVal.BMap.Point(polylineArr[0].lng, polylineArr[0].lat))
 
-	polyline = new globalVal.BMap.Polyline(polylineArr, { strokeColor: "red", strokeWeight: 2, strokeOpacity: 0.6 });
+	polyline = new globalVal.BMap.Polyline(polylineArr, { strokeColor: "red", strokeWeight: 2, strokeOpacity: 0.6  });
 	globalVal.map.addOverlay(polyline)
 }
 

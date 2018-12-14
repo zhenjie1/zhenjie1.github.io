@@ -72,18 +72,18 @@ export default {
 				this.isMenuShow = true
 			}
 			this.start = y;
+		},
+		scrollStartEv(e){
+			this.start = Math.floor( e.targetTouches[0]['clientY'] )
 		}
 	},
 	mounted() {
-		window.addEventListener('touchstart', function(e){
-			this.start = Math.floor( e.targetTouches[0]['clientY'] )
-		})
-		window.addEventListener('touchmove',
-			debounce(this.scrollEv, 20, {
-				'leading': true,
-				'trailing': false
-			})
-		)
+		window.addEventListener('touchstart', this.scrollStartEv)
+		window.addEventListener('touchmove',this.scrollEv)
+	},
+	beforeDestroy(){
+		window.removeEventListener('touchstart', this.scrollStartEv)
+		window.removeEventListener('touchmove', this.scrollEv)
 	}
 }
 </script>
