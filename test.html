@@ -86,7 +86,7 @@
             if (xhr.lengthComputable) {
                 var percentComplete = xhr.loaded / xhr.total * 100;
                 var percent = document.getElementById("percent");
-                // percent.innerText = Math.round(percentComplete, 2) + '% 已经加载';
+                percent.innerText = Math.round(percentComplete, 2) + '% 已经加载';
             }
         };
         var onError = function (xhr) {
