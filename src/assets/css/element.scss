@@ -1,0 +1,32 @@
+
+
+// tabs
+.el-tabs__item{color: var(--colorGray);padding: 0 !important;}
+.el-tabs__header{margin-bottom: 0;}
+.el-tabs__nav-wrap::after{background-color: var(--R8);height: 1px;}
+.el-tabs__active-bar{height: 1px;}
+
+.el-button--default{color: var(--R70);background-color: transparent;border-color: var(--borderColorDeep);}
+
+// input
+.el-input__inner{background-color: transparent;border-color: var(--borderColorDeep);color: var(--color);
+    &:hover{border-color: var(--R40);}
+    &:focus{border-color: var(--main);}
+    &::-ms-input-placeholder {color:var(--colorLightGray);}
+    &::-webkit-input-placeholder {color:var(--colorLightGray);}
+    &:-moz-placeholder { color: var(--colorLightGray);}
+    &::-moz-placeholder { color: var(--colorLightGray);}
+    &:-ms-input-placeholder { color: var(--colorLightGray);}
+}
+
+// checkbox
+.el-checkbox__inner{background-color: transparent;border-color: var(--R40);}
+.el-checkbox__label, .el-checkbox__input.is-checked+.el-checkbox__label{color: var(--R70);}
+// 禁用
+.el-checkbox.is-disabled {
+    .el-checkbox__inner{
+        background-color: transparent;
+        border-color: var(--R20);
+    }
+    .el-checkbox__label{color: var(--R40) !important;}
+}

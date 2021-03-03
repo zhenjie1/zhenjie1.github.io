@@ -1,0 +1,45 @@
+body {
+	/* 主色调 */
+	--main: #1890ff;
+
+	/* rgb 主背景颜色 */
+	--RR: 255;
+	--RG: 255;
+	--RB: 255;
+
+	/* 与主背景颜色相反的颜色 */
+	--CR: 0;
+	--CG: 0;
+	--CB: 0;
+
+	/* 消息相关的 */
+	--msgBgColor: tranparent;
+
+	/* 所有的背景颜色 ------ 开始 ------ */
+	 /* 背景颜色 */
+	/* --bgColor: #f3f4f6; */
+	background-color: var(--R0);
+	/* background-color: transparent; */
+	--bgColor: var(--C86); /* 背景颜色 */
+	--hoverBgColor: var(--R4); /* 鼠标经过时的颜色 */
+
+	--AppLeftMenuColor: rgba(0, 0, 0, 0.9); /* 左侧菜单背景颜色 */
+	--menuBgColor: transparent; /* 菜单颜色 */
+	/* 所有的背景颜色 ------ 结束 ------ */
+
+	/* 所有的文字颜色 ------ 开始 ------ */
+	--color: var(--R80);
+	--colorLightGray: var(--R30); /* 浅灰 */
+	--colorGray: var(--R40); /* 中等 */
+	--colorDeepGray: var(--R60); /* 深灰 */
+	/* 所有的文字颜色 ------ 结束 ------ */
+
+	/* 所有的边框颜色 ------ 开始 ------ */
+	--borderColor: var(--R10);
+	--borderColorDeep: var(--R20);
+	/* 所有的边框颜色 ------ 结束 ------ */
+
+	/* 所有的投影颜色 ------ 开始 ------ */
+	--shadow: 0 2px 15px rgba(0,0,0,.4);
+	/* 所有的投影颜色 ------ 结束 ------ */
+}
