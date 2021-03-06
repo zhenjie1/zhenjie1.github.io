@@ -39,13 +39,13 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-	history: createWebHashHistory(),
+	history: createWebHashHistory('/folder/'),
 	routes,
 })
 
 export default router
 
 router.beforeEach((to, from, next) => {
-	document.title = to.meta.title
+	document.title = (to.meta.title as string) || '项目名称'
 	next()
 })

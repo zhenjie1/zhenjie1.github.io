@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import anime from 'animejs'
-import { defineComponent, reactive } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
 	name: 'ChatHistory',
@@ -40,7 +40,7 @@ export default defineComponent({
 	},
 	mounted() {
 		const el = this.$refs.el as HTMLElement
-		const an = anime({
+		anime({
 			targets: el,
 			translateX: {
 				value: [50, 250], // 100px * 2.5 = '250px'
