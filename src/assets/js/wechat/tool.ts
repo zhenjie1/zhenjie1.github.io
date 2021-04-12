@@ -1,4 +1,4 @@
-import { isObject } from 'utils/index.ts'
+import { isObject } from 'utils/index'
 
 type IsSomeFriendParam = Friend.data | Group.data | undefined
 /**

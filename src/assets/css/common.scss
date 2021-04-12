@@ -2,10 +2,10 @@
 @import './animate.scss';
 
 #app {
-	width: 900px;
-	height: 700px;
+	width: 800px;
+	height: 600px;
 	max-height: 100%;
-	border: 1px solid var(--borderColor);
+	// border: 1px solid var(--borderColor);
 	margin: auto;
 	box-sizing: border-box;
 	box-shadow: var(--shadow);
@@ -15,6 +15,7 @@
 
 body {
 	display: flex;
+	background-color: var(--bgColor);
 
 	// 定义所用到的颜色
 	// C1-C99 背景主颜色; R1-R99 背景相反颜色

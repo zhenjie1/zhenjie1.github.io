@@ -1,4 +1,4 @@
-import groupMemberData from 'components/wechat/friendGroupConver/friend.ts'
+import groupMemberData from 'components/wechat/friendGroupConver/friend'
 import { onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { debounce } from 'lodash'
 import { insertDom } from 'js/tool/dom'

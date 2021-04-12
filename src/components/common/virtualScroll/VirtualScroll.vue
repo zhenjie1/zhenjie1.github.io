@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, watchEffect } from 'vue'
+import { defineComponent, toRefs, watchEffect, onActivated } from 'vue'
 import useVirtualScroll from './VirtualScroll'
 
 export default defineComponent({

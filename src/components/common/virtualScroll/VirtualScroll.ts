@@ -1,4 +1,4 @@
-import { onMounted, reactive, ref, computed, toRefs, watch } from 'vue'
+import { onMounted, reactive, ref, computed, toRefs, watch, onActivated } from 'vue'
 import { throttle, debounce } from 'lodash'
 
 /**
@@ -51,6 +51,12 @@ export default function useVirtualScroll(props: Virtual.params): Virtual.returns
 		// 分割数据
 		data.showData = props.data.slice(startIndex.value, endIndex) as never[]
 	}
+
+	// 从缓存读取时, 运行一次
+	onActivated(() => {
+		if (!parentDom.value) throw new Error('没有找到父节点!')
+		scrollEv()
+	})
 
 	onMounted(() => {
 		if (!parentDom.value) throw new Error('没有找到父节点!')
