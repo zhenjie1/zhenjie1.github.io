@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "declaration":false,
-    "declarationMap":false,
-    "checkJs": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
     "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "types": ["vite/client"],
-    "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
@@ -31,11 +28,11 @@
     }
   },
   "include": [
-    "electron/**/*",
-    "typings/**/*",
-    "utils/**/*",
     "src/**/*.ts", 
+    "src/*.d.ts", 
     "src/**/*.d.ts", 
-    "src/**/*.tsx", "src/**/*.vue"
+    "src/**/*.tsx", 
+    "src/**/*.vue",
+    "typings/**/*.d.ts"
   ]
 }
