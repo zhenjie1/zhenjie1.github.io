@@ -10,12 +10,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, unref } from 'vue'
 import LeftMenuPosition from 'components/common/LeftMenu.vue'
 
 export default defineComponent({
 	name: 'AppPage',
 	components: { LeftMenuPosition },
+	setup() {
+		const aref = ref('123')
+		const b = unref(aref)
+	},
 })
 </script>
 

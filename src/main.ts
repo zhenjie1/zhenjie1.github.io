@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import AppTemp from '@/App.vue'
+import 'js/test'
 
 // import 'js/reload'
 
@@ -18,6 +19,7 @@ import 'css/theme/defaultTheme.css'
 import 'css/wechat.scss'
 
 import router from './router/index'
+import { testApi } from './api'
 
 const app = createApp(AppTemp as any)
 
@@ -30,3 +32,5 @@ initElement(app)
 initGlobalComponent(app)
 
 app.mount('#app')
+
+testApi()
