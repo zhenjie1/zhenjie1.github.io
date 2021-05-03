@@ -13,7 +13,6 @@ export default function initGlobalComponent(app: App<Element>) {
 		modules[path]().then((mod) => {
 			const component: Component = mod.default
 			if (!component || !component.name) return
-			// console.log(component.name, component)
 			app.component(component.name, component)
 		})
 	}

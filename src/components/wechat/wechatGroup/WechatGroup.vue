@@ -1,5 +1,6 @@
 <template>
 	<div class="wechatGroupComponents">
+		<pre>{{ wxList }}</pre>
 		<div v-for="group in wechatData" :key="group.id" class="group-content">
 			<p class="blur group-name">
 				{{ group.groupName }}
@@ -24,6 +25,8 @@
 import { defineComponent, reactive, computed, PropType } from 'vue'
 import FriendItem from '../friendGroupConver/FriendItem.vue'
 import wechatIcon from 'assets/logo.png'
+import apiData from '@/api/store'
+import { api } from '@/api'
 
 interface WechatData {
 	groupName: string
@@ -145,6 +148,7 @@ export default defineComponent({
 			},
 		])
 
+		api.chat.chhatWechatGroup()
 		const handlerClickWechat = function handlerClickWechat(wechat: Wechat.data) {
 			ctx.emit('checked', wechat)
 		}
@@ -154,6 +158,7 @@ export default defineComponent({
 		)
 
 		return {
+			wxList: apiData.chat.wxList,
 			handlerClickWechat,
 			isCheck,
 			wechatData,

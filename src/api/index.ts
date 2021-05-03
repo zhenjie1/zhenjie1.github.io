@@ -1,8 +1,7 @@
-import APIFetch from 'utils/fetch'
-import { stringify } from 'qs'
+import * as login from './login'
+import * as chat from './chat'
 
-export const testApi = () =>
-	APIFetch({
-		url: 'http://localhost:3000',
-		method: 'get',
-	})
+export const api = {
+	login,
+	chat,
+}

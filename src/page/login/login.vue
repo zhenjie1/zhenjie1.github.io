@@ -5,17 +5,53 @@
 				<!-- <img class="cover" :src="jpg" /> -->
 			</div>
 			<p></p>
-			<div class="blur loginContent">
+			<div class="loginContent">
 				<p class="title">登录</p>
-				<el-form class="form" :model="form">
-					<el-form-item label="账号" name="user">
-						<el-input v-model:value="form.user"></el-input>
+				<el-form
+					ref="formElement"
+					class="form"
+					:model="form"
+					:rules="rules"
+					label-width="66px"
+					@submit.prevent="submitEv"
+				>
+					<el-form-item label="账号" prop="userName">
+						<el-input v-model="form.userName"></el-input>
 					</el-form-item>
-					<el-form-item label="密码" name="pass">
-						<el-input v-model:value="form.pass"></el-input>
+					<el-form-item label="密码" prop="password">
+						<el-input v-model="form.password" type="password" show-password></el-input>
 					</el-form-item>
-					<el-form-item label=" " name="pass" class="notColon">
-						<el-button type="primary" block>登录</el-button>
+					<el-form-item label="图形码" prop="graphCode">
+						<div class="flex code">
+							<el-input
+								v-model="form.graphCode"
+								class="codeInput"
+								placeholder="图形码"
+								maxlength="4"
+								show-word-limit
+							></el-input>
+							<img
+								:src="form.img"
+								class="codeImg"
+								alt="点击刷新图形码"
+								@click="initImgCode"
+							/>
+						</div>
+					</el-form-item>
+					<el-form-item label="">
+						<div class="operation">
+							<el-checkbox v-model="remember" label="记住密码"></el-checkbox>
+							<span class="seekPass">
+								<router-link to="/login/seekPass" class="loginTxt">
+									找回密码
+								</router-link>
+							</span>
+						</div>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" native-type="submit" :loading="loading">
+							登录
+						</el-button>
 					</el-form-item>
 				</el-form>
 			</div>
@@ -23,17 +59,35 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import apiData from '@/api/store'
+import { validatorPassword, validatorUsername } from 'js/formValidate'
 import { defineComponent } from 'vue'
-import jpg from 'images/login/bg.jpg'
-console.log(jpg)
+import useLogin from './useLogin'
+
 export default defineComponent({
-	data() {
+	setup() {
+		const { form, remember, formElement, submitEv, loading } = useLogin()
+
 		return {
-			jpg,
-			form: {
-				user: '',
-				pass: '',
+			form,
+			remember,
+			loading,
+			formElement,
+			submitEv,
+			rules: {
+				userName: [
+					{ required: true, message: '请输入账号', trigger: 'blur' },
+					{ required: true, validator: validatorUsername, trigger: 'blur' },
+				],
+				password: [
+					{ required: true, message: '请输入密码', trigger: 'blur' },
+					{ required: true, validator: validatorPassword, trigger: 'blur', msg: '密码' },
+				],
+				graphCode: [
+					{ required: true, message: '请输入图形码', trigger: 'blur' },
+					{ min: 4, max: 4, message: '图形码为4个字符', trigger: 'blur' },
+				],
 			},
 		}
 	},
@@ -61,16 +115,15 @@ export default defineComponent({
 			left: 0;
 			top: 0;
 
-			// /src/assets/images/login/bg.jpg
 			background: url('/src/assets/images/login/bg.jpg') no-repeat center;
 			background-size: auto 100%;
 		}
 	}
 	.loginContent {
-		background-color: var(--C50);
+		background-color: var(--C90);
 		position: relative;
 		float: right;
-		width: 30%;
+		width: 400px;
 		padding: 20px;
 		.title {
 			color: var(--main);
@@ -78,6 +131,9 @@ export default defineComponent({
 			font-size: 20px;
 			line-height: 2;
 			margin-bottom: 6px;
+		}
+		.code {
+			display: flex;
 		}
 	}
 }

@@ -10,15 +10,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, unref } from 'vue'
+import { defineComponent } from 'vue'
 import LeftMenuPosition from 'components/common/LeftMenu.vue'
+import { useStore } from './store'
 
 export default defineComponent({
 	name: 'AppPage',
 	components: { LeftMenuPosition },
 	setup() {
-		const aref = ref('123')
-		const b = unref(aref)
+		const { state, getters, commit, dispatch } = useStore()
+		// dispatch('friend/testActions', '1')
+		dispatch('group/testActions', '123')
+		console.log(state)
 	},
 })
 </script>

@@ -6,15 +6,17 @@
 </template>
 
 <script lang="ts">
-import { ComputedRef, defineComponent, inject, ref, watchEffect } from 'vue'
+import { checkFriendKey, checkWechatKey, injectStrict } from '@/assets/js/injectionKey'
+import { defineComponent, ref, watchEffect } from 'vue'
+
 export default defineComponent({
 	name: 'FriendTopSearch',
 	setup() {
-		const checkWechat = inject<ComputedRef<FriendItem>>('checkWechat')
-		const friend = inject<ComputedRef<FriendItem>>('friend')
+		const checkWechat = injectStrict(checkWechatKey)
+		const friend = injectStrict(checkFriendKey)
 		watchEffect(() => {
-			console.log('wechat', friend?.value)
-			console.log('friend', checkWechat?.value)
+			console.log('wechat', friend.value)
+			console.log('friend', checkWechat.value)
 		})
 		const text = ref('')
 

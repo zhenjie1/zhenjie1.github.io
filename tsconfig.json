@@ -22,7 +22,7 @@
 
       "components/*": ["src/components/*"],
 
-      "utils/*": ["utils/*"],
+      "utils/*": ["src/utils/*"],
 
       "page/*": ["src/page/*"],
     }

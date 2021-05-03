@@ -68,14 +68,15 @@ export default defineComponent({
 		},
 	},
 	setup(props) {
-		const store = useStore()
+		const { commit, state } = useStore()
 		const menuActive = ref('conver')
 
 		const checkFriend = computed(() => props.friend)
 
+		// const state = store.state
 		// 点击好友执行
 		const handlerClickFriend = (item: FriendItem) => {
-			store.commit('friend/saveCheckedFriend', item)
+			commit('friend/saveCheckedFriend', item)
 		}
 
 		// 右键选中的好友

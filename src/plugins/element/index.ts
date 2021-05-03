@@ -19,10 +19,10 @@ import 'element-plus/lib/theme-chalk/index.css'
  * @param {App<Element>} app createApp 的返回
  * @returns {void}
  */
-export default function initElement(app: App<Element>) {
-	app.config.globalProperties.$ELEMENT = {
-		size: 'small',
-	}
+export default function initElementUi(app: App<Element>) {
+	// app.config.globalProperties.$ELEMENT = {
+	// 	size: 'small',
+	// }
 	app.component(ElButton.name, ElButton)
 	app.component(ElTabs.name, ElTabs)
 	app.component(ElTabPane.name, ElTabPane)
