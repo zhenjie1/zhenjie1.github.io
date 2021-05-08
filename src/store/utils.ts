@@ -8,8 +8,8 @@ import {
 	GetterTree,
 	MutationTree,
 } from 'vuex'
-import * as friend from './modules/friend'
-import * as group from './modules/group'
+import * as friend from '@/store/modules/friend'
+import * as group from '@/store/modules/group'
 
 type Modules = {
 	friend: [friend.State, friend.Getters, friend.Actions, friend.Mutations]

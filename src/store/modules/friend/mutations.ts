@@ -2,7 +2,7 @@ import { MutationTree } from 'vuex'
 
 export type Mutations<S = Friend.state> = {
 	saveCheckedFriend(state: S, payload: Friend.data): void
-	testMutations(state: S, payload: string): void
+	testMutations(state: S, payload: string): string
 }
 
 const friendMutations: MutationTree<Friend.state> & Mutations = {
@@ -17,6 +17,7 @@ const friendMutations: MutationTree<Friend.state> & Mutations = {
 	},
 	testMutations(state, p) {
 		console.log('测试 mutations', p)
+		return '123321'
 	},
 }
 

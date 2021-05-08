@@ -6,7 +6,11 @@
 </template>
 
 <script lang="ts">
-import { checkFriendKey, checkWechatKey, injectStrict } from '@/assets/js/injectionKey'
+import {
+	checkFriendKey,
+	checkWechatKey,
+	injectStrict,
+} from '@/assets/js/injectionKey'
 import { defineComponent, ref, watchEffect } from 'vue'
 
 export default defineComponent({

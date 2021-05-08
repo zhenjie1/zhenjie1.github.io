@@ -9,5 +9,6 @@ const wechatStore: Module<Wechat.state, RootState> = {
 	state: wechatState,
 	actions,
 	mutations,
+	getters: {},
 }
 export default wechatStore

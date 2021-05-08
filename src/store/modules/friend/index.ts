@@ -1,9 +1,14 @@
-import friendState, { State as FriendStateTypes } from './state'
-import actions, { Actions as FriendActionsTypes } from './actions'
-import getters, { Getters as FriendGettersTypes } from './getters'
-import mutations, { Mutations as FriendMutationsTypes } from './mutations'
+import friendState from './state'
+import actions from './actions'
+import getters from './getters'
+import mutations from './mutations'
 import { Module } from 'vuex'
 import { RootState } from '@/store/utils'
+
+export * from './state'
+export * from './actions'
+export * from './mutations'
+export * from './getters'
 
 const friendStore: Module<Friend.state, RootState> = {
 	namespaced: true,
@@ -14,9 +19,3 @@ const friendStore: Module<Friend.state, RootState> = {
 }
 
 export default friendStore
-
-type State = FriendStateTypes
-type Getters = FriendGettersTypes
-type Actions = FriendActionsTypes
-type Mutations = FriendMutationsTypes
-export { State, Actions, Getters, Mutations }

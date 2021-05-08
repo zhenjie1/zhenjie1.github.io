@@ -1,22 +1,21 @@
-import groupState, { State as GroupStateTypes } from './state'
-import actions, { Actions as GroupActionsTypes } from './actions'
-import getters, { Getters as GroupGettersTypes } from './getters'
-import mutations, { Mutations as GroupMutationsTypes } from './mutations'
+import state from './state'
+import actions from './actions'
+import getters from './getters'
+import mutations from './mutations'
 import { Module } from 'vuex'
 import { RootState } from '@/store/utils'
 
+export * from './state'
+export * from './actions'
+export * from './mutations'
+export * from './getters'
+
 const groupStore: Module<Group.state, RootState> = {
 	namespaced: true,
-	state: groupState,
+	state,
 	actions,
 	getters,
 	mutations,
 }
 
 export default groupStore
-
-type State = GroupStateTypes
-type Getters = GroupGettersTypes
-type Actions = GroupActionsTypes
-type Mutations = GroupMutationsTypes
-export { State, Actions, Getters, Mutations }

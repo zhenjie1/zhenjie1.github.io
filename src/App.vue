@@ -17,11 +17,8 @@ import { useStore } from './store'
 export default defineComponent({
 	name: 'AppPage',
 	components: { LeftMenuPosition },
-	setup() {
+	setup(props) {
 		const { state, getters, commit, dispatch } = useStore()
-		// dispatch('friend/testActions', '1')
-		dispatch('group/testActions', '123')
-		console.log(state)
 	},
 })
 </script>

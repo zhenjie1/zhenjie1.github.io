@@ -1,23 +1,13 @@
-import { InjectionKey } from 'vue'
-import {
-	createStore,
-	useStore as baseUseStore,
-	Store as VuexStore,
-	CommitOptions,
-	DispatchOptions,
-} from 'vuex'
+import { Store as StoreTs } from 'typings/newStore/index'
+
+import { createStore, useStore as baseUseStore } from 'vuex'
 
 import friendStore from './modules/friend/index'
 import groupStore from './modules/group/index'
 import wechatStore from './modules/wechat'
 
-import {
-	PayloadAndOptionsTuple,
-	RootActions,
-	RootGettersParams,
-	RootMutations,
-	RootState,
-} from './utils'
+import * as friend from '@/store/modules/friend'
+import * as group from '@/store/modules/group'
 
 export const modules = {
 	friend: friendStore,
@@ -25,27 +15,37 @@ export const modules = {
 	wechat: wechatStore,
 }
 
-const store = createStore<RootState>({
+export type StoreType = {
+	friend: {
+		namespace: true
+		state: friend.State
+		actions: friend.Actions
+		mutations: friend.Mutations
+		getters: friend.Getters
+	}
+	group: {
+		namespace: true
+		state: group.State
+		actions: group.Actions
+		mutations: group.Mutations
+		getters: group.Getters
+	}
+	// wechat: {
+	// 	namespace: true
+	// 	state: typeof wechatStore.state
+	// 	actions: typeof wechatStore.actions
+	// 	mutations: typeof wechatStore.mutations
+	// 	getters: typeof wechatStore.getters
+	// }
+}
+
+const store = createStore({
 	modules,
 	strict: true,
-})
+}) as StoreTs<StoreType>
 
 export default store
 
-export type Store = Omit<VuexStore<RootState>, 'getters' | 'commit' | 'dispatch'> & {
-	commit<K extends keyof RootMutations, P extends Parameters<RootMutations[K]>[1]>(
-		key: K,
-		...params: PayloadAndOptionsTuple<P, CommitOptions>
-	): ReturnType<RootMutations[K]>
-	dispatch<K extends keyof RootActions, P extends Parameters<RootActions[K]>[1]>(
-		key: K,
-		...params: PayloadAndOptionsTuple<P, DispatchOptions>
-	): ReturnType<RootActions[K]>
-	getters: RootGettersParams
-}
-
-export const key: InjectionKey<Store> = Symbol('store')
-export function useStore(): Store {
-	// console.log(baseUseStore(key))
+export function useStore(): StoreTs<StoreType> {
 	return baseUseStore()
 }

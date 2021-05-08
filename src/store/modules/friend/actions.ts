@@ -1,20 +1,18 @@
-import { AugmentedModuleActionContext, RootState } from '@/store/utils'
+import { StoreType } from '@/store'
 import { ActionTree } from 'vuex'
-import { Getters } from './getters'
-import { Mutations } from './mutations'
-import { State } from './state'
+// import { ActionsContext, RootState } from 'vuex-next-ts'
+import { RootState, ActionsContext } from 'typings/store/index'
 
-type Context = AugmentedModuleActionContext<State, Mutations, Actions, Getters>
+type Context = ActionsContext<StoreType, 'friend'>
 
 export type Actions = {
 	testActions(context: Context, p: string): Promise<any>
 }
 
-const friendActions: ActionTree<Friend.state, RootState> & Actions = {
-	async testActions({ commit, state, getters, dispatch }, p) {
-		console.log('actions', p)
-		// commit('testMutations', '123')
-		commit('testMutations', '123')
+const friendActions: ActionTree<Friend.state, RootState<StoreType>> & Actions = {
+	async testActions({ commit, state, getters, dispatch, rootGetters }, p) {
+		// const a = rootGetters['friend/testGetter']
+		commit('friend/testMutations', '123', { root: true })
 	},
 }
 
