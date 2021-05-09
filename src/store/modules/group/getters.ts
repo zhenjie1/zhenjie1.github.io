@@ -1,4 +1,5 @@
-import { RootGettersParams, RootState } from '@/store/utils'
+import { StoreType } from '@/store'
+import { RootState, RootGetters } from 'typings/newStore'
 import { ObjReturnType } from 'typings/utils'
 import { GetterTree } from 'vuex'
 import { State } from './state'
@@ -9,12 +10,12 @@ export type Getters = {
 	groupG1(
 		state: State,
 		getters: GroupGettersParam,
-		rootState: RootState,
-		rootGetters: RootGettersParams
+		rootState: RootState<StoreType>,
+		rootGetters: ObjReturnType<RootGetters<StoreType>>
 	): void
 }
 
-const groupGetters: GetterTree<State, RootState> & Getters = {
+const groupGetters: GetterTree<State, RootState<StoreType>> & Getters = {
 	groupG1: (state, g, R, RG) => state.badge,
 }
 

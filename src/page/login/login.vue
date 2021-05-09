@@ -12,16 +12,19 @@
 					class="form"
 					:model="form"
 					:rules="rules"
-					label-width="66px"
 					@submit.prevent="submitEv"
 				>
-					<el-form-item label="账号" prop="userName">
+					<el-form-item prop="userName">
 						<el-input v-model="form.userName"></el-input>
 					</el-form-item>
-					<el-form-item label="密码" prop="password">
-						<el-input v-model="form.password" type="password" show-password></el-input>
+					<el-form-item prop="password">
+						<el-input
+							v-model="form.password"
+							type="password"
+							show-password
+						></el-input>
 					</el-form-item>
-					<el-form-item label="图形码" prop="graphCode">
+					<el-form-item prop="graphCode">
 						<div class="flex code">
 							<el-input
 								v-model="form.graphCode"
@@ -32,15 +35,18 @@
 							></el-input>
 							<img
 								:src="form.img"
-								class="codeImg"
+								class="ml-sm codeImg"
 								alt="点击刷新图形码"
 								@click="initImgCode"
 							/>
 						</div>
 					</el-form-item>
-					<el-form-item label="">
-						<div class="operation">
-							<el-checkbox v-model="remember" label="记住密码"></el-checkbox>
+					<el-form-item>
+						<div class="flex operation">
+							<el-checkbox
+								v-model="remember"
+								label="记住密码"
+							></el-checkbox>
 							<span class="seekPass">
 								<router-link to="/login/seekPass" class="loginTxt">
 									找回密码
@@ -49,7 +55,12 @@
 						</div>
 					</el-form-item>
 					<el-form-item>
-						<el-button type="primary" native-type="submit" :loading="loading">
+						<el-button
+							type="primary"
+							native-type="submit"
+							class="w100"
+							:loading="loading"
+						>
 							登录
 						</el-button>
 					</el-form-item>
@@ -60,7 +71,6 @@
 </template>
 
 <script lang="ts">
-import apiData from '@/api/store'
 import { validatorPassword, validatorUsername } from 'js/formValidate'
 import { defineComponent } from 'vue'
 import useLogin from './useLogin'
@@ -82,7 +92,12 @@ export default defineComponent({
 				],
 				password: [
 					{ required: true, message: '请输入密码', trigger: 'blur' },
-					{ required: true, validator: validatorPassword, trigger: 'blur', msg: '密码' },
+					{
+						required: true,
+						validator: validatorPassword,
+						trigger: 'blur',
+						msg: '密码',
+					},
 				],
 				graphCode: [
 					{ required: true, message: '请输入图形码', trigger: 'blur' },
@@ -102,8 +117,9 @@ export default defineComponent({
 	.loginContainer {
 		border-radius: 10px;
 		overflow: hidden;
-		width: 80%;
-		height: 80%;
+		box-shadow: var(--shadow);
+		width: 320px;
+		// height: 80%;
 		margin: auto;
 		display: flex;
 		justify-content: space-between;
@@ -114,9 +130,6 @@ export default defineComponent({
 			position: absolute;
 			left: 0;
 			top: 0;
-
-			background: url('/src/assets/images/login/bg.jpg') no-repeat center;
-			background-size: auto 100%;
 		}
 	}
 	.loginContent {
@@ -134,6 +147,9 @@ export default defineComponent({
 		}
 		.code {
 			display: flex;
+		}
+		.operation {
+			justify-content: space-between;
 		}
 	}
 }

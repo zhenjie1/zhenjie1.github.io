@@ -1,6 +1,5 @@
-import { RootGettersParams, RootState } from '@/store/utils'
+import { RootState } from 'typings/newStore'
 import { ObjReturnType } from 'typings/utils'
-import { $PropertyType } from 'utility-types'
 import { GetterTree } from 'vuex'
 
 type FriendGettersParam = ObjReturnType<Getters>
@@ -11,12 +10,12 @@ export type Getters = {
 		getters: FriendGettersParam,
 		rootState: RootState,
 		rootGetters: RootGettersParams
-	): $PropertyType<Friend.state, 'badge'>
+	): string
 	testGetter1(state: Friend.state): string
 }
 
 const friendGetters: GetterTree<Friend.state, RootState> & Getters = {
-	testGetter: (state, g, R, RG) => state.badge,
+	testGetter: (state, g, R, RG) => 'state.badge',
 	testGetter1: (state) => '2222',
 }
 

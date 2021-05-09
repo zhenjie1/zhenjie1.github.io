@@ -61,6 +61,7 @@ export default defineComponent({
 .chat-template {
 	background-color: var(--msgBgColor);
 	flex-grow: 1;
+	flex-shrink: 1;
 	overflow: hidden;
 	// width: calc(100% - 430px);
 }
