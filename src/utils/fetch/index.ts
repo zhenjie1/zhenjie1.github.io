@@ -11,7 +11,7 @@ import { ElMessage } from 'element-plus'
  * @param {Fetch.all} params 参数
  * @returns {Observer} 返回数据
  */
-export default function APIFetch(params: Fetch.all) {
+export default function APIFetch<T = any>(params: Fetch.all): Promise<T> {
 	const config = defaultParams(params)
 
 	const { dataPath, isCode } = config
@@ -73,7 +73,10 @@ function saveStore(path: Fetch.StorePath, data: any): void {
 		const val = store[path]
 
 		const apiStore = getDeepResponse(prefixPath, apiData)
-		if (typeof apiStore === 'object') apiStore[apiDataKey] = val
+		if (typeof apiStore === 'object') {
+			console.log(apiStore, apiDataKey, val)
+			apiStore[apiDataKey] = val
+		}
 	}
 }
 

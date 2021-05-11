@@ -1,18 +1,19 @@
-declare type WechatMutations<S = Wechat.state> = {
-	saveCheckedWechat(state: S, payload: Wechat.data): void
+import { MutationTree } from 'vuex'
+import { State } from './state'
+
+export type Mutations<S = State> = {
+	testMutations(state: S, payload: string): void
+	saveCheckedWechat(state: S, payload: State['checkedWechat']): void
 }
 
-const wechatMutations: WechatMutations = {
-	/**
-	 * 首页, 保存选中的好友
-	 *
-	 * @param {object} state vuex wechat/state
-	 * @param {Wechat.data} wechat 微信号数据
-	 * @returns {void}
-	 */
+const mutations: MutationTree<State> & Mutations = {
+	testMutations(state, value: string): void {
+		console.log('modContact', value)
+	},
+	// 选中一个微信号
 	saveCheckedWechat(state, wechat) {
 		state.checkedWechat = wechat
 	},
 }
 
-export default wechatMutations
+export default mutations

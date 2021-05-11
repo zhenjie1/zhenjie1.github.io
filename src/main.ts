@@ -1,7 +1,10 @@
+import { get, set } from 'idb-keyval'
+import Cookie from 'js-cookie'
 import { createApp } from 'vue'
 import AppTemp from '@/App.vue'
 import 'js/test'
 
+// Cookie.set('refreshToken', '123321312')
 // import 'js/reload'
 
 import initGlobalDirective from './assets/js/directive'
@@ -24,9 +27,13 @@ app.config.performance = true
 
 app.use(router).use(store)
 
-console.log(store)
 initGlobalDirective(app)
 initElementUi(app)
 initGlobalComponent(app)
 
 app.mount('#app')
+
+set('kkk', {
+	a: 1,
+	b: 2,
+})

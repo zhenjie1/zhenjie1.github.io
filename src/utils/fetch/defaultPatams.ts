@@ -1,4 +1,5 @@
-import as from 'utility-types'
+import { tokenKey } from '@/assets/js/keys'
+import Cookie from 'js-cookie'
 
 import { isObject } from 'utils/tool'
 import ajaxUrl from './url'
@@ -23,7 +24,8 @@ export default function defaultParams(
 	const {
 		method = 'post',
 		data = {},
-		store = true,
+		storePath = false,
+		headers = {},
 		file = false,
 		isCode = true,
 		baseURL = ajaxUrl('url'),
@@ -38,14 +40,19 @@ export default function defaultParams(
 	options.method = method
 	options.dataPath = dataPath
 	options.file = file
-	options.store = store
+	options.storePath = storePath
 	options.isCode = isCode
 	options.codeErrorMessage = codeErrorMessage
+	options.headers = headers
+
 	// 上传文件时, 修改 Content-Typ 值
 	if (file) {
 		options.headers['Content-Type'] =
 			'application/x-www-form-urlencoded;charset=utf-8'
 	}
+
+	const accesstoken = Cookie.get(tokenKey.access)
+	if (accesstoken) options.headers.accesstoken = accesstoken
 
 	// 将 Fetch.config 设置为必填(已有值的状态)
 	const op = options as FetchRequired<Fetch.all, keyof Fetch.config>

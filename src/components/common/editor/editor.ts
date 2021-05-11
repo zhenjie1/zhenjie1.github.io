@@ -31,7 +31,6 @@ export const editorInput = ref<HTMLDivElement>()
 
 // 键盘按下事件
 const keydownFunction = debounce(function (this: HTMLDivElement, e: KeyboardEvent) {
-	console.log(e.shiftKey, e.key)
 	const targetTag = editorInput.value
 	if (!targetTag) return
 
@@ -103,11 +102,8 @@ function changeEditorText(this: HTMLDivElement) {
  * @param {HTMLDivElement} this this指向
  */
 export function selectMember(this: HTMLDivElement) {
-	console.clear()
 	memberModel.show = true
 	const { endContainer, endOffset } = window.getSelection()!.getRangeAt(0)
-
-	console.log(endContainer.parentElement?.children, endContainer)
 }
 
 /**

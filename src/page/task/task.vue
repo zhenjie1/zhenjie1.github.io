@@ -70,9 +70,6 @@ export default defineComponent({
 			menu,
 		}
 	},
-	created() {
-		// console.log('创建')
-	},
 })
 </script>
 

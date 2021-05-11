@@ -68,16 +68,17 @@ export default defineComponent({
 						icon: 'icon-guanjianzibiaoqian',
 						link: '/site/keyword',
 					},
-					{ content: '欢迎语模版', icon: 'icon-paishou', link: '/site/hello' },
+					{
+						content: '欢迎语模版',
+						icon: 'icon-paishou',
+						link: '/site/hello',
+					},
 				],
 			},
 		])
 		return {
 			menu,
 		}
-	},
-	created() {
-		// console.log('创建')
 	},
 })
 </script>

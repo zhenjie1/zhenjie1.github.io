@@ -1,16 +1,18 @@
 <template>
 	<div class="friendTopSearch">
-		<el-input v-model="text" class="search" placeholder="搜索" clearable />
-		<el-button class="createGroup">创建群聊</el-button>
+		<el-input
+			v-model="text"
+			size="small"
+			class="search"
+			placeholder="搜索"
+			clearable
+		/>
+		<el-button size="small" class="createGroup">创建群聊</el-button>
 	</div>
 </template>
 
 <script lang="ts">
-import {
-	checkFriendKey,
-	checkWechatKey,
-	injectStrict,
-} from '@/assets/js/injectionKey'
+import { checkFriendKey, checkWechatKey, injectStrict } from '@/assets/js/injectionKey'
 import { defineComponent, ref, watchEffect } from 'vue'
 
 export default defineComponent({

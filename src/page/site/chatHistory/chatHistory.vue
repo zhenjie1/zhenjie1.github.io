@@ -36,7 +36,6 @@ export default defineComponent({
 	},
 	created() {
 		this.initDataFn()
-		console.log(' create ')
 	},
 	mounted() {
 		const el = this.$refs.el as HTMLElement
@@ -58,26 +57,6 @@ export default defineComponent({
 			},
 			direction: 'alternate',
 		})
-		// const logEl = document.querySelector('.battery-log')
-		// anime({
-		// 	targets: battery,
-		// 	qqq: 123,
-		// 	charged: '100%',
-		// 	cycles: 130,
-		// 	round: 1,
-		// 	easing: 'linear',
-		// 	update: function () {
-		// 		console.log('uoload')
-		// 	},
-		// })
-
-		// anime({
-		// 	targets: el,
-		// 	translateX: 250,
-		// 	rotate: '1turn',
-		// 	backgroundColor: '#FFF',
-		// 	duration: 800,
-		// })
 	},
 	methods: {
 		// 初始化数据

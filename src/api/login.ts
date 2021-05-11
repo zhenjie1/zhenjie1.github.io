@@ -1,4 +1,5 @@
 import APIFetch from 'utils/fetch'
+import store from '@/store/index'
 
 // 获取图形码
 export const getImageCode = () =>
@@ -9,9 +10,15 @@ export const getImageCode = () =>
 		storePath: 'login.codeImg',
 	})
 
+type LoginReturn = {
+	accessToken: string
+	permissionList: string
+	refreshToken: string
+	userInfo: User.state
+}
 // 登录接口
 export const startLogin = (data: any) =>
-	APIFetch({
+	APIFetch<LoginReturn>({
 		url: '/product.user.login',
 		data,
 		dataPath: 'data.data',
@@ -25,4 +32,9 @@ export const startLogin = (data: any) =>
 			userInfo: 'login.login.userInfo',
 		},
 		isCode: false,
+	}).then((res) => {
+		store.commit('user/changeAccessToken', res.accessToken)
+		store.commit('user/changeRefreshToken', res.refreshToken)
+		store.commit('user/changeUserInfo', res.userInfo)
+		return res
 	})

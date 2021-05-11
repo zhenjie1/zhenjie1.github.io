@@ -14,8 +14,8 @@ export type Getters = {
 	): void
 }
 
-const getters: GetterTree<State, RootState> & Getters = {
+const groupGetters: GetterTree<State, RootState> & Getters = {
 	groupG1: (state, g, R, RG) => 'state.badge',
 }
 
-export default getters
+export default groupGetters

@@ -1,5 +1,13 @@
-const friendState: User.state = {
-	userInfo: {},
+export type State = {
+	accessToken: string
+	refreshToken: string
+	userInfo: User.state
 }
 
-export default friendState
+const state: State = {
+	accessToken: '',
+	refreshToken: '',
+	userInfo: {} as User.state,
+}
+
+export default state

@@ -17,7 +17,12 @@ type ApiData = {
 		}
 	}
 	chat: {
-		wxList: any[]
+		wxList: {
+			children: Wechat.data[]
+			groupId: number
+			groupName: string
+			id: number
+		}[]
 	}
 }
 
@@ -37,5 +42,7 @@ const apiData: ApiData = reactive({
 	login: loginPage,
 	chat: chatPage,
 })
+
+window.apiData = apiData
 
 export default apiData

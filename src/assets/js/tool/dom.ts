@@ -20,7 +20,6 @@ export function insertDom(parentNode: HTMLElement, insertDoms: Node[], offset = 
 	// 如果没有字节点, 直接将元素插入
 	if (!parentChildNodes || parentChildNodes.length === 0) {
 		insertDoms.map((node) => parentNode.appendChild(node))
-		console.log(parentNode)
 	} else {
 		const prevs: Node[] = [] // endContainer 之前的节点
 		const nexts: Node[] = [] // endContainer 之后的节点

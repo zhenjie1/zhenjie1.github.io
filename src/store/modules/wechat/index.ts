@@ -1,14 +1,21 @@
-import wechatState from './state'
-import * as actions from './actions'
+import state, { State } from './state'
+import actions from './actions'
+import getters from './getters'
 import mutations from './mutations'
 import { Module } from 'vuex'
-import { RootState } from '@/store/utils'
+import { RootState } from '../../type'
 
-const wechatStore: Module<Wechat.state, RootState> = {
+export * from './state'
+export * from './actions'
+export * from './mutations'
+export * from './getters'
+
+const groupStore: Module<State, RootState> = {
 	namespaced: true,
-	state: wechatState,
+	state,
 	actions,
+	getters,
 	mutations,
-	getters: {},
 }
-export default wechatStore
+
+export default groupStore

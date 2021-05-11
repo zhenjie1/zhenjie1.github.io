@@ -1,7 +1,6 @@
 <template>
 	<div class="wechatGroupComponents">
-		<pre>{{ wxList }}</pre>
-		<div v-for="group in wechatData" :key="group.id" class="group-content">
+		<div v-for="group in wxList" :key="group.id" class="group-content">
 			<p class="blur group-name">
 				{{ group.groupName }}
 				<span>(1/{{ group.children.length }})</span>
@@ -15,7 +14,13 @@
 					title
 					:friend="item"
 					@click="handlerClickWechat(item)"
-				></friend-item>
+				>
+					<template #time>
+						<span :class="[status(item.status)[1]]">
+							{{ status(item.status)[0] }}
+						</span>
+					</template>
+				</friend-item>
 			</ul>
 		</div>
 	</div>
@@ -24,15 +29,9 @@
 <script lang="ts">
 import { defineComponent, reactive, computed, PropType } from 'vue'
 import FriendItem from '../friendGroupConver/FriendItem.vue'
-import wechatIcon from 'assets/logo.png'
 import apiData from '@/api/store'
 import { api } from '@/api'
-
-interface WechatData {
-	groupName: string
-	id: number
-	children: Wechat.data[]
-}
+import { GComputed } from 'js/computed/index'
 
 export default defineComponent({
 	nickName: 'WechatGroup',
@@ -46,108 +45,6 @@ export default defineComponent({
 	},
 	emits: { checked: null },
 	setup(props, ctx) {
-		const wechatData: WechatData[] = reactive([
-			{
-				groupName: '分组名',
-				id: Math.random() * 100,
-				children: [
-					{
-						id: '123',
-						wxId: 'wxId_123321ghfghfghjf32',
-						uin: Math.random() * 10000,
-						nickName: '第一个微信第一个微信第一个微信',
-						headImgUrl: wechatIcon,
-						groupId: 123,
-						status: 2,
-					},
-					{
-						id: '123',
-						groupId: 123,
-						status: 2,
-						wxId: 'wxId_asdfdsq313213312',
-						uin: Math.random() * 10000,
-						nickName: '第一个微信第一个微信第一个微信',
-						headImgUrl: wechatIcon,
-					},
-				],
-			},
-			{
-				groupName: '分组名',
-				id: Math.random() * 100,
-				children: [
-					{
-						id: '123',
-						groupId: 123,
-						status: 2,
-						wxId: 'wxId_123321ghfghfghjf32',
-						uin: Math.random() * 10000,
-						nickName: '第一个微信第一个微信第一个微信',
-						headImgUrl: wechatIcon,
-					},
-					{
-						id: '123',
-						groupId: 123,
-						status: 2,
-						wxId: 'wxId_123321ghfg213f32',
-						uin: Math.random() * 10000,
-						nickName: '第一个微信第一个微信第一个微信',
-						headImgUrl: wechatIcon,
-					},
-					{
-						id: '123',
-						groupId: 123,
-						status: 2,
-						wxId: 'wxId_123321123213f32',
-						uin: Math.random() * 10000,
-						nickName: '第一个微信第一个微信第一个微信',
-						headImgUrl: wechatIcon,
-					},
-					{
-						id: '123',
-						groupId: 123,
-						status: 2,
-						wxId: 'wxId_asdfdsq313213312',
-						uin: Math.random() * 10000,
-						nickName: '第一个微信第一个微信第一个微信',
-						headImgUrl: wechatIcon,
-					},
-				],
-			},
-			{
-				groupName: '分组名',
-				id: Math.random() * 100,
-				children: [
-					{
-						id: '123',
-						groupId: 123,
-						status: 2,
-						wxId: 'wxId_123321ghfghfghjf32',
-						uin: Math.random() * 10000,
-						nickName: '第一个微信第一个微信第一个微信',
-						headImgUrl: wechatIcon,
-					},
-					{
-						id: '123',
-						groupId: 123,
-						status: 2,
-						wxId: 'wxId_asdfdsq313213312',
-						uin: Math.random() * 10000,
-						nickName: '第一个微信第一个微信第一个微信',
-						headImgUrl: wechatIcon,
-					},
-					{
-						id: '123',
-						groupId: 123,
-						status: 2,
-						wxId: 'wxId21313213312',
-						uin: Math.random() * 10000,
-						nickName: '第一个微信第一个微信第一个微信',
-						headImgUrl: wechatIcon,
-					},
-				],
-			},
-		])
-
 		api.chat.chhatWechatGroup()
 		const handlerClickWechat = function handlerClickWechat(wechat: Wechat.data) {
 			ctx.emit('checked', wechat)
@@ -157,11 +54,12 @@ export default defineComponent({
 			wechat && wechat.uin === props.wechat?.uin
 		)
 
+		console.log(apiData.chat.wxList)
 		return {
-			wxList: apiData.chat.wxList,
+			status: GComputed.chat.status,
+			wxList: computed(() => apiData.chat.wxList),
 			handlerClickWechat,
 			isCheck,
-			wechatData,
 		}
 	},
 })

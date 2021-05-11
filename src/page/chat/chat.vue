@@ -17,14 +17,13 @@ import { computed, defineComponent, provide } from 'vue'
 import ChatWechatList from './chatWechatList.vue'
 import FriendGroupConver from 'components/wechat/friendGroupConver/FriendGroupConver.vue'
 import ChatTemplate from 'components/wechat/chatTemplate/ChatTemplate.vue'
-import { useStore } from 'vuex'
+import { useStore } from '@/store'
 import { checkWechatKey, checkFriendKey } from 'js/injectionKey'
-import { RootState } from '@/store/utils'
 
 export default defineComponent({
 	components: { ChatWechatList, FriendGroupConver, ChatTemplate },
 	setup() {
-		const store = useStore<RootState>()
+		const store = useStore()
 
 		const checkWechat = computed(() => store.state.wechat.checkedWechat)
 		const checkFriend = computed(() => store.state.friend.checkedFriend)

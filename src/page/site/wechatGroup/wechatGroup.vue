@@ -3,19 +3,13 @@
 </template>
 
 <script lang="ts">
+import { useStore } from '@/store'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
 	name: 'WechatGroup',
-	data() {
-		return {}
-	},
-	created() {
-		this.initDataFn()
-	},
-	methods: {
-		// 初始化数据
-		initDataFn() {},
+	setup() {
+		const store = useStore()
 	},
 })
 </script>

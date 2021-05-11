@@ -11,7 +11,7 @@ type PrefixEach<K extends string, T> = {
 }
 
 type Prefix<K extends string, T> = {
-	[Key in keyof T as `${K}/${Key extends string ? Key : never}`]: T[Key]
+	[Key in keyof T as `${K}/${Key extends string & Key ? Key : never}`]: T[Key]
 }
 
 type RootGetValue<K extends 1 | 2 | 3> = FlatIntersection<

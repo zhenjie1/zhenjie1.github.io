@@ -80,8 +80,6 @@ export default defineComponent({
 				emit('clickItem', props.friend)
 			},
 		}
-
-		// console.log(inject('kkk'))
 	},
 })
 </script>

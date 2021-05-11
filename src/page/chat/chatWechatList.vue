@@ -5,6 +5,7 @@
 			<div class="wechat">
 				<el-input
 					class="search"
+					size="small"
 					prefix-icon="iconfont icon-guanjianzibiaoqian"
 					clearable
 				></el-input>
