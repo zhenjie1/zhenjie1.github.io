@@ -6,6 +6,7 @@ import 'js/test'
 
 // Cookie.set('refreshToken', '123321312')
 // import 'js/reload'
+import '@/plugins/socket/index'
 
 import initGlobalDirective from './assets/js/directive'
 import store from '@/store'

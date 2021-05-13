@@ -21,7 +21,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
 	name: 'LeftMenuPosition',
-	data(): Record<string, any> {
+	data() {
 		return {
 			menu: {
 				wechat: {
@@ -30,8 +30,13 @@ export default defineComponent({
 					title: '聊天',
 					badge: 10,
 				},
-				site: { icon: 'icon-shezhi', link: '/site', title: '设置' },
-				task: { icon: 'icon-renwuguanli', link: '/task', title: '任务' },
+				site: { icon: 'icon-shezhi', link: '/site', title: '设置', badge: 0 },
+				task: {
+					icon: 'icon-renwuguanli',
+					link: '/task',
+					title: '任务',
+					badge: 0,
+				},
 			},
 		}
 	},

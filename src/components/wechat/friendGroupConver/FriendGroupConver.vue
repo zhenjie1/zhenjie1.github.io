@@ -51,7 +51,7 @@ import { isSomeFriend } from 'js/wechat/tool'
 import { wechatProp } from 'assets/props/wechatProps'
 
 import VirtualScroll from 'components/common/virtualScroll/VirtualScroll.vue'
-import { useStore } from 'vuex'
+import { useStore } from '@/store'
 
 export default defineComponent({
 	name: 'FriendGroupConver',
@@ -63,7 +63,7 @@ export default defineComponent({
 	props: {
 		wechat: wechatProp,
 		friend: {
-			type: Object as PropType<Friend.data>,
+			type: Object as PropType<Friend.data | undefined>,
 			default: undefined,
 		},
 	},
@@ -76,7 +76,7 @@ export default defineComponent({
 		// const state = store.state
 		// 点击好友执行
 		const handlerClickFriend = (item: FriendItem) => {
-			commit('friend/saveCheckedFriend', item)
+			commit('fg/saveCheckedFriend', item)
 		}
 
 		// 右键选中的好友

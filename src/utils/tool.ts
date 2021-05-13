@@ -6,7 +6,7 @@
 export const isDev = process.env.NODE_ENV === 'development'
 
 // 是否是对象类型
-export const isObject = (val: any): val is object =>
+export const isObject = (val: any): val is Record<string, any> =>
 	val !== null && typeof val === 'object'
 
 // 是否是 FormData 类型
@@ -18,6 +18,30 @@ export const isEmpty = (val: any) => [null, undefined].includes(val)
 // json 转换
 export function JSONToStr(obj: object) {
 	return JSON.parse(JSON.stringify(obj))
+}
+
+// string 转 json 对象
+export function strToJson(str: any): Record<string, any> {
+	if (typeof str !== 'string') return str
+
+	try {
+		return JSON.parse(str)
+	} catch {
+		return str as any as Record<string, any>
+	}
+}
+
+// string | object 深度转为 object 对象
+export function strToJsonDeep(val: Record<string, any> | string): any {
+	if (!isObject(val)) return strToJson(val)
+
+	for (const i in val) {
+		const item = val[i]
+		if (i === 'uin') val[i] = parseInt(item)
+		else if (isObject(item)) strToJsonDeep(item)
+		else if (typeof item === 'string') val[i] = strToJson(item)
+	}
+	return val
 }
 
 /**

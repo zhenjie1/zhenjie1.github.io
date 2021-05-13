@@ -28,11 +28,14 @@
 				</slot>
 			</p>
 		</div>
+		<div class="float-right">
+			<slot v-if="slot.floatRight" name="float-right"></slot>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, onMounted, PropType } from 'vue'
 
 export default defineComponent({
 	name: 'FriendItem',
@@ -75,11 +78,22 @@ export default defineComponent({
 	},
 	emits: ['clickItem'],
 	setup(props, { emit }) {
+		onMounted(() => {})
 		return {
 			handlerClick() {
 				emit('clickItem', props.friend)
 			},
 		}
+	},
+	data() {
+		return {
+			slot: {
+				floatRight: false,
+			},
+		}
+	},
+	mounted() {
+		if (this.$slots['float-right']) this.slot.floatRight = true
 	},
 })
 </script>
@@ -92,6 +106,12 @@ export default defineComponent({
 	user-select: none;
 	border-left: 2px solid transparent;
 	position: relative;
+
+	.float-right {
+		position: absolute;
+		right: 0;
+	}
+
 	&.top::after {
 		position: absolute;
 		right: 4px;

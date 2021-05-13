@@ -48,7 +48,7 @@
 import { defineComponent } from 'vue'
 export default defineComponent({
 	name: 'Key',
-	data(): { [key: string]: any } {
+	data() {
 		return {
 			keys: {
 				sendMessage: 'Enter',

@@ -19,7 +19,7 @@ function codeErrorDeal(config: AxiosResponse<any>) {
 	const code = config.data.code
 
 	if ([900018, 900010].includes(code)) {
-		router.push('/login/login')
+		router.push('/login')
 		clearUserCache()
 	} else if (code === 900019) return ajaxTokenInvalid(config)
 

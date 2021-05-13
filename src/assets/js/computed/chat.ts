@@ -3,7 +3,7 @@ import { computed } from 'vue'
 // 微信在线状态
 export const status = computed(() => (status: Wechat.status) => {
 	// 转为 string 类型
-	if (typeof status === 'number') status = (status.toString() as any) as Wechat.status
+	if (typeof status === 'number') status = status.toString() as any as Wechat.status
 
 	const data = {
 		0: ['离线', 'gray'],

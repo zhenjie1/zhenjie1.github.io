@@ -25,10 +25,11 @@ export default function defaultParams(
 		method = 'post',
 		data = {},
 		storePath = false,
+		timeout = 1 * 60 * 1000,
 		headers = {},
 		file = false,
 		isCode = true,
-		baseURL = ajaxUrl('url'),
+		baseURL = ajaxUrl('ajax') + '/product',
 		codeErrorMessage = true,
 		dataPath = 'data',
 	} = options
@@ -44,6 +45,7 @@ export default function defaultParams(
 	options.isCode = isCode
 	options.codeErrorMessage = codeErrorMessage
 	options.headers = headers
+	options.timeout = timeout
 
 	// 上传文件时, 修改 Content-Typ 值
 	if (file) {

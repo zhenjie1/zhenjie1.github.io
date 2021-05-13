@@ -1,6 +1,7 @@
 <template>
 	<div v-size="size" class="chatWechatList">
 		<div class="wechatTitle">
+			<!-- {{ name(checkWechat) }} -->
 			<div class="dropWin wechatOnline">微信号(2/10)</div>
 			<div class="wechat">
 				<el-input
@@ -24,7 +25,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '@/store'
 import WechatGroup from 'components/wechat/wechatGroup/WechatGroup.vue'
 
 export default defineComponent({
@@ -37,6 +38,7 @@ export default defineComponent({
 		)
 
 		return {
+			name: store.getters['wechat/getCheckWechatName'],
 			checkWechat,
 			checkedWechat(wechat: Wechat.data | undefined) {
 				store.commit('wechat/saveCheckedWechat', wechat)

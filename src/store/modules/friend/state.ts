@@ -1,21 +1,18 @@
 export type State = {
-	checkedFriend: FriendItem | undefined
 	badge: {
 		// uin + wxId
 		[key: string]: Message.badge
 	}
 	friends: {
-		[key: string]:
+		[uin: number]:
 			| {
-					[key: string]: Friend.data | undefined
+					[wxid: string]: Friend.data
 			  }
 			| undefined
 	}
 }
 
-const friendState: State = {
-	checkedFriend: undefined,
-	// 锚点数据 (消息个数, 消息内容, 消息类型, 消息时间)
+const state: State = {
 	badge: {},
 	/**
 	 * 所有的微信好友数据
@@ -29,4 +26,4 @@ const friendState: State = {
 	friends: {},
 }
 
-export default friendState
+export default state

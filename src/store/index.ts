@@ -4,6 +4,7 @@ import friendStore from './modules/friend/index'
 import groupStore from './modules/group/index'
 import wechatStore from './modules/wechat/index'
 import userStore from './modules/user/index'
+import FGstore from './modules/FGstore/index'
 import storeIndexDB from './storeDB'
 
 export const modules = {
@@ -11,6 +12,7 @@ export const modules = {
 	group: groupStore,
 	wechat: wechatStore,
 	user: userStore,
+	fg: FGstore,
 }
 
 const store = createStore({

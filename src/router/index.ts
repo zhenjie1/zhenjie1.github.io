@@ -47,5 +47,11 @@ export default router
 
 router.beforeEach((to, from, next) => {
 	document.title = (to.meta.title as string) || '项目名称'
+
+	if (to.path === '/') {
+		next('/chat')
+		return
+	}
+
 	next()
 })

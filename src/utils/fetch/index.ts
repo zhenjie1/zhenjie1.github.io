@@ -74,7 +74,6 @@ function saveStore(path: Fetch.StorePath, data: any): void {
 
 		const apiStore = getDeepResponse(prefixPath, apiData)
 		if (typeof apiStore === 'object') {
-			console.log(apiStore, apiDataKey, val)
 			apiStore[apiDataKey] = val
 		}
 	}

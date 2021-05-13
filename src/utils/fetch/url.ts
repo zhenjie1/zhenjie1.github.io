@@ -1,20 +1,26 @@
-import { isDev } from "utils/index"
+import { isDev } from 'utils/index'
 
-export default function ajaxUrl(key: string): string {
-	const urlKey = getQueryString(key)
-	const suffix = '/product'
-
+export default function ajaxUrl(type: 'ws' | 'ajax'): string {
 	const { host, protocol } = location
+	const onlineUrl = `${protocol}//${host}`
 
-	if (!urlKey) return isDev ? `https://nztos.com${suffix}` : `${protocol}//${host}${suffix}`
+	const urlKey = getQueryString('url')
 
-	const urls: { [key: string]: string | undefined } = {
-		ww: 'http://192.168.3.110:9811',
-		gt: 'http://192.168.3.3:9811',
-		ysx: 'https://sg2.nztos.com',
+	const urls: { [key: string]: [string, string] | undefined } = {
+		ww: ['http://192.168.3.110:9811', 'guitang.com'],
+		gt: ['http://192.168.3.3:9811', 'guitang.com'],
+		ysx: ['https://sg2.nztos.com', 'https://sg2.nztos.com'],
 	}
 
-	return urls[urlKey] ? urls[urlKey] + suffix : suffix
+	if (urlKey) {
+		const index: 0 | 1 = type === 'ajax' ? 0 : 1
+
+		if (urls[urlKey]) {
+			return urls[urlKey]![index]
+		}
+	}
+
+	return onlineUrl
 }
 
 /**

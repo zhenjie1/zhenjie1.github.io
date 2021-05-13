@@ -1,22 +1,23 @@
-import { RootState } from 'typings/newStore'
+import { RootState, RootGettersReturn } from '../../type'
 import { ObjReturnType } from 'typings/utils'
 import { GetterTree } from 'vuex'
+import { State } from './state'
 
-type FriendGettersParam = ObjReturnType<Getters>
+type CGetters = ObjReturnType<Getters>
 
 export type Getters = {
-	testGetter(
-		state: Friend.state,
-		getters: FriendGettersParam,
+	getFriends(
+		state: State,
+		getters: CGetters,
 		rootState: RootState,
-		rootGetters: RootGettersParams
-	): string
-	testGetter1(state: Friend.state): string
+		rootGetters: RootGettersReturn
+	): (uin: number) => Record<string, Friend.data> | undefined
 }
 
-const friendGetters: GetterTree<Friend.state, RootState> & Getters = {
-	testGetter: (state, g, R, RG) => 'state.badge',
-	testGetter1: (state) => '2222',
+const getters: GetterTree<State, RootState> & Getters = {
+	getFriends: (state) => (uin) => {
+		return state.friends[uin]
+	},
 }
 
-export default friendGetters
+export default getters

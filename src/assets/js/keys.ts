@@ -4,3 +4,5 @@ export const tokenKey = {
 	access: 'accessToken',
 	refresh: 'refreshToken',
 }
+
+export const vuexName = 'vuexData'

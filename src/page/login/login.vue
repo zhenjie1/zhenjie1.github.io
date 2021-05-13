@@ -71,9 +71,11 @@
 </template>
 
 <script lang="ts">
+import { api } from '@/api'
 import { validatorPassword, validatorUsername } from 'js/formValidate'
 import { defineComponent } from 'vue'
 import useLogin from './useLogin'
+import { debounce } from 'lodash'
 
 export default defineComponent({
 	setup() {
@@ -104,6 +106,9 @@ export default defineComponent({
 					{ min: 4, max: 4, message: '图形码为4个字符', trigger: 'blur' },
 				],
 			},
+			initImgCode: debounce(() => {
+				api.login.getImageCode()
+			}, 300),
 		}
 	},
 })

@@ -2,9 +2,9 @@
 	<div class="app-page">
 		<left-menu-position v-if="!$route.meta.fullScreen" class="leftMenuPosition" />
 		<router-view v-slot="{ Component }" class="right">
-			<keep-alive>
-				<component :is="Component"></component>
-			</keep-alive>
+			<!-- <keep-alive> -->
+			<component :is="Component"></component>
+			<!-- </keep-alive> -->
 		</router-view>
 	</div>
 </template>
@@ -13,12 +13,13 @@
 import { defineComponent } from 'vue'
 import LeftMenuPosition from 'components/common/LeftMenu.vue'
 import { useStore } from './store'
+import { useSocket } from './plugins/socket'
 
 export default defineComponent({
 	name: 'AppPage',
 	components: { LeftMenuPosition },
 	setup(props) {
-		const { state, getters, commit, dispatch } = useStore()
+		// const { state, getters, commit, dispatch } = useStore()
 	},
 })
 </script>

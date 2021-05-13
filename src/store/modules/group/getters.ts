@@ -6,16 +6,21 @@ import { State } from './state'
 type GroupGettersParam = ObjReturnType<Getters>
 
 export type Getters = {
-	groupG1(
+	getGroup(
 		state: State,
 		getters: GroupGettersParam,
 		rootState: RootState,
 		rootGetters: RootGettersReturn
-	): void
+	): (uin: number) => Record<string, Group.data> | undefined
 }
 
 const getters: GetterTree<State, RootState> & Getters = {
-	groupG1: (state, g, R, RG) => 'state.badge',
+	// 获取某微信号的群
+	getGroup: (state) => (uin) => {
+		if (!state.groups[uin]) return {}
+
+		return state.groups[uin]
+	},
 }
 
 export default getters

@@ -21,8 +21,8 @@ export default defineComponent({
 		const checkWechat = injectStrict(checkWechatKey)
 		const friend = injectStrict(checkFriendKey)
 		watchEffect(() => {
-			console.log('wechat', friend.value)
-			console.log('friend', checkWechat.value)
+			// console.log('wechat', friend.value)
+			// console.log('friend', checkWechat.value)
 		})
 		const text = ref('')
 

@@ -19,17 +19,23 @@ import FriendGroupConver from 'components/wechat/friendGroupConver/FriendGroupCo
 import ChatTemplate from 'components/wechat/chatTemplate/ChatTemplate.vue'
 import { useStore } from '@/store'
 import { checkWechatKey, checkFriendKey } from 'js/injectionKey'
+import { useSocket } from '@/plugins/socket'
 
 export default defineComponent({
 	components: { ChatWechatList, FriendGroupConver, ChatTemplate },
 	setup() {
 		const store = useStore()
+		const { receive } = useSocket()
+		receive('login', (data) => {
+			console.log('aaaa', data)
+		})
 
 		const checkWechat = computed(() => store.state.wechat.checkedWechat)
-		const checkFriend = computed(() => store.state.friend.checkedFriend)
+		const checkFriend = computed(() => store.state.fg.checkedFriend)
 
 		provide(checkWechatKey, checkWechat)
 		provide(checkFriendKey, checkFriend)
+
 		return {
 			checkWechat,
 			checkFriend,
