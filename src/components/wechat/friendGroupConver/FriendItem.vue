@@ -1,5 +1,5 @@
 <template>
-	<div class="hover FriendItem" :class="{ top: friend.op === 1 }" @click="handlerClick">
+	<div class="hover FriendItem" :class="{ top: friend.op === 1 }">
 		<div class="avatarBox">
 			<slot name="avatar">
 				<img :src="friend.headImgUrl" alt="" class="avatar" />
@@ -76,15 +76,6 @@ export default defineComponent({
 			default: () => ({}),
 		},
 	},
-	emits: ['clickItem'],
-	setup(props, { emit }) {
-		onMounted(() => {})
-		return {
-			handlerClick() {
-				emit('clickItem', props.friend)
-			},
-		}
-	},
 	data() {
 		return {
 			slot: {
@@ -150,7 +141,7 @@ export default defineComponent({
 			.time {
 				margin-left: 10px;
 				display: flex;
-				color: var(--colorDeepGray);
+				color: var(--colorGrayDeep);
 				font-size: 12px;
 				line-height: 14px * 1.5;
 			}

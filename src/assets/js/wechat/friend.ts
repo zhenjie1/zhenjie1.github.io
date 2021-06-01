@@ -1,27 +1,25 @@
 import { api } from '@/api'
+import store from '@/store'
 
 export const friendTools = {
 	// 初始化某微信号的所有好友
 	initAllFriendGroup(wechat: Wechat.data) {
 		const friend = api.friend.friendList(wechat)
 		const group = api.group.groupList(wechat)
-		this.initConver(wechat)
-		console.log(friend, group)
+
+		Promise.allSettled([friend, group]).then((res) => {
+			const [f, g] = res
+			if (f.status === 'fulfilled') {
+				store.commit('friend/friendPut', f.value)
+			}
+			if (g.status === 'fulfilled') {
+				store.commit('group/groupPut', g.value)
+			}
+		})
 	},
 	initConver(wechat: Wechat.data) {
 		api.conver.getConver(wechat)
 	},
 }
-
-const p1 = new Promise((resolve) => resolve('赢了'))
-const p2 = new Promise((_, reject) => reject('错了'))
-
-Promise.allSettled([p1, p2])
-	.then((res) => {
-		console.log('log', res)
-	})
-	.catch((err) => {
-		console.log('拨错了', err)
-	})
 
 export default friendTools

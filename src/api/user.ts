@@ -17,6 +17,7 @@ export const getNewToken = (): Promise<any> => {
 		url: '/product.token.get',
 		method: 'get',
 		storePath: false,
+		token: false,
 		headers: {
 			refreshToken,
 		},

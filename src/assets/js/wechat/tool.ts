@@ -1,4 +1,4 @@
-import { isObject } from 'utils/index'
+import { isObject } from 'lodash'
 
 type IsSomeFriendParam = Friend.data | Group.data | undefined
 /**

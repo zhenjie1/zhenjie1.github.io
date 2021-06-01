@@ -1,13 +1,16 @@
 import { tokenKey } from '@/assets/js/keys'
 import ajaxUrl from '@/utils/fetch/url'
-import initSocketEvent from './socketEvent'
+import initSocketEvent, { socketAbnormal } from './socketEvent'
 import cookies from 'js-cookie'
-import { isDev, isObject } from '@/utils'
+import { isDev } from '@/utils'
 import store from '@/store'
 import SocketEvent from './event'
+import { useNetwork } from '@vueuse/core'
+import { ref } from 'vue'
 
 export default class SocketListener {
 	event: SocketEvent = new SocketEvent()
+
 	/**
 	 * readyState: socket 连接状态
 	 * 0: 正在建立连接连接，还没有完成
@@ -16,14 +19,13 @@ export default class SocketListener {
 	 * 3: 连接已经关闭或者根本没有建立
 	 */
 	sockets?: WebSocket
-	// /**
-	//  * 是否主动断开的
-	//  * 当调用 close 方法时会标记为 true
-	//  * 当 socket 收到 onclose 方法时会标记为 false
-	//  */
-	// isActiveBreak = false
+
+	// 是否已经连接成功了
+	ready = ref(false)
+
 	// 心跳的间隔时间
 	heartbeatTime = isDev ? 3 : 10
+
 	/**
 	 * 准备发送但因 socket 状态异常未发送的数据
 	 * 将在 socket 重连成功后尝试发送
@@ -40,6 +42,17 @@ export default class SocketListener {
 		this.initHeartbeat()
 	}
 
+	constructor() {
+		window.addEventListener('online', () => {
+			console.log('上线')
+			this.close()
+		})
+		window.addEventListener('offline', () => {
+			console.log('离线')
+			this.close()
+		})
+	}
+
 	/**
 	 * 创建一个 socket 连接
 	 * @param {string?} accessToken token
@@ -47,10 +60,16 @@ export default class SocketListener {
 	 */
 	createSocket(accessToken?: string): boolean {
 		// 如果正在连接中或已经连上了, 无需再连
-		if (this.sockets && [0, 1].includes(this.sockets.readyState)) return false
+		if (this.sockets && [0, 1].includes(this.sockets.readyState)) {
+			console.warn(`因为 readyState = ${this.sockets.readyState} 而取消连接`)
+			return false
+		}
 
 		// 是否允许连接
-		if (!this.isConnect()) return false
+		if (!this.isConnect()) {
+			console.warn('因不满足重连条件而取消连接')
+			return false
+		}
 
 		if (!accessToken) accessToken = cookies.get(tokenKey.access)
 
@@ -62,19 +81,45 @@ export default class SocketListener {
 		const url = `${protocol}://${host}/${protocol}?accessToken=${accessToken}`
 		this.sockets = new WebSocket(url)
 
+		this.event.add('connect', () => {
+			this.ready.value = true
+		})
+		this.event.add('disconnect', () => {
+			this.ready.value = false
+		})
+
+		setTimeout(() => {
+			if (this.sockets?.readyState === 1) return
+
+			// 断开连接进入重连, 这里无需写重连, 引开断开后会自动重连
+			this.sockets?.close()
+		}, 8000)
+
 		return true
 	}
 
 	// 是否允许连接 socket; tru: 允许连接, false: 不允许连接
 	isConnect(): boolean {
+		const refreshToken = cookies.get(tokenKey.refresh)
+		if (!refreshToken) {
+			console.warn('无需连接, 用户尚未登录')
+			return false
+		}
+
 		// 验证 token
 		const token = cookies.get(tokenKey.access)
-		if (!token) return false
+		if (!token) {
+			console.warn('没有 accessToken 无法连接')
+			// 延迟一定时间后重试
+			socketAbnormal(this)
+			return false
+		}
 
 		// 验证无需连接 socket 的页面
 		const notPages: string[] = []
 		const path = location.hash.replace('#', '')
 		if (notPages.includes(path)) {
+			console.warn('当前在无需连接的页面而取消连接')
 			return false
 		}
 
@@ -84,7 +129,10 @@ export default class SocketListener {
 	// 关闭 webSocket 连接
 	close() {
 		if (this.sockets) {
-			if (this.sockets.readyState === 1) this.sockets.close()
+			if (this.sockets.readyState === 1) {
+				this.ready.value = false
+				this.sockets.close()
+			}
 		}
 	}
 

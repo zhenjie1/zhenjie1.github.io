@@ -11,11 +11,12 @@ export type Getters = {
 		getters: CGetters,
 		rootState: RootState,
 		rootGetters: RootGettersReturn
-	): (uin: number) => Record<string, Friend.data> | undefined
+	): (uin: number | undefined) => Record<string, Friend.data> | undefined
 }
 
 const getters: GetterTree<State, RootState> & Getters = {
 	getFriends: (state) => (uin) => {
+		if (!uin) return {}
 		return state.friends[uin]
 	},
 }

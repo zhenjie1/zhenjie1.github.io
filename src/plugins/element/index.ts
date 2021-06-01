@@ -7,6 +7,8 @@ import {
 	ElForm,
 	ElFormItem,
 	ElSwitch,
+	ElRow,
+	ElCol,
 	ElCheckbox,
 	ElSelect,
 	ElOption,
@@ -27,6 +29,8 @@ export default function initElementUi(app: App<Element>) {
 	app.component(ElTabs.name, ElTabs)
 	app.component(ElTabPane.name, ElTabPane)
 	app.component(ElInput.name, ElInput)
+	app.component(ElRow.name, ElRow)
+	app.component(ElCol.name, ElCol)
 	app.component(ElForm.name, ElForm)
 	app.component(ElFormItem.name, ElFormItem)
 	app.component(ElSwitch.name, ElSwitch)

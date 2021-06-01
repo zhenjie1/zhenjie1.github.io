@@ -30,7 +30,7 @@ body {
 	--color: var(--R80);
 	--colorLightGray: var(--R30); /* 浅灰 */
 	--colorGray: var(--R40); /* 中等 */
-	--colorDeepGray: var(--R60); /* 深灰 */
+	--colorGrayDeep: var(--R60); /* 深灰 */
 	/* 所有的文字颜色 ------ 结束 ------ */
 
 	/* 所有的边框颜色 ------ 开始 ------ */

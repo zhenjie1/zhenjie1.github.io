@@ -1,3 +1,11 @@
+import { curry, isObject } from 'lodash'
+import dayjs from 'dayjs'
+
+// 检查类型
+const typeCheck = curry((type: any, val: any) => {
+	return val.constructor === type
+})
+
 /**
  * 判断是不是开发环境
  *
@@ -5,12 +13,12 @@
  */
 export const isDev = process.env.NODE_ENV === 'development'
 
-// 是否是对象类型
-export const isObject = (val: any): val is Record<string, any> =>
-	val !== null && typeof val === 'object'
+// 是不是空对象
+export const isEmptyObj = (obj: Object): boolean =>
+	isObject(obj) ? Object.keys(obj).length === 0 : false
 
 // 是否是 FormData 类型
-export const isFormData = (val: any): val is FormData => val instanceof FormData
+export const isFormData = (val: any): val is FormData => typeCheck(FormData)(val)
 
 // 是不是不存在的值
 export const isEmpty = (val: any) => [null, undefined].includes(val)
@@ -78,4 +86,60 @@ export function addScript(url: string) {
 
 		document.head.appendChild(scriptEl)
 	})
+}
+/**
+ * 节流函数，与传统截留不一样的是，可传入一个唯一标识
+ *
+ * @param {number} delay 延迟时间
+ * @param {boolean} onceRun 第一次是否立即执行，默认只有到了规定时间才会执行
+ * @returns {Function} 返回可执行的截流方法
+ */
+export function myThrottle(delay = 300, onceRun = false) {
+	const keys = new Map()
+
+	return function (key: string, fn: Function) {
+		if (!key) throw new Error('缺少必要参数')
+		if (typeof fn !== 'function') throw new Error('fn 必须为函数')
+
+		const args = arguments
+
+		let prevOptions = keys.get(key)
+
+		if (!prevOptions) {
+			const options = { avail: true, lastFn: fn, timer: undefined }
+			keys.set(key, options)
+			prevOptions = options
+		}
+
+		if (prevOptions.avail) {
+			prevOptions.avail = false
+
+			let isRun = false
+			if (onceRun && !prevOptions.timer) {
+				fn.apply(null, args)
+				isRun = true
+			}
+
+			if (isRun) {
+				prevOptions.timer = setTimeout(() => {}, 0)
+				prevOptions.avail = true
+			} else {
+				prevOptions.timer = setTimeout(() => {
+					fn.apply(null, args)
+					prevOptions.avail = true
+				}, delay)
+			}
+		}
+	}
+}
+/**
+ * 日期格式转换
+ *
+ * @param {string} date 要转换的字符串
+ * @returns {string} 转换后的字符串
+ */
+export function dateTrans(date: dayjs.ConfigType, len = 20): string {
+	if (!date) return ''
+	const date1 = dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+	return date1.substr(0, len)
 }

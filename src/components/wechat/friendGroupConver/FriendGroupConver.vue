@@ -1,6 +1,6 @@
 <template>
 	<div v-if="wechat" v-size="size" class="friendGroupConverContent">
-		<div class="blur topOpertaing">
+		<div class="topOpertaing">
 			<friend-top-search />
 			<div class="friendGroupConver">
 				<el-tabs v-model="menuActive" stretch>
@@ -11,31 +11,8 @@
 			</div>
 		</div>
 
-		<virtual-scroll
-			class="virtualScrollContent"
-			:top-offset="82"
-			:item-height="60"
-			:data="friendData"
-		>
-			<template #default="{ item }">
-				<friend-item
-					:friend="item"
-					class="friendItem"
-					:class="{
-						checked: isSomeFriend(item, friend),
-						select: isSomeFriend(item, selectFriend),
-					}"
-					badge
-					title
-					time
-					icon
-					conver
-					top
-					@contextmenu="friendContextmenu($event, item)"
-					@clickItem="handlerClickFriend"
-				/>
-			</template>
-		</virtual-scroll>
+		<Conversation v-if="menuActive === 'conver'" />
+		<FriendGroup v-if="menuActive === 'friendGroup'" v-model:compName="fgCheck" />
 
 		<div class="positionDrop" title="按住调节大小" />
 	</div>
@@ -45,20 +22,19 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue'
 import FriendTopSearch from './FriendTopSearch.vue'
-import friendData from './friend'
-import FriendItem from './FriendItem.vue'
+import FriendGroup from './friendGroup/index.vue'
+import Conversation from './conversation.vue'
 import { isSomeFriend } from 'js/wechat/tool'
 import { wechatProp } from 'assets/props/wechatProps'
-
-import VirtualScroll from 'components/common/virtualScroll/VirtualScroll.vue'
-import { useStore } from '@/store'
 
 export default defineComponent({
 	name: 'FriendGroupConver',
 	components: {
 		FriendTopSearch,
-		FriendItem,
-		VirtualScroll,
+		FriendGroup,
+		Conversation,
+		// FriendItem,
+		// VirtualScroll,
 	},
 	props: {
 		wechat: wechatProp,
@@ -68,35 +44,16 @@ export default defineComponent({
 		},
 	},
 	setup(props) {
-		const { commit, state } = useStore()
-		const menuActive = ref('conver')
+		const menuActive = ref('friendGroup')
+		const fgCheck = ref('friend')
 
 		const checkFriend = computed(() => props.friend)
 
-		// const state = store.state
-		// 点击好友执行
-		const handlerClickFriend = (item: FriendItem) => {
-			commit('fg/saveCheckedFriend', item)
-		}
-
-		// 右键选中的好友
-		const selectFriend = ref<FriendItem | undefined>(undefined)
-
-		const contextmenuConfig = {
-			close() {
-				selectFriend.value = undefined
-			},
-		}
-
 		return {
+			fgCheck,
 			isSomeFriend,
 			menuActive,
 			checkFriend,
-			selectFriend,
-			contextmenuConfig,
-			friendData,
-			// 点击好友或群聊数据
-			handlerClickFriend,
 		}
 	},
 	data() {
@@ -109,13 +66,6 @@ export default defineComponent({
 				height: true,
 			},
 		}
-	},
-	methods: {
-		friendContextmenu(event: MouseEvent, item: FriendItem) {
-			// 加延迟, 防止连续右键 close 事件清除
-			setTimeout(() => (this.selectFriend = item), 0)
-			//friendContextmenu(event, item, this.contextmenuConfig)
-		},
 	},
 })
 </script>
@@ -133,11 +83,7 @@ export default defineComponent({
 	flex-shrink: 0;
 
 	.topOpertaing {
-		position: absolute;
 		width: 100%;
-		top: 0;
-		left: 0;
-		z-index: 10;
 		padding: 10px 10px 0;
 		box-sizing: border-box;
 		// background-color: var(--C6);
@@ -157,14 +103,14 @@ export default defineComponent({
 		cursor: col-resize;
 	}
 
-	.virtualScrollContent {
-		.friendItem {
-			height: 60px;
-			box-sizing: border-box;
-		}
-		.friendItem.select {
-			box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 4px inset;
-		}
-	}
+	// .virtualScrollContent {
+	// 	.friendItem {
+	// 		height: 60px;
+	// 		box-sizing: border-box;
+	// 	}
+	// 	.friendItem.select {
+	// 		box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 4px inset;
+	// 	}
+	// }
 }
 </style>

@@ -1,3 +1,4 @@
+import SocketListener from '@/plugins/socket/socket'
 import { UseStore } from '@/store/type'
 
 export {}
@@ -6,5 +7,7 @@ declare global {
 		JSEncrypt: any
 		pako: any
 		store: UseStore
+
+		socketObj: SocketListener
 	}
 }

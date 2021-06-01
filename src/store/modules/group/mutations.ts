@@ -27,8 +27,8 @@ const mutations: MutationTree<State> & Mutations = {
 			const newFriend = oldFriend
 				? replace
 					? f
-					: { ...oldFriend, ...f }
-				: oldFriend
+					: { ...(oldFriend || {}), ...f }
+				: f
 
 			state.groups[f.uin]![f.wxId] = newFriend
 		})

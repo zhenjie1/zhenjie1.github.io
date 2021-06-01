@@ -53,10 +53,10 @@ export default function useVirtualScroll(props: Virtual.params): Virtual.returns
 	}
 
 	// 从缓存读取时, 运行一次
-	onActivated(() => {
-		if (!parentDom.value) throw new Error('没有找到父节点!')
-		scrollEv()
-	})
+	onActivated(scrollEv)
+
+	// 数据本身发生变化
+	watch(() => props.data, scrollEv)
 
 	onMounted(() => {
 		if (!parentDom.value) throw new Error('没有找到父节点!')

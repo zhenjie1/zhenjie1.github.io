@@ -4,6 +4,8 @@ import { createApp } from 'vue'
 import AppTemp from '@/App.vue'
 import 'js/test'
 
+import 'js/rxjs/index'
+
 // Cookie.set('refreshToken', '123321312')
 // import 'js/reload'
 import '@/plugins/socket/index'
@@ -22,19 +24,18 @@ import 'css/wechat.scss'
 
 import router from './router/index'
 
-const app = createApp(AppTemp as any)
+async function createVue() {
+	const app = createApp(AppTemp as any)
 
-app.config.performance = true
+	app.config.performance = true
 
-app.use(router).use(store)
+	app.use(router).use(store)
 
-initGlobalDirective(app)
-initElementUi(app)
-initGlobalComponent(app)
+	initGlobalDirective(app)
+	initElementUi(app)
+	await initGlobalComponent(app)
 
-app.mount('#app')
+	app.mount('#app')
+}
 
-set('kkk', {
-	a: 1,
-	b: 2,
-})
+createVue()

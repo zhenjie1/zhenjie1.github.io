@@ -60,7 +60,6 @@ export default defineComponent({
 
 .friendGroupConver {
 	width: 230px;
-	z-index: 3;
 }
 
 .chat-template {

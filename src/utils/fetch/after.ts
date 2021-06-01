@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import router from '@/router'
 import { clearUserCache } from '@/assets/js/user'
 import { api } from '@/api'
@@ -21,28 +21,30 @@ function codeErrorDeal(config: AxiosResponse<any>) {
 	if ([900018, 900010].includes(code)) {
 		router.push('/login')
 		clearUserCache()
-	} else if (code === 900019) return ajaxTokenInvalid(config)
+	} else if (code === 900019) {
+		return ajaxGetNewToken(config.config).then(axios)
+	}
 
 	return config
 }
 
 interface FetchState {
-	resolve: Function
-	reject: Function
-	config: AxiosResponse
+	resolve: (value: unknown) => void
+	reject: (value: unknown) => void
+	config: AxiosRequestConfig
 }
 
 let fetchState: FetchState[] = []
 
 // accessToken 失效时, 换取新的 token
-export function ajaxTokenInvalid(config: AxiosResponse): Promise<any> | AxiosResponse {
-	const p = new Promise((resolve, reject) =>
+export function ajaxGetNewToken(config: AxiosRequestConfig): Promise<any> {
+	const p = new Promise((resolve, reject) => {
 		fetchState.push({
 			resolve,
 			reject,
 			config,
 		})
-	)
+	})
 
 	if (fetchState.length !== 1) return p
 
@@ -53,24 +55,19 @@ export function ajaxTokenInvalid(config: AxiosResponse): Promise<any> | AxiosRes
 			const { data: newToken, code } = data
 			if (code !== 100000) throw new Error('换取 token 异常')
 
-			console.warn('换取新 accessToken', newToken)
+			console.warn('换取新 accessToken 成功', newToken)
 			store.commit('user/changeAccessToken', newToken)
-			fetchState.map((options) => {
-				const config = options.config.config
-				config.headers.accessToken = newToken
 
-				axios(config)
-					.then((res) => {
-						options.resolve(res)
-					})
-					.catch((err) => {
-						options.reject(err)
-					})
+			fetchState.map(({ config, resolve }) => {
+				config.headers.accessToken = newToken
+				resolve(config)
 			})
 
 			fetchState = []
 		})
 		.catch((err) => {
+			fetchState.map(({ config, reject }) => reject(config))
+
 			console.error('换取新的 token 时报错', err)
 			router.push('/login')
 			clearUserCache()

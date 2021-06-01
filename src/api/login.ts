@@ -6,6 +6,7 @@ export const getImageCode = () =>
 	APIFetch({
 		url: '/secret.graphcode.get',
 		method: 'get',
+		token: false,
 		dataPath: 'data.data',
 		storePath: 'login.codeImg',
 	})
@@ -22,6 +23,7 @@ export const startLogin = (data: any) =>
 		url: '/product.user.login',
 		data,
 		dataPath: 'data.data',
+		token: false,
 		storePath: {
 			accessToken: 'login.login.accessToken',
 			refreshToken: 'login.login.refreshToken',

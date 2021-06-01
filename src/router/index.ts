@@ -19,6 +19,7 @@ const routes: RouteRecordRaw[] = [
 	{
 		path: '/task',
 		component: () => import('page/task/task.vue'),
+		redirect: '/task/pageFriendList',
 		meta: { title: '任务' },
 		children: taskRouter,
 	},
@@ -26,6 +27,7 @@ const routes: RouteRecordRaw[] = [
 		path: '/site',
 		component: () => import('page/site/site.vue'),
 		children: siteRouter,
+		redirect: '/site/pageWechatList',
 		meta: { title: '运营' },
 	},
 	{

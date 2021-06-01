@@ -16,12 +16,14 @@
 					@click="handlerClickWechat(item)"
 				>
 					<template #time>
-						<span :class="[status(item.status)[1]]">
+						<span :class="[status(item.status)[1]]" class="onlineStatus">
 							{{ status(item.status)[0] }}
 						</span>
 					</template>
 					<!-- <template #float-right>
-						<span class="float-right-context">上线</span>
+						<span class="float-right-context" @click="online(item)">
+							上线
+						</span>
 					</template> -->
 				</friend-item>
 			</ul>
@@ -51,6 +53,7 @@ export default defineComponent({
 	},
 	emits: { checked: null },
 	setup(props, ctx) {
+		const { send } = useSocket()
 		api.chat.chhatWechatGroup()
 		const handlerClickWechat = function handlerClickWechat(wechat: Wechat.data) {
 			ctx.emit('checked', wechat)
@@ -67,6 +70,12 @@ export default defineComponent({
 		)
 
 		return {
+			online: (item: Wechat.data) => {
+				console.log(item)
+				send('login', {
+					content: {},
+				})
+			},
 			status: GComputed.chat.status,
 			wxList: computed(() => apiData.chat.wxList),
 			handlerClickWechat,
@@ -83,7 +92,7 @@ export default defineComponent({
 		.group-name {
 			line-height: 36px;
 			padding: 0 10px;
-			color: var(--colorDeepGray);
+			color: var(--colorGrayDeep);
 			position: sticky;
 			top: 0;
 			z-index: 10;
@@ -98,6 +107,9 @@ export default defineComponent({
 				width: 40px;
 				text-align: center;
 				margin-right: 10px;
+			}
+			.onlineStatus {
+				flex-shrink: 0;
 			}
 		}
 	}

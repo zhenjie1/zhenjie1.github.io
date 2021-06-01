@@ -1,10 +1,9 @@
 import { onUnmounted } from 'vue'
 import SocketListener from './socket'
 
-const sockets = new SocketListener()
+export const sockets = new SocketListener()
 sockets.startConnect()
-
-// window.sockets = sockets
+window.socketObj = sockets
 
 export function useSocket() {
 	// receive 添加的事件监听在此存储一份, 方便 onUnmounted 时删除事件监听
@@ -18,7 +17,8 @@ export function useSocket() {
 	})
 
 	return {
-		send: (name: SocketNameKeys, data: SocketNameData) => sockets.send(name, data),
+		ready: sockets.ready,
+		send: (name: SocketNameKeys, data: any) => sockets.send(name, data),
 		receive(key: SocketNameKeys | TagKeys, cb: SocketNameData) {
 			sockets.event.add(key, cb)
 			receivePools.push([key, cb])

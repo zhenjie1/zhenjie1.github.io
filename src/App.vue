@@ -1,6 +1,15 @@
 <template>
-	<div class="app-page">
+	<div v-if="!ready" class="offline">您的设备已离线, 请检查网络连接!</div>
+	<div ref="div" class="app-page">
 		<left-menu-position v-if="!$route.meta.fullScreen" class="leftMenuPosition" />
+		<!--		<div style="width: 500px">
+			<el-row>
+				<el-col :span="12">
+					<pre>{{ ready }}</pre>
+				</el-col>
+				<el-col :span="12">{{ ready }}</el-col>
+			</el-row>
+		</div>-->
 		<router-view v-slot="{ Component }" class="right">
 			<!-- <keep-alive> -->
 			<component :is="Component"></component>
@@ -12,20 +21,40 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import LeftMenuPosition from 'components/common/LeftMenu.vue'
-import { useStore } from './store'
 import { useSocket } from './plugins/socket'
 
 export default defineComponent({
 	name: 'AppPage',
 	components: { LeftMenuPosition },
 	setup(props) {
-		// const { state, getters, commit, dispatch } = useStore()
+		const { ready } = useSocket()
+
+		return {
+			ready,
+		}
 	},
 })
 </script>
 
 <style lang="scss">
 $menuWidth: 60px;
+.offline {
+	position: relative;
+	color: var(--yellow);
+	padding: 4px 10px;
+	&::before {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -1;
+		background-color: var(--yellow);
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		opacity: 0.2;
+	}
+}
 .app-page {
 	display: flex;
 	height: 100%;

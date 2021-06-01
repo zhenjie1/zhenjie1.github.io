@@ -28,7 +28,7 @@ import { defineComponent, toRefs, watchEffect, onActivated } from 'vue'
 import useVirtualScroll from './VirtualScroll'
 
 export default defineComponent({
-	name: 'VirtualScrollContent',
+	name: 'VirtualScroll',
 	props: {
 		// 要显示的数据
 		data: {

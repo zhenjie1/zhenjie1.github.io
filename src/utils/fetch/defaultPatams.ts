@@ -1,7 +1,6 @@
 import { tokenKey } from '@/assets/js/keys'
 import Cookie from 'js-cookie'
-
-import { isObject } from 'utils/tool'
+import { isObject } from 'lodash'
 import ajaxUrl from './url'
 
 // 将 T 中的 U 改为必填
@@ -28,6 +27,7 @@ export default function defaultParams(
 		timeout = 1 * 60 * 1000,
 		headers = {},
 		file = false,
+		token = true,
 		isCode = true,
 		baseURL = ajaxUrl('ajax') + '/product',
 		codeErrorMessage = true,
@@ -40,6 +40,7 @@ export default function defaultParams(
 	options.baseURL = baseURL
 	options.method = method
 	options.dataPath = dataPath
+	options.token = token
 	options.file = file
 	options.storePath = storePath
 	options.isCode = isCode

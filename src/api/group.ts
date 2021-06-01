@@ -1,3 +1,4 @@
+import { addNeedField } from '@/assets/js/wechat/fg'
 import APIFetch from '@/utils/fetch'
 import { fetchPagination, Page } from './apiTool'
 
@@ -20,5 +21,8 @@ export const groupList = (wechat: Wechat.data, progressCb?: (num: string) => voi
 			},
 		})
 
-	return fetchPagination(awaitFn, (progress) => console.log('进度: ' + progress))
+	return fetchPagination(awaitFn).then((res) => {
+		if (Array.isArray(res)) res.map((v) => addNeedField(v, wechat))
+		return res
+	})
 }

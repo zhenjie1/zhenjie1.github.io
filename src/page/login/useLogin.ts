@@ -4,6 +4,7 @@ import { reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import pick from 'lodash/pick'
 import { stringEncrypt } from 'js/JSEncrypt'
+import { sockets } from '@/plugins/socket'
 
 export default function useLogin() {
 	api.login.getImageCode()
@@ -47,6 +48,7 @@ export default function useLogin() {
 				.startLogin(data)
 				.then((res) => {
 					router.push('/')
+					sockets.startConnect()
 				})
 				.catch((err) => {
 					form.graphCode = ''
