@@ -1,12 +1,9 @@
-import { get, set } from 'idb-keyval'
-import Cookie from 'js-cookie'
 import { createApp } from 'vue'
 import AppTemp from '@/App.vue'
 import 'js/test'
 
 import 'js/rxjs/index'
 
-// Cookie.set('refreshToken', '123321312')
 // import 'js/reload'
 import '@/plugins/socket/index'
 
@@ -18,8 +15,8 @@ import initGlobalComponent from '@/plugins/globalComponents/globalComponents'
 // 引入的 css 资源
 import 'css/clear.scss'
 import 'css/common.scss'
-// import 'css/theme/blackTheme.css'
-import 'css/theme/defaultTheme.css'
+import 'css/theme/blackTheme.css'
+// import 'css/theme/defaultTheme.css'
 import 'css/wechat.scss'
 
 import router from './router/index'
@@ -33,7 +30,7 @@ async function createVue() {
 
 	initGlobalDirective(app)
 	initElementUi(app)
-	await initGlobalComponent(app)
+	initGlobalComponent(app)
 
 	app.mount('#app')
 }

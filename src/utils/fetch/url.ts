@@ -1,3 +1,4 @@
+import { stringify } from 'qs'
 import { isDev } from 'utils/index'
 
 export default function ajaxUrl(type: 'ws' | 'ajax'): string {
@@ -21,6 +22,19 @@ export default function ajaxUrl(type: 'ws' | 'ajax'): string {
 	}
 
 	return onlineUrl
+}
+
+/**
+ * 根据 axios 请求参数, 获取接口唯一 key
+ * [url + data + params]
+ * @param {Fetch.all} config 配置
+ * @returns {string} 返回 key
+ */
+export function fetchGetKey(config: Fetch.all) {
+	const { data = {}, params = {} } = config
+	const newData = stringify(Object.assign(data, params))
+	const key = config.url + '?' + newData
+	return key
 }
 
 /**

@@ -44,3 +44,7 @@ $S: (xs: 10, sm: 16, md: 20, lg: 26, xl: 32);
         }
     }
 }
+
+@for $i from 1 through 100 {
+    .w-#{$i}{width: #{$i * 10}px;}
+}

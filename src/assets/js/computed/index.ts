@@ -1,3 +1,4 @@
 import * as chat from './chat'
 
-export const GComputed = { chat }
+const GComputed = { chat }
+export default GComputed

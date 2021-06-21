@@ -1,9 +1,7 @@
-import { strToJson, strToJsonDeep } from '@/utils'
+import { myThrottle, strToJson, strToJsonDeep } from '@/utils'
 import SocketListener from './socket'
 import { ElMessage } from 'element-plus'
 import { debounce, isObject } from 'lodash'
-
-export const socketAbnormal = debounce(socketDisconnect, 5000)
 
 /**
  * 初始化 socket 的事件
@@ -63,7 +61,7 @@ export default function initSocketEvent(socketListener: SocketListener) {
 		socketListener.event.emit('disconnect')
 
 		// socket 异常回调
-		socketAbnormal(socketListener)
+		socketError(socketListener)
 	}
 
 	/**
@@ -77,7 +75,21 @@ export default function initSocketEvent(socketListener: SocketListener) {
 		socketListener.event.emit('disconnect')
 
 		// socket 异常回调
+		socketError(socketListener)
+	}
+}
+
+// 重连小于一定时间走这个
+export const socketAbnormal = debounce(socketDisconnect, 1000)
+// 重连次数超过一定次数走这个
+export const socketAbnormalMany = debounce(socketDisconnect, 5000)
+
+// socket 关闭或报错 后执行
+function socketError(socketListener: SocketListener) {
+	if (socketListener.reconnectCount.value <= 10) {
 		socketAbnormal(socketListener)
+	} else {
+		socketAbnormalMany(socketListener)
 	}
 }
 

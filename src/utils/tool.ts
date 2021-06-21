@@ -1,10 +1,24 @@
 import { curry, isObject } from 'lodash'
 import dayjs from 'dayjs'
+import { unref } from 'vue'
+import { MaybeRef } from '@vueuse/core'
 
 // 检查类型
 const typeCheck = curry((type: any, val: any) => {
 	return val.constructor === type
 })
+
+// type Unrefs = {}
+type Unrefs<T = any> = {
+	[key: string]: MaybeRef<T>
+}
+// ref 对象转普通对象
+export function unrefs<T>(refs: Unrefs): T {
+	for (const i in refs) {
+		refs[i] = unref(refs[i])
+	}
+	return refs as T
+}
 
 /**
  * 判断是不是开发环境

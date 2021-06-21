@@ -6,10 +6,10 @@ import { App, Component } from 'vue'
  * @param {App<Element>} app createApp的返回
  * @returns {void}
  */
-export default async function initGlobalComponent(app: App<Element>) {
-	const modules = import.meta.glob('./../../components/common/**/*.vue')
+export default function initGlobalComponent(app: App<Element>) {
+	const modules = import.meta.globEager('./../../components/common/**/*.vue')
 	for (const path in modules) {
-		const mod = await modules[path]()
+		const mod = modules[path]
 		const component: Component = mod.default
 		if (!component || !component.name) return
 

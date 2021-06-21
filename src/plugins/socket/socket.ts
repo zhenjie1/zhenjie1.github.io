@@ -5,7 +5,6 @@ import cookies from 'js-cookie'
 import { isDev } from '@/utils'
 import store from '@/store'
 import SocketEvent from './event'
-import { useNetwork } from '@vueuse/core'
 import { ref } from 'vue'
 
 export default class SocketListener {
@@ -21,7 +20,10 @@ export default class SocketListener {
 	sockets?: WebSocket
 
 	// 是否已经连接成功了
-	ready = ref(false)
+	ready = ref(true)
+
+	// 重连次数
+	reconnectCount = ref(0)
 
 	// 心跳的间隔时间
 	heartbeatTime = isDev ? 3 : 10
@@ -35,6 +37,9 @@ export default class SocketListener {
 
 	// 开始建立连接
 	startConnect() {
+		// 重连次数增加
+		this.reconnectCount.value++
+
 		const isopen = this.createSocket()
 		if (!isopen) return
 
@@ -44,11 +49,9 @@ export default class SocketListener {
 
 	constructor() {
 		window.addEventListener('online', () => {
-			console.log('上线')
 			this.close()
 		})
 		window.addEventListener('offline', () => {
-			console.log('离线')
 			this.close()
 		})
 	}
@@ -83,6 +86,7 @@ export default class SocketListener {
 
 		this.event.add('connect', () => {
 			this.ready.value = true
+			this.reconnectCount.value = 0
 		})
 		this.event.add('disconnect', () => {
 			this.ready.value = false
@@ -112,6 +116,9 @@ export default class SocketListener {
 			console.warn('没有 accessToken 无法连接')
 			// 延迟一定时间后重试
 			socketAbnormal(this)
+
+			// 换取新的 token
+			store.dispatch('user/exchangeForNewToken')
 			return false
 		}
 

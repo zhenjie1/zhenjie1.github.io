@@ -2,6 +2,10 @@ export {}
 
 declare global {
 	namespace User {
+		type position = 0 | 1 | 2 | 3
+
+		type brandType = '0' | '1' | '2' | '3' | '4' | '5' | '8' | '9' | '10'
+
 		type state = {
 			// userInfo: {
 			brand: number
@@ -15,7 +19,7 @@ declare global {
 			lastLoginTime: string
 			limitWx: string
 			phone: string | null
-			position: 0 | 1 | 2 | 3
+			position: position
 			realName: string
 			remark: string | null
 			startDate: string

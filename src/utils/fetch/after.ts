@@ -8,7 +8,8 @@ axios.interceptors.response.use((config) => {
 	if (typeof config.data !== 'object') return config
 
 	// 如果无需验证token, 接口异常时不检查, 避免死循环请求
-	const configs: any = config
+	const configs = config as any // as Fetch.all
+
 	if (configs.config.token === false) return config
 
 	return codeErrorDeal(config)

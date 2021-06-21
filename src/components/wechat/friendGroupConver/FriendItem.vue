@@ -163,7 +163,7 @@ export default defineComponent({
 			.icon {
 				margin-left: 10px;
 				font-size: 12px;
-				color: var(--colorLightGray);
+				color: var(--colorGrayLight);
 			}
 		}
 	}

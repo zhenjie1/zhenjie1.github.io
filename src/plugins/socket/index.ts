@@ -18,6 +18,7 @@ export function useSocket() {
 
 	return {
 		ready: sockets.ready,
+		reconnectCount: sockets.reconnectCount,
 		send: (name: SocketNameKeys, data: any) => sockets.send(name, data),
 		receive(key: SocketNameKeys | TagKeys, cb: SocketNameData) {
 			sockets.event.add(key, cb)

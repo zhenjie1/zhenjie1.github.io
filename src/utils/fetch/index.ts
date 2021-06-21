@@ -1,9 +1,11 @@
 import axios from 'axios'
 import defaultParams from './defaultPatams'
-import './before'
+// import './before'
 import './after'
 import apiData from '@/api/store'
 import { ElMessage } from 'element-plus'
+import { apiSave } from './before'
+import { fetchGetKey } from './url'
 
 /**
  * 发送请求
@@ -23,8 +25,11 @@ export default function APIFetch<T = any>(params: Fetch.all): Promise<T> {
 
 			if (typeof data !== 'object') return data
 
-			if (data.code === 100000) return getDeepResponse(dataPath, response)
-			else if (isCode) {
+			if (data.code === 100000) {
+				const result = getDeepResponse(dataPath, response)
+				apiSaveResult(config, result)
+				return result
+			} else if (isCode) {
 				if (data.msg) ElMessage.error(data.msg)
 				throw new Error(data.msg || data)
 			}
@@ -42,11 +47,20 @@ export default function APIFetch<T = any>(params: Fetch.all): Promise<T> {
 	return app
 }
 
+// 保存 api 接口结果, 下次请求前会执行 cacheFn 回调
+function apiSaveResult(config: Fetch.all, result: any) {
+	if (typeof config.cacheCb === 'function') {
+		const key = fetchGetKey(config)
+
+		apiSave[key] = result
+	}
+}
+
 // 存储请求的结果
 function saveStore(path: Fetch.StorePath, data: any): void {
 	// key: 将结果放到哪里
 	// value: 结果
-	const store: { [key: string]: string } = {}
+	const store: Data = {}
 
 	if (typeof path === 'string') store[path] = data
 
@@ -70,11 +84,10 @@ function saveStore(path: Fetch.StorePath, data: any): void {
 
 		const apiDataKey = path.substr(index + 1)
 		const prefixPath = path.substr(0, index)
-		const val = store[path]
 
 		const apiStore = getDeepResponse(prefixPath, apiData)
 		if (typeof apiStore === 'object') {
-			apiStore[apiDataKey] = val
+			apiStore[apiDataKey] = store[path]
 		}
 	}
 }

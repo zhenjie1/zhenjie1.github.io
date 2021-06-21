@@ -50,6 +50,9 @@ body {
 	backdrop-filter: saturate(180%) blur(20px);
 }
 
+.nowrap{white-space: nowrap;}
+.wrap{white-space: normal;}
+
 .badge {
 	position: absolute;
 	right: 0;
@@ -70,12 +73,18 @@ body {
 	text-align: center;
 }
 
+.text-center, .text-center *{text-align: center;}
+
 .routerlink {
 	display: block;
 }
 
-.flex{display: flex;}
+.flex{display: flex;align-items: center;}
 .w100{width:100%;}
+
+.omit{@include omit;}
+.omit2{@include lineOmit(2);}
+.omit3{@include lineOmit(3);}
 
 .nav{display: flex;justify-content: space-around;text-align: center;line-height: 40px;
 	border-bottom: 1px solid var(--borderColor);

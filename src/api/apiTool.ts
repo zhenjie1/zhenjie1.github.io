@@ -1,16 +1,22 @@
+import { MaybeRef } from '@vueuse/core'
+import { ApiTablePage } from 'typings/components/tablepage'
+
 export type Page = {
 	index: number
 	size: number
 	total: number
 }
 
-type ReturnParams = {
-	total: number
-	list?: any[]
+// table 表格的分页数据
+export type ListPage = {
+	pageNum: MaybeRef<number>
+	pageSize: MaybeRef<number>
 }
+
+type ReturnParams = ApiTablePage<any>
+
 /**
  * 请求某接口的所有数据
- *
  */
 export function fetchPagination(
 	awaitFn: (page: Page) => Promise<ReturnParams>,

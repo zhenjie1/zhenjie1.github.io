@@ -19,7 +19,7 @@ export default defineComponent({
 	name: 'AppointList',
 	props: {
 		members: {
-			type: (Array as never) as PropType<Group.member[]>,
+			type: Array as never as PropType<Group.member[]>,
 			default: () => [],
 		},
 		checkIndex: {
@@ -63,7 +63,7 @@ export default defineComponent({
 		}
 
 		&:hover {
-			background-color: var(--hoverBgColor);
+			background-color: var(--bgHover);
 		}
 	}
 }

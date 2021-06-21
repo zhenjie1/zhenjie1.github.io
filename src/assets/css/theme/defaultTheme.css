@@ -20,7 +20,8 @@ body {
 	/* --bgColor: #f3f4f6; */
 	/* background-color: var(--R0); */
 	--bgColor: var(--C97); /* 背景颜色 */
-	--hoverBgColor: var(--R4); /* 鼠标经过时的颜色 */
+	--bgHover: var(--R4); /* 鼠标经过时的颜色 */
+	--bgCheck: var(--R8); /* 选中时的颜色 */
 
 	--AppLeftMenuColor: var(--R86); /* 左侧菜单背景颜色 */
 	--menuBgColor: transparent; /* 菜单颜色 */
@@ -28,7 +29,7 @@ body {
 
 	/* 所有的文字颜色 ------ 开始 ------ */
 	--color: var(--R80);
-	--colorLightGray: var(--R30); /* 浅灰 */
+	--colorGrayLight: var(--R30); /* 浅灰 */
 	--colorGray: var(--R40); /* 中等 */
 	--colorGrayDeep: var(--R60); /* 深灰 */
 	/* 所有的文字颜色 ------ 结束 ------ */

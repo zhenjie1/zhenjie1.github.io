@@ -3,9 +3,9 @@
 		<my-menu :data="menu" class="menu" />
 		<router-view v-slot="{ Component }" class="router">
 			<transition name="fade">
-				<keep-alive>
-					<component :is="Component"></component>
-				</keep-alive>
+				<!-- <keep-alive> -->
+				<component :is="Component"></component>
+				<!-- </keep-alive> -->
 			</transition>
 		</router-view>
 	</div>
@@ -86,8 +86,19 @@ export default defineComponent({
 <style scoped lang="scss">
 .siteTemplateContent {
 	display: flex;
-	.router {
-		flex-grow: 1;
+	// height: 100%;
+	overflow: hidden;
+	.menu {
+		flex-shrink: 0;
 	}
+	.router {
+		overflow: hidden;
+		flex: 1;
+	}
+	// ::v-deep(.router) {
+	// 	> * {
+	// 		height: 100%;
+	// 	}
+	// }
 }
 </style>

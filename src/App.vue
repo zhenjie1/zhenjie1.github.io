@@ -1,16 +1,8 @@
 <template>
-	<div v-if="!ready" class="offline">您的设备已离线, 请检查网络连接!</div>
+	<!-- <div v-if="!ready" class="offline">您的设备已离线, 请检查网络连接!</div> -->
 	<div ref="div" class="app-page">
 		<left-menu-position v-if="!$route.meta.fullScreen" class="leftMenuPosition" />
-		<!--		<div style="width: 500px">
-			<el-row>
-				<el-col :span="12">
-					<pre>{{ ready }}</pre>
-				</el-col>
-				<el-col :span="12">{{ ready }}</el-col>
-			</el-row>
-		</div>-->
-		<router-view v-slot="{ Component }" class="right">
+		<router-view v-slot="{ Component }" class="router">
 			<!-- <keep-alive> -->
 			<component :is="Component"></component>
 			<!-- </keep-alive> -->
@@ -28,7 +20,6 @@ export default defineComponent({
 	components: { LeftMenuPosition },
 	setup(props) {
 		const { ready } = useSocket()
-
 		return {
 			ready,
 		}
@@ -36,7 +27,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 $menuWidth: 60px;
 .offline {
 	position: relative;
@@ -62,7 +53,7 @@ $menuWidth: 60px;
 		width: $menuWidth;
 		flex-shrink: 0;
 	}
-	.right {
+	> ::v-deep(.router) {
 		flex-grow: 1;
 		width: calc(100% - #{$menuWidth});
 		background-color: var(--bgColor);
