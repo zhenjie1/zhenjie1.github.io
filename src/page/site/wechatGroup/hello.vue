@@ -41,10 +41,10 @@
 				<el-form-item v-if="isOpen" label="欢迎语模版" prop="helloId">
 					<my-select
 						v-model="form.helloId"
-						:data="helloData"
 						class="w-22"
 						one-key="id"
 						label="templateName"
+						:loadmore="selectLoadmore"
 					/>
 				</el-form-item>
 			</el-form>
@@ -52,12 +52,7 @@
 			<template #footer>
 				<span class="dialog-footer">
 					<el-button size="small" @click="show = false"> 取 消 </el-button>
-					<el-button
-						size="small"
-						type="primary"
-						:loading="loading"
-						@click="submit"
-					>
+					<el-button size="small" type="primary" :loading="loading" @click="submit">
 						确 定
 					</el-button>
 				</span>
@@ -68,7 +63,6 @@
 
 <script lang="ts">
 import { api } from '@/api'
-import apiData from '@/api/store'
 import { GroupList, SetHelloParams } from '@/api/'
 import { validatorNumberRange } from '@/assets/js/formValidate'
 import { useVModel } from '@vueuse/core'
@@ -98,12 +92,6 @@ export default defineComponent({
 		})
 		const isOpen = computed(() => form.isTurnOn === 0)
 
-		api.hello.list().then((res) => {
-			if (res.list.length > 0) {
-				form.helloId = res.list[0].id
-			}
-		})
-
 		const formEl = ref()
 
 		const loading = ref(false)
@@ -111,9 +99,9 @@ export default defineComponent({
 		return {
 			isOpen,
 			formEl,
-			helloData: computed(() => apiData.hello.list),
 			form,
 			loading,
+			selectLoadmore: (page: any) => api.hello.list(...page),
 			rules: {
 				isTurnOn: [{ required: true, message: ' ', trigger: 'change' }],
 				startInterval: [
@@ -154,7 +142,9 @@ export default defineComponent({
 					}
 
 					loading.value = true
-					await api.hello.setHello(data).finally(() => (loading.value = false))
+					await api.hello.setHello(data).then(() => {
+
+          }).finally(() => (loading.value = false))
 
 					show.value = false
 				})

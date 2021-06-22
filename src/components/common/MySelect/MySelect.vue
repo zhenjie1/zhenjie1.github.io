@@ -1,7 +1,7 @@
 <template>
 	<el-select v-model="check" v-loadmore="loadmoreParams" :popper-class="clas" placeholder="">
 		<el-option
-			v-for="item in data"
+			v-for="item in selectList"
 			:key="item[oneKey]"
 			:label="item[label]"
 			:value="item[oneKey]"
@@ -11,23 +11,34 @@
 
 <script lang="ts">
 import { random } from 'lodash'
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import { useVModel } from '@vueuse/core'
 
 export default defineComponent({
 	name: 'MySelect',
 	props: {
+		// 被选中的数据，用于外部读取当前选中项的完整数据
+		checked: {
+			type: Object,
+			default: undefined,
+		},
 		// 与 el-select 一致
 		modelValue: {
 			type: String as PropType<string | number>,
 			default: '',
 			required: true,
 		},
-		// 数据
+		/**
+		 * data 与 loadmore 传一个即可
+		 */
 		data: {
 			type: Array as PropType<any[]>,
 			default: () => [],
-			required: true,
+		},
+		// api 接口
+		loadmore: {
+			type: Function,
+			default: () => Promise.resolve(),
 		},
 		// 唯一标识
 		oneKey: {
@@ -41,22 +52,28 @@ export default defineComponent({
 			default: 'id',
 			required: true,
 		},
-		loadmore: {
-			type: Function,
-			default: () => Promise.resolve(),
-		},
 	},
+	emits: ['update:checked'],
 	setup(props, { emit }) {
 		const check = useVModel(props, 'modelValue', emit)
 
 		const randomNum = random(10000000)
 		const clas = `my-select-${Date.now()}-${randomNum} .el-select-dropdown__wrap`
 
+		const selectList = ref(props.data)
+
+		watch(check, (val) => {
+			const target = selectList.value.find((v) => v[props.oneKey] === val)
+			emit('update:checked', target)
+		})
+
 		const loadmoreParams = {
 			clas,
+			list: selectList,
 			loadmore: props.loadmore,
 		}
 		return {
+			selectList,
 			loadmoreParams,
 			clas,
 			check,

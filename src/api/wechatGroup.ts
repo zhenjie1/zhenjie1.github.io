@@ -65,6 +65,15 @@ export const changeCustomer = (data: Data) =>
 		storePath: false,
 	})
 
+// 微信分组 - 设置关键词回复
+export const setKeyword = (data: Data) =>
+	APIFetch({
+		url: '/key.word.set',
+		storePath: false,
+		dataPath: 'data.data',
+		data,
+	})
+
 type ChangeNameParams = Pick<GroupList, 'groupId' | 'groupName'>
 // 修改微信分组名字
 export const changeName = (data: ChangeNameParams) =>

@@ -18,12 +18,7 @@ export const list = (pageNum = 1, pageSize = 1000) =>
 		url: '/query.wechat.welcome.template.list',
 		data: { pageNum, pageSize },
 		dataPath: 'data.data',
-		storePath: {
-			list: {
-				path: 'hello.list',
-				handler: (val: HelloList[]) => val,
-			},
-		},
+		storePath: false
 	})
 
 export type SetHelloParams = {

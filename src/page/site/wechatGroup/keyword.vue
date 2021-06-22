@@ -41,10 +41,10 @@
 				<el-form-item v-if="isOpen" label="关键字模版" prop="helloId">
 					<my-select
 						v-model="form.helloId"
-						:data="helloData"
+						v-model:checked="form.checked"
 						class="w-22"
 						one-key="id"
-						label="templateName"
+						label="groupName"
 						:loadmore="selectLoadmore"
 					/>
 				</el-form-item>
@@ -64,7 +64,6 @@
 
 <script lang="ts">
 import { api } from '@/api'
-import apiData from '@/api/store'
 import { GroupList, SetHelloParams } from '@/api/'
 import { validatorNumberRange } from '@/assets/js/formValidate'
 import { useVModel } from '@vueuse/core'
@@ -88,9 +87,11 @@ export default defineComponent({
 		const show = useVModel(props, 'modelValue', emit)
 		const form = reactive({
 			isTurnOn: 1,
+			checked: undefined as any,
 			startInterval: '',
 			endInterval: '',
 			helloId: '' as any as number,
+			keywordName: '',
 		})
 		const isOpen = computed(() => form.isTurnOn === 0)
 
@@ -101,10 +102,7 @@ export default defineComponent({
 		return {
 			isOpen,
 			formEl,
-			helloData: computed(() => apiData.hello.list),
-			selectLoadmore: (page: any) => {
-				return api.keyword.list(...page)
-			},
+			selectLoadmore: (page: any) => api.keyword.list(...page),
 			form,
 			loading,
 			rules: {
@@ -142,12 +140,12 @@ export default defineComponent({
 						groupIds: props.checkes.map((v) => v.groupId),
 						isTurnOn: form.isTurnOn,
 						timeInterval: `${form.startInterval}-${form.endInterval}`,
-						wechatKeyGroupName: form.helloId,
+						wechatKeyGroupName: form.checked.groupName,
 						welcomeTemplateId: form.helloId,
 					}
 
 					loading.value = true
-					await api.hello.setHello(data).finally(() => (loading.value = false))
+					await api.wechatGroup.setKeyword(data).finally(() => (loading.value = false))
 
 					show.value = false
 				})

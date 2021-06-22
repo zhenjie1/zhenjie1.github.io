@@ -45,7 +45,7 @@ export default defineComponent({
 	setup(props) {
 		const show: Data = reactive({
 			hello: false,
-			keyword: true,
+			keyword: false,
 		})
 
 		const checkLeng = computed(() => props.checkes.length > 0)

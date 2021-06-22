@@ -1,6 +1,6 @@
 import { isObject } from '@vueuse/core'
 import { ApiTablePage } from 'typings/components/tablepage'
-import { Directive } from 'vue'
+import { Directive, isRef, Ref } from 'vue'
 
 type Page = {
 	index: number
@@ -26,7 +26,7 @@ export default function loadMore(): Directive {
 				lock: false, // 锁🔒
 			}
 
-			const { clas, loadmore, index, size } = binding.value as any
+			const { clas, loadmore, index, size, list } = binding.value as any
 			if (!loadmore) return
 
 			if (index) page.index = index
@@ -38,31 +38,35 @@ export default function loadMore(): Directive {
 			if (!selectDom) return console.warn('没找到 dom', clas)
 
 			// 请求第一页数据
-			loadNextData(loadmore, page)
+			loadNextData(loadmore, page, list)
 
 			selectDom.addEventListener('scroll', function (this: Element) {
 				const { scrollHeight, scrollTop, clientHeight } = this
 				const condition = scrollHeight - scrollTop <= clientHeight
 				// 还未滚动到底部呢
 				if (!condition) return
-				// debugger
 				if (page.size * page.index >= page.total) return console.log('done') // 已经显示全部了
 				if (page.lock) return console.warn('上次的请求还未返回')
 
+				page.index++
 				// 加载下一页
-				loadNextData(loadmore, page)
+				loadNextData(loadmore, page, list)
 			})
 		},
 	}
 }
 
+/**
+ * key: number 第几页
+ * value: any[] 数据
+ */
+const pageDatas: Data = {}
 // 加载下一页数据
-function loadNextData(loadmoreFn: Function, page: Page) {
+function loadNextData(loadmoreFn: Function, page: Page, list: Ref<any[]>) {
 	page.lock = true
 	const p = loadmoreFn([page.index, page.size, false])
 
 	if (!(p instanceof Promise)) {
-		page.index++
 		page.lock = false
 		return
 	}
@@ -70,8 +74,11 @@ function loadNextData(loadmoreFn: Function, page: Page) {
 	p.then((res: ApiTablePage<any>) => {
 		if (!isObject(res)) return console.warn('忘记返回参数啦!!!')
 
+		// 将数据存起来
+		pageDatas[page.index] = res.list
+
 		page.total = res.total
-		page.index++ // 下次请求下一页
+		list.value = Object.values(pageDatas).flat(2)
 	}).finally(() => {
 		page.lock = false // 恢复锁状态
 	})
