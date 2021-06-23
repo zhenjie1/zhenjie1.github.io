@@ -1,7 +1,7 @@
 import { curry, isObject } from 'lodash'
 import dayjs from 'dayjs'
-import { unref } from 'vue'
-import { MaybeRef } from '@vueuse/core'
+import { unref, Ref, ref, onMounted } from 'vue'
+import { MaybeRef, templateRef } from '@vueuse/core'
 
 // 检查类型
 const typeCheck = curry((type: any, val: any) => {
@@ -18,6 +18,17 @@ export function unrefs<T>(refs: Unrefs): T {
 		refs[i] = unref(refs[i])
 	}
 	return refs as T
+}
+
+// 获取 ref
+export function getRef(refStr: string): Ref<Element | undefined> {
+	const el: Ref<Element | undefined> = ref()
+	onMounted(() => {
+		const target = templateRef(refStr)
+		if (target.value) el.value = target.value
+		else console.error('未找到', refStr)
+	})
+	return el
 }
 
 /**

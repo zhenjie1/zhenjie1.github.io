@@ -15,7 +15,6 @@ export type GetPropValue<
 > = Modules[Space][K]
 
 type ModuleActions = ValueOf<Modules>[1]
-type ModuleMutations = ValueOf<Modules>[2]
 type ModuleGetters = ValueOf<Modules>[3]
 
 export type ActionContext<

@@ -6,7 +6,8 @@
 			:data="list"
 			:max-height="page.total > list.length ? height - 48 : height"
 			highlight-current-row
-			:row-key="(row) => row[onekey]"
+			:row-key="getRowKey"
+			:reserve-selection="false"
 			@selection-change="selectionChange"
 		>
 			<slot></slot>
@@ -31,7 +32,6 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import useTablePage, { AwaitFetch, TablePage } from './tablePageLogic'
-import { useVModel } from '@vueuse/core'
 
 export default defineComponent({
 	name: 'TablePage',
@@ -62,23 +62,19 @@ export default defineComponent({
 		},
 	},
 	// emits: ['selectData'],
-	setup(props, { emit }) {
+	setup(props, ctx) {
 		if (!props.awaitFetch) throw new Error('awaFetch 不能为空!')
 
 		if (typeof props.awaitFetch !== 'function') {
 			throw new TypeError('awaFetch 只允许 Function 类型')
 		}
 
-		const select = useVModel(props, 'selectData', emit)
-
 		const tableEl = ref()
 
-		const { page, list, pageSizeEv, pageIndexEv, initDataFn } = useTablePage(
-			props.awaitFetch,
-			props.filters
-		)
+		const { page, list, pageSizeEv, pageIndexEv, initDataFn, select } = useTablePage(props, ctx)
 
 		return {
+			select,
 			page,
 			list,
 			tableEl,
@@ -92,9 +88,12 @@ export default defineComponent({
 			},
 			initDataFn,
 			selectionChange(row: any) {
-				console.log(row)
 				select.value = row
 			},
+			sehectOne(row: any) {
+				tableEl.value.toggleRowSelection(row, true)
+			},
+			getRowKey: (row: any) => row[props.onekey],
 		}
 	},
 })

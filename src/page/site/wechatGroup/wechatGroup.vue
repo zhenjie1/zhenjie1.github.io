@@ -1,18 +1,19 @@
 <template>
 	<div class="wechatGroup">
 		<TopFunction class="pt-xs mx-xs" :checkes="select"></TopFunction>
-		<table-page ref="table" v-model:select-data="select" :await-fetch="awaitFn">
+		<table-page
+			ref="table"
+			v-model:select-data="select"
+			:await-fetch="awaitFn"
+			onekey="groupId"
+		>
 			<el-table-column
 				v-if="hide('selection')"
 				type="selection"
 				width="54px"
 			></el-table-column>
 			<el-table-column type="index" width="80px" label="序号"></el-table-column>
-			<el-table-column
-				label="分组名"
-				prop="groupName"
-				min-width="130px"
-			></el-table-column>
+			<el-table-column label="分组名" prop="groupName" min-width="130px"></el-table-column>
 			<el-table-column
 				v-if="hide('customer')"
 				label="负责客服"
@@ -42,12 +43,7 @@
 				align="center"
 				min-width="80px"
 			></el-table-column>
-			<el-table-column
-				v-if="hide('hello')"
-				label="欢迎语"
-				align="center"
-				min-width="100px"
-			>
+			<el-table-column v-if="hide('hello')" label="欢迎语" align="center" min-width="100px">
 				<template #default="{ row }">
 					{{ row.templateName ? row.templateName : '关闭' }}
 				</template>
@@ -92,6 +88,7 @@ import { isVideo } from '@/assets/js/var/global'
 import { computed, defineComponent } from 'vue'
 import useWechatGroup, { useWechatGroupFun } from './useWechatGroup'
 import TopFunction from './topFunction.vue'
+import { getRef } from '@/utils'
 
 export default defineComponent({
 	name: 'WechatGroup',
@@ -110,13 +107,16 @@ export default defineComponent({
 			return data[key]
 		}
 		const { awaitFn } = useWechatGroup()
-		const { handlerChangeCustomer, handlerEdit, handlerDelete, select } =
-			useWechatGroupFun()
+		const { handlerChangeCustomer, handlerEdit, handlerDelete, select } = useWechatGroupFun()
+		const tableEl: any = getRef('table')
 
 		return {
 			select,
 			hide,
 			awaitFn,
+			refreshEv() {
+				tableEl.value?.initDataFn?.()
+			},
 			handlerEdit,
 			handlerDelete,
 			handlerChangeCustomer,

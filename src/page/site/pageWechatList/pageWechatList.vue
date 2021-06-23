@@ -1,7 +1,7 @@
 <template>
 	<div class="pageWechatList">
 		<top-function :filters="filters" />
-		<TablePage ref="table" :await-fetch="awaitFn" :filters="filters">
+		<TablePage ref="table" :await-fetch="awaitFn" :filters="filters" oneKey="uin">
 			<el-table-column type="selection" width="54px"></el-table-column>
 			<el-table-column label="状态" align="center" width="72px">
 				<template #default="{ row }">

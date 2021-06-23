@@ -1,6 +1,7 @@
-import { debouncedWatch } from '@vueuse/core'
+import { debouncedWatch, useVModel } from '@vueuse/core'
 import { ApiTablePage } from 'typings/components/tablepage'
-import { reactive, Ref, ref } from 'vue'
+import { reactive, Ref, ref, SetupContext } from 'vue'
+import { getRef } from '@/utils'
 
 // 请求返回的结构
 export type AwaitFetch = ApiTablePage<any>
@@ -21,6 +22,7 @@ export type TableApiParams = TablePage & TableFilter
 
 // 方法最终返回的结果
 export type TablePageReturn<P, F> = {
+	select: Ref<any[]>
 	page: P
 	filters: F
 	list: Ref<{ [x: string]: any }[]>
@@ -30,13 +32,23 @@ export type TablePageReturn<P, F> = {
 }
 
 type UseTablePage = {
-	(awaitFetch: (params: TableApiParams) => Promise<AwaitFetch>, filters: Data): TablePageReturn<
-		TablePage,
-		typeof filters
-	>
+	(
+		props: {
+			awaitFetch: (params: TableApiParams) => Promise<AwaitFetch>
+			filters: Data
+			selectData: any[]
+		},
+		ctx: SetupContext
+	): TablePageReturn<TablePage, typeof props['filters']>
 }
 
-const useTablePage: UseTablePage = (awaitFetch, filters = {}) => {
+let _props: Data = {}
+
+const useTablePage: UseTablePage = (props, { emit }) => {
+	const { awaitFetch, filters = {} } = props
+	_props = props
+	const tabelEl = getRef('tableEl')
+
 	const page = reactive<TablePage>({
 		size: 10,
 		index: 1,
@@ -44,18 +56,21 @@ const useTablePage: UseTablePage = (awaitFetch, filters = {}) => {
 		lock: false, // 锁
 	})
 
+	// 选中的数据
+	const select = useVModel(props, 'selectData', emit)
+
 	// 请求成功后, 此处存放数据结果
 	const list = ref<Record<string, any>[]>([])
 
 	// 每页个数发生变化
 	const pageSizeEv = (size: number) => {
 		page.size = size
-		loadData(awaitFetch, page, list)
+		loadData(awaitFetch, page, list, tabelEl, select)
 	}
 	// 切换页数
 	const pageIndexEv = (index: number) => {
 		page.index = index
-		loadData(awaitFetch, page, list)
+		loadData(awaitFetch, page, list, tabelEl, select)
 	}
 
 	/**
@@ -69,7 +84,7 @@ const useTablePage: UseTablePage = (awaitFetch, filters = {}) => {
 		if (listData && Array.isArray(listData)) return (list.value = listData)
 
 		if (pageInit) page.index = 1
-		loadData(awaitFetch, page, list)
+		loadData(awaitFetch, page, list, tabelEl, select)
 	}
 
 	// 过滤条件变化后刷新表格
@@ -82,6 +97,7 @@ const useTablePage: UseTablePage = (awaitFetch, filters = {}) => {
 	initDataFn()
 
 	return {
+		select,
 		page,
 		filters,
 		list,
@@ -97,7 +113,9 @@ export default useTablePage
 function loadData(
 	awaitFetch: (page: TablePage) => Promise<AwaitFetch>,
 	params: TablePage,
-	list: Ref<{ [x: string]: any }[]>
+	list: Ref<{ [x: string]: any }[]>,
+	tabelEl: Ref<any>,
+	select: Ref<any[]>
 ): Promise<any> {
 	// 正在请求期间
 	if (params.lock) return Promise.reject('在请求期间重复请求, 已终止')
@@ -114,6 +132,19 @@ function loadData(
 			params.total = res.total || 0
 
 			list.value = res.list || []
+
+			setTimeout(() => {
+				const newSelect: any[] = []
+				select.value.map((v) => {
+					const target = res.list.find((r) => r[_props.onekey] === v[_props.onekey])
+					if (!target) return
+
+					newSelect.push(target)
+					tabelEl.value.toggleRowSelection(target, true)
+				})
+
+				select.value = newSelect
+			}, 0)
 		})
 		.finally(() => {
 			params.lock = false

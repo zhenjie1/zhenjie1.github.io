@@ -67,7 +67,7 @@ import { api } from '@/api'
 import { GroupList, SetHelloParams } from '@/api/'
 import { validatorNumberRange } from '@/assets/js/formValidate'
 import { useVModel } from '@vueuse/core'
-import { computed, defineComponent, reactive, ref, PropType } from 'vue'
+import { computed, defineComponent, reactive, ref, PropType, getCurrentInstance } from 'vue'
 
 export default defineComponent({
 	name: 'Hello',
@@ -98,6 +98,7 @@ export default defineComponent({
 		const formEl = ref()
 
 		const loading = ref(false)
+		const current = getCurrentInstance()!
 
 		return {
 			isOpen,
@@ -145,7 +146,13 @@ export default defineComponent({
 					}
 
 					loading.value = true
-					await api.wechatGroup.setKeyword(data).finally(() => (loading.value = false))
+					await api.wechatGroup
+						.setKeyword(data)
+						.then(() => {
+							const parent: any = current?.parent
+							parent?.setupState.refreshEv?.()
+						})
+						.finally(() => (loading.value = false))
 
 					show.value = false
 				})
