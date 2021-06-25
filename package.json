@@ -11,6 +11,7 @@
     "@vueuse/rxjs": "^4.11.1",
     "animejs": "^3.2.1",
     "axios": "^0.21.1",
+    "axios-repeat-abandon": "^1.0.5",
     "dayjs": "^1.10.5",
     "element-plus": "^1.0.2-beta.41",
     "idb-keyval": "^5.0.5",

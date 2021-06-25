@@ -21,13 +21,16 @@ export function unrefs<T>(refs: Unrefs): T {
 }
 
 // 获取 ref
-export function getRef(refStr: string): Ref<Element | undefined> {
+export function getRef(refStr: string | Element): Ref<Element | undefined> {
 	const el: Ref<Element | undefined> = ref()
-	onMounted(() => {
-		const target = templateRef(refStr)
-		if (target.value) el.value = target.value
-		else console.error('未找到', refStr)
-	})
+	if (refStr instanceof Element) el.value = refStr
+	else {
+		onMounted(() => {
+			const target = templateRef(refStr)
+			if (target.value) el.value = target.value
+			else console.error('未找到', refStr)
+		})
+	}
 	return el
 }
 

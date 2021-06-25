@@ -1,5 +1,11 @@
 <template>
-	<el-select v-model="check" v-loadmore="loadmoreParams" :popper-class="clas" placeholder="">
+	<el-select
+		v-model="check"
+		v-loadmore="loadmoreParams"
+		:popper-class="clas"
+		placeholder=""
+		@change="handlerChange"
+	>
 		<el-option
 			v-for="item in selectList"
 			:key="item[oneKey]"
@@ -53,7 +59,7 @@ export default defineComponent({
 			required: true,
 		},
 	},
-	emits: ['update:checked'],
+	emits: ['update:checked', 'change'],
 	setup(props, { emit }) {
 		const check = useVModel(props, 'modelValue', emit)
 
@@ -77,6 +83,10 @@ export default defineComponent({
 			loadmoreParams,
 			clas,
 			check,
+			handlerChange(id: any) {
+				const target = selectList.value.find((v) => v[props.oneKey] === id)
+				emit('change', target)
+			},
 		}
 	},
 })

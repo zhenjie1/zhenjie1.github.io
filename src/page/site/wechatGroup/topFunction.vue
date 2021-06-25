@@ -47,8 +47,6 @@ export default defineComponent({
 
 		const current = getCurrentInstance()!
 
-		const keywordTemp = getRef('keyword')
-
 		return {
 			show,
 			checkLeng,

@@ -18,11 +18,7 @@
 						<el-input v-model="form.userName"></el-input>
 					</el-form-item>
 					<el-form-item prop="password">
-						<el-input
-							v-model="form.password"
-							type="password"
-							show-password
-						></el-input>
+						<el-input v-model="form.password" type="password" show-password></el-input>
 					</el-form-item>
 					<el-form-item prop="graphCode">
 						<div class="flex code">
@@ -43,10 +39,7 @@
 					</el-form-item>
 					<el-form-item>
 						<div class="flex operation">
-							<el-checkbox
-								v-model="remember"
-								label="记住密码"
-							></el-checkbox>
+							<el-checkbox v-model="remember" label="记住密码"></el-checkbox>
 							<span class="seekPass">
 								<router-link to="/login/seekPass" class="loginTxt">
 									找回密码

@@ -10,12 +10,10 @@ export function injectStrict<T>(key: InjectionKey<T>, fallback?: T) {
 }
 
 // 被选中的微信号
-export const checkWechatKey: InjectionKey<Ref<Wechat.data | undefined>> =
-	Symbol('checkWechat')
+export const checkWechatKey: InjectionKey<Ref<Wechat.data | undefined>> = Symbol('checkWechat')
 
 // 被选中的好友或群聊
-export const checkFriendKey: InjectionKey<Ref<FriendItem | undefined>> =
-	Symbol('checkFriend')
+export const checkFriendKey: InjectionKey<Ref<FriendItem | undefined>> = Symbol('checkFriend')
 
 export const socketKey: InjectionKey<{
 	send: (name: string, value: Record<string, any> | undefined) => void

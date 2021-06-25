@@ -12,13 +12,8 @@ let tableComp: Ref<any>
 const select = ref([])
 
 export default function useWechatGroup() {
-	// 获取客服列表
-	api.customer.subordinateCustomer()
-
 	// 表格
-	const awaitFn = (page: TablePage) => {
-		return api.wechatGroup.getGroupList(page.index, page.size)
-	}
+	const awaitFn = (page: TablePage) => api.wechatGroup.getGroupList(page.index, page.size)
 
 	onMounted(() => (tableComp = templateRef('table')))
 
@@ -82,16 +77,15 @@ export function useWechatGroupFun() {
 		},
 
 		// 修改微信分组所属客服
-		handlerChangeCustomer(row: GroupList, id: number) {
-			const customer = apiData.customer.subordinate.find((v) => v.id === id)
-			if (!customer) return console.warn('未找到该客服', id)
+		handlerChangeCustomer(row: GroupList, customer: any) {
+			if (!customer) return console.warn('未找到该客服')
 
 			const { deptId } = state.user.userInfo
 			const data = {
 				cServiceIds: [deptId, row.userId],
 				groupIds: [row.groupId],
-				userId: id,
-				groupUsersId: JSON.stringify([deptId, id]),
+				userId: customer.id,
+				groupUsersId: JSON.stringify([deptId, customer.id]),
 				userName: customer.userName,
 			}
 

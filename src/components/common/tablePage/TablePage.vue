@@ -90,9 +90,6 @@ export default defineComponent({
 			selectionChange(row: any) {
 				select.value = row
 			},
-			sehectOne(row: any) {
-				tableEl.value.toggleRowSelection(row, true)
-			},
 			getRowKey: (row: any) => row[props.onekey],
 		}
 	},
