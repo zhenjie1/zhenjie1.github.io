@@ -1,13 +1,7 @@
 <template>
 	<div class="friendTopSearch">
-		<el-input
-			v-model="text"
-			size="small"
-			class="search"
-			placeholder="搜索"
-			clearable
-		/>
-		<el-button size="small" class="createGroup">创建群聊</el-button>
+		<el-input v-model="text" size="small" class="search" placeholder="搜索" clearable />
+		<el-button size="small" class="createGroup bg-blue-20">创建群聊</el-button>
 	</div>
 </template>
 

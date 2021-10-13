@@ -1,3 +1,9 @@
+/**
+ * # 重要
+ * 如果需要使用 #ff0000 这种格式的颜色值, 请改为 rgb|rgba(255, 255, 255) 的格式
+ * 因为 tailwind.config.js 在转换透明度时, 是将 rgb(255, 255, 255) 转换为 rgba(255, 255, 255, 10) 的格式
+ * 如果使用16进制的格式, tailwind.config.js 将无法转换透明度
+ */
 const data: Data = {
 	/* rgb 主背景颜色 */
 	CR: '255',
@@ -8,7 +14,7 @@ const data: Data = {
 	RR: '0',
 	RG: '0',
 	RB: '0',
-	main: '#1890ff',
+	main: 'rgb(24, 144, 255)',
 	AppLeftMenuColor: 'var(--R86)' /* 左侧菜单背景颜色 */,
 	menuBgColor: 'transparent' /* 菜单颜色 */,
 	bg: {

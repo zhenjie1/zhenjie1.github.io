@@ -1,17 +1,11 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, StoreDefinition } from 'pinia'
+import FGStore from './FGStore/index'
 
-export const useStore = defineStore('store', {
-	state() {
-		return {
-			count: 0,
-			name: 'jack',
-		}
-	},
-	actions: {
-		increment() {
-			this.count++
-		},
-	},
-})
+export const useFGStore = FGStore
 
-// useStore
+// for (const store of stores) {
+// 	const item = stores[i]
+// 	if (import.meta.hot) {
+// 		import.meta.hot.accept(acceptHMRUpdate(stores[i], import.meta.hot))
+// 	}
+// }

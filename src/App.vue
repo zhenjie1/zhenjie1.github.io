@@ -17,14 +17,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import LeftMenuPosition from 'components/common/LeftMenu.vue'
-import { useSocket } from './plugins/socket'
+import { useFGStore } from '@/pinia/index'
 
 export default defineComponent({
 	name: 'AppPage',
 	components: {
 		LeftMenuPosition,
 	},
-	setup() {},
+	setup() {
+		const fgStore = useFGStore()
+		console.log(fgStore.$state)
+	},
 })
 </script>
 

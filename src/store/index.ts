@@ -27,8 +27,6 @@ const store = createStore({
 	plugins: [storeIndexDB()],
 }) as UseStore
 
-window.store = store
-
 export default store
 
 export function useStore(): UseStore {

@@ -31,6 +31,7 @@ const theme = {
 		deep: '',
 	},
 }
+
 for (const i in theme) {
 	if (typeof theme[i] == 'object') {
 		for (const j in theme[i]) {
@@ -40,6 +41,14 @@ for (const i in theme) {
 		theme[i] = `var(--${i})`
 	}
 }
+
+// 循环生成透明度
+const transformKey = ['main', 'red', 'yellow', 'blue', 'gray']
+transformKey.map((k) => {
+	for (let i = 1; i < 50; i++) {
+		theme[`${k}-${i * 2}`] = `var(--${k}-${i * 2})`
+	}
+})
 
 module.exports = {
 	purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],

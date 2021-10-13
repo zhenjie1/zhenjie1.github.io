@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import AppTemp from '@/App.vue'
 import 'js/test'
 
@@ -9,6 +10,7 @@ import '@/plugins/socket/index'
 
 import initGlobalDirective from './assets/js/directive'
 import store from '@/store'
+import '@/pinia'
 import initElementUi from '@/plugins/element'
 import initGlobalComponent from '@/plugins/globalComponents/globalComponents'
 import '@/plugins/indexDB/index'
@@ -30,7 +32,7 @@ async function createVue() {
 
 	app.config.performance = true
 
-	app.use(router).use(store)
+	app.use(router).use(store).use(createPinia())
 
 	initGlobalDirective(app)
 	initElementUi(app)

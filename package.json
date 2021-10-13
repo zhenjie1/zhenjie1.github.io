@@ -23,8 +23,10 @@
     "promise": "^8.1.0",
     "qs": "^6.10.1",
     "rxjs": "^7.1.0",
+    "tailwind": "^4.0.0",
     "utility-types": "^3.10.0",
-    "vue": "^3.0.11",
+    "vue": "^3.2.14",
+    "vue-demi": "^0.11.4",
     "vue-router": "4",
     "vuex": "^4.0.0",
     "vuex-persistedstate": "^4.0.0-beta.3"

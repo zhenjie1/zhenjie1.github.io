@@ -9,7 +9,7 @@ const data: Data = {
 	RG: '255',
 	RB: '255',
 
-	main: '#1890ff',
+	main: 'rgb(24, 144, 255)',
 	AppLeftMenuColor: 'var(--C90)' /* 左侧菜单背景颜色 */,
 	menuBgColor: 'transparent' /* 菜单颜色 */,
 	bg: {
