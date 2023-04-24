@@ -81,10 +81,11 @@ function submit() {
 
 <template>
   <div class="flex flex-col h-full max-w-300 mx-auto">
-    <div class="messageBox flex-1 m-5 overflow-y-auto">
+    <div class="messageBox flex-1 m-5 mb-0 overflow-y-auto">
       <div v-for="(item, index) in receiveFilter" :key="index" class="item overflow-x-auto" :class="[item.type]" v-html="item.html" />
       <div v-if="finallyObj.msg" ref="finallyRef" class="item left overflow-x-auto" v-html="finallyObj.html" />
     </div>
+    <pre>{{ finallyObj }}</pre>
 
     <form class="flex h-16 shadow-[0_0_15px_rgba(0,0,0,0.10)] bg-#40414f m-4 mb-7 rounded-6px" :class="[disabled ? 'opacity-20' : '']">
       <textarea v-model="msg" :readonly="disabled" class="resize-none flex-1 disabled:opacity-50 border-none py-5 pl-5 text-4" placeholder="输入您的问题" @keyup.enter="submit" />
@@ -95,7 +96,7 @@ function submit() {
 
 <style lang="scss" scoped>
 .messageBox{
-  .item{padding: 20px 16px;}
+  .item{padding: 20px 16px;border-radius: 6px;}
   .item.left{background-color: #434654;}
 }
 </style>

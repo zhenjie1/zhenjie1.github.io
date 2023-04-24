@@ -1,3 +1,5 @@
+import { useUuid } from './utils'
+
 const stack: ((data: Data) => void)[] = []
 
 export function onSocketMessage(cb: (data: Data) => void) {
@@ -23,11 +25,13 @@ export function createSocket() {
 
 const sendPools: string[] = []
 
+const uuid = useUuid()
+
 export function sendMessage(action: string, params: Data = {}) {
   if (!action) return
 
   if (socket) {
-    const sendData = JSON.stringify({ action, data: params })
+    const sendData = JSON.stringify({ action, data: params, uuid })
     if (socket.readyState === 1) socket.send(sendData)
     else sendPools.push(sendData)
 
