@@ -1,9 +1,26 @@
 <script lang="ts" setup>
 import { throttle } from 'lodash-es'
-import { marked } from 'marked'
+import MarkdownIt from 'markdown-it'
+import hljs from 'highlight.js'
+import hlvue from 'highlight.js/lib/languages/python'
 import { createSocket, onSocketMessage, sendMessage } from '~/assets/js/socket'
 
+console.log(hlvue)
+hljs.registerLanguage('vue', hlvue)
 createSocket()
+hljs.highlightAll()
+const md = MarkdownIt({
+  highlight: (str, lang) => {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return `<pre class="hljs"><code>${hljs.highlight(str, { language: lang, ignoreIllegals: true }).value}</code></pre>`
+      }
+      catch (_) {}
+    }
+    return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
+  },
+})
+console.log('md', md.render('```js\nconsole.log(1)\n```'))
 
 interface Messsage {
   type: 'right' | 'left'
@@ -42,7 +59,7 @@ onSocketMessage((params) => {
       const { msg } = data
       // console.log('finallyObj', finallyObj)
       finallyObj.msg += msg
-      finallyObj.html = marked(finallyObj.msg)
+      finallyObj.html = md.render(finallyObj.msg)
       showFinally()
     },
     start() {
@@ -56,6 +73,8 @@ onSocketMessage((params) => {
       disabled.value = false
     },
     error() {
+      receiveMessages[receiveIndex] = { ...finallyObj, type: 'error' }
+      resetFinally()
       disabled.value = false
     },
   }
@@ -68,7 +87,7 @@ const msg = ref('')
 
 function submit() {
   receiveIndex++
-  receiveMessages.push({ type: 'right', msg: msg.value, html: marked(msg.value) })
+  receiveMessages.push({ type: 'right', msg: msg.value, html: md.render(msg.value) })
 
   sendMessage('chatMsg', {
     msg: msg.value,
