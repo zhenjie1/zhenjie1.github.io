@@ -6,8 +6,8 @@ export function onSocketMessage(cb: (data: Data) => void) {
 
 let socket: WebSocket
 export function createSocket() {
-  socket = new WebSocket('ws://localhost:9000')
-  // socket = new WebSocket('wss://service-09b9300w-1304747704.gz.apigw.tencentcs.com/release/')
+  // socket = new WebSocket('ws://localhost:9000')
+  socket = new WebSocket('wss://service-09b9300w-1304747704.gz.apigw.tencentcs.com/release/')
 
   socket.onmessage = (e) => {
     const data = JSON.parse(e.data)
