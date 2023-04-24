@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>帮助与反馈</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      background-color: white;
+    }
+
+    #content * {
+      margin: 0;
+      padding: 0;
+      white-space: pre-wrap !important;
+    }
+
+    #content {
+      line-height: 1.5;
+    }
+
+    img {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="content"></div>
+  <script>
+    let link = new URL(location.href);
+    let id = link.searchParams.get('id');
+
+
+    if (id) {
+      const isTest = location.href.includes('test')
+
+      const url = `http${isTest ? '' : 's'}://live${isTest ? '-test' : ''}.doulan.cn/v4/user/help_detail_api?help_id=${id}`
+      fetch(url).then(res => res.json()).then(res => {
+        const data = res.data.info
+        if (!data) return
+
+        document.title = data.title
+        const ctxEl = document.getElementById('content')
+        ctxEl.innerHTML = data.content
+
+        // 不包含图片是，添加边距
+        if (!data.content.includes('<img')) {ctxEl.style.margin = '10px'}
+      })
+    }
+
+  </script>
+</body>
+
+</html>

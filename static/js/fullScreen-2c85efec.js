@@ -1,0 +1,1 @@
+import{_ as r}from"./index-0cc1a0e4.js";import{k as t,j as e,l as i}from"./@vue-825b6421.js";import"./vue-router-ff4fc7aa.js";import"./pinia-aec398c9.js";import"./vue-demi-71ba0ef2.js";import"./pinia-plugin-persistedstate-d2bd58cf.js";const s=r({},[["render",function(r,s){const o=i("RouterView");return e(),t(o)}]]);export{s as default};

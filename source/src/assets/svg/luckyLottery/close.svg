@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="57px" height="57px" viewBox="0 0 57 57" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>关闭按钮</title>
+    <defs>
+        <linearGradient x1="66.8215256%" y1="56.3576226%" x2="100%" y2="56.3576226%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.899805029" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.898294089" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="幸运转盘" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="交互" transform="translate(-1340.000000, -756.000000)">
+            <g id="关闭按钮" transform="translate(1340.000000, 756.000000)">
+                <circle id="椭圆形" stroke="url(#linearGradient-1)" fill="#FE5967" cx="28.5" cy="28.5" r="28"></circle>
+                <g transform="translate(21.000000, 21.000000)" id="形状结合" stroke="#FFFFFF" stroke-linecap="round" stroke-width="3">
+                    <path d="M0.0478343119,0 L15.9522203,16 M0.031902789,15.9840326 L15.9681881,0.016031101"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>椭圆形</title>
+    <defs>
+        <linearGradient x1="66.8215256%" y1="56.3576226%" x2="100%" y2="56.3576226%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.899805029" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.898294089" offset="100%"></stop>
+        </linearGradient>
+        <rect id="path-2" x="0" y="0" width="22" height="22"></rect>
+    </defs>
+    <g id="幸运转盘" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="排行榜单" transform="translate(-30.000000, -421.000000)">
+            <g id="弹窗标题" transform="translate(0.000000, 390.000000)">
+                <g id="返回按钮" transform="translate(30.000000, 31.000000)">
+                    <circle id="椭圆形" stroke="url(#linearGradient-1)" fill="#F35A72" cx="24" cy="24" r="23.5"></circle>
+                    <g id="关闭icon" transform="translate(14.000000, 13.000000)">
+                        <mask id="mask-3" fill="white">
+                            <use xlink:href="#path-2"></use>
+                        </mask>
+                        <use id="矩形" fill-opacity="0" fill="#FFFFFF" xlink:href="#path-2"></use>
+                        <g id="编组" mask="url(#mask-3)" fill="#FFFFFF">
+                            <g transform="translate(12.222440, 10.753230) rotate(-315.000000) translate(-12.222440, -10.753230) translate(4.096989, 2.627778)">
+                                <path d="M1.52777778,16.1333333 L1.52777778,16.1333333 C0.6875,16.1333333 -3.33481391e-13,15.4073333 -3.33481391e-13,14.52 L-3.33481391e-13,1.61333333 C-3.33481391e-13,0.726 0.6875,0 1.52777778,0 C2.36805556,0 3.05555556,0.726 3.05555556,1.61333333 L3.05555556,14.52 C3.05555556,15.4073333 2.36805556,16.1333333 1.52777778,16.1333333" id="Fill-1"></path>
+                                <path d="M0.117570539,14.7231261 L0.117570539,14.7231261 C0.117570539,13.8828483 0.843570539,13.1953483 1.73090387,13.1953483 L14.6375705,13.1953483 C15.5249039,13.1953483 16.2509039,13.8828483 16.2509039,14.7231261 C16.2509039,15.5634039 15.5249039,16.2509039 14.6375705,16.2509039 L1.73090387,16.2509039 C0.843570539,16.2509039 0.117570539,15.5634039 0.117570539,14.7231261" id="Fill-3"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
