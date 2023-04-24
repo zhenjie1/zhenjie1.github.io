@@ -1,18 +1,30 @@
 {
   "extends": "@antfu",
-  "ignorePatterns": ["!pages/public"],
+  "ignorePatterns": [
+    "!pages/public"
+  ],
   "overrides": [
     {
-      "files": ["locales/**.json"],
+      "files": [
+        "locales/**.json"
+      ],
       "rules": {
         "jsonc/sort-keys": "error"
       }
     }
   ],
   "rules": {
-    "vue/no-restricted-syntax":["error", {
-      "selector": "VElement[name='a']",
-      "message": "Use NuxtLink instead."
-    }]
+    "vue/no-restricted-syntax": [
+      "error",
+      {
+        "selector": "VElement[name='a']",
+        "message": "Use NuxtLink instead."
+      }
+    ],
+    "array-callback-return": "off",
+    "curly": "off",
+    "brace-style": "off",
+    "@typescript-eslint/brace-style": "warn",
+    "antfu/if-newline": "off"
   }
 }
