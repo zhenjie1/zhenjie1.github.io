@@ -18,6 +18,7 @@
     "dayjs": "^1.11.7",
     "echarts": "^5.4.2",
     "lodash-es": "^4.17.21",
+    "marked": "^4.3.0",
     "pinia": "^2.0.30",
     "pinia-plugin-persistedstate": "^3.1.0",
     "qs": "^6.11.1",
