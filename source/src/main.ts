@@ -1,5 +1,6 @@
 import { setupLayouts } from 'virtual:generated-layouts'
 import { createRouter, createWebHashHistory } from 'vue-router'
+import CodeBlock from 'vue3-code-block'
 
 import App from './App.vue'
 
@@ -28,6 +29,7 @@ window.router = router
 
 const app = createApp(App)
 app.use(router)
+app.use(CodeBlock)
 piniaInstall(app)
 
 app.mount('#app')

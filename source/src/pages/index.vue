@@ -20,7 +20,7 @@ const md = MarkdownIt({
     return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
   },
 })
-console.log('md', md.render('```js\nconsole.log(1)\n```'))
+// console.log('md', md.render('```js\nconsole.log(1)\n```'))
 
 interface Messsage {
   type: 'right' | 'left'
@@ -106,7 +106,7 @@ function submit() {
     </div>
     <pre>{{ finallyObj }}</pre>
 
-    <form class="flex h-16 shadow-[0_0_15px_rgba(0,0,0,0.10)] bg-#40414f m-4 mb-7 rounded-6px" :class="[disabled ? 'opacity-20' : '']">
+    <form class="flex h-16 shadow-[0_0_15px_rgba(0,0,0,0.10)] bg-#40414f m-4 mb-7 rounded-6px" :class="[disabled ? 'opacity-30' : '']">
       <textarea v-model="msg" :readonly="disabled" class="resize-none flex-1 disabled:opacity-50 border-none py-5 pl-5 text-4" placeholder="输入您的问题" @keyup.enter="submit" />
       <i class="iconfont icon-fasong leading-16 px-5 opacity-40 text-18px cursor-pointer hover:opacity-70" @click="submit" />
     </form>
