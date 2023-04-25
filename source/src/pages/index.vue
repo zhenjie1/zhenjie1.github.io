@@ -2,11 +2,9 @@
 import { throttle } from 'lodash-es'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
-import hlvue from 'highlight.js/lib/languages/python'
+
 import { createSocket, onSocketMessage, sendMessage } from '~/assets/js/socket'
 
-console.log(hlvue)
-hljs.registerLanguage('vue', hlvue)
 createSocket()
 hljs.highlightAll()
 const md = MarkdownIt({
